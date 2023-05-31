@@ -1,39 +1,48 @@
 <template>
 
-  <div class="section main-canvas p-0">
-
-    <div class="navigation-bar">
-      <img class="avatar" src="/slush-pana.png">
-      <span class="username">
+  <div class="container is-max-desktop">
+    <div class="main-canvas">
+      <div class="navigation-bar">
+        <img class="avatar" src="/slush-pana.png">
+        <span class="username">
         Surprise Bot
       </span>
-      <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>
-    </div>
+        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>
+      </div>
 
-    <div class="chat-canvas" ref="chatCanvas" style="background-image: url('public/background.jpg');">
-      <div class="columns is-mobile is-multiline">
-        <div class="column is-full" v-for="message in messages">
-          <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']" v-html="message.content">
+      <div class="chat-canvas" ref="chatCanvas" style="background-image: url('/public/background.jpg');">
+        <div class="columns is-mobile is-multiline">
+          <div class="column is-full" v-for="message in messages">
+            <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']" v-html="message.content">
+            </div>
           </div>
-        </div>
 
-        <div class="column is-full" v-if="isLoading">
-          <div :class="['receive-canvas']">
+          <div class="column is-full" v-if="isLoading">
+            <div :class="['receive-canvas']">
             <span v-html="tempMessage">
 
             </span>
-            <span class='blinking-cursor'>▋</span>
+              <span class='blinking-cursor'>▋</span>
+            </div>
+          </div>
+
+          <div class="column is-full" v-if="!isLoading">
+            <div :class="['receive-end-canvas']">
+            <span @click="endConversationBtnTap">
+              我已經得到想要的結果，請幫我結束對話
+            </span>
+            </div>
           </div>
         </div>
       </div>
+
+      <div class="chat-input-canvas">
+        <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText" :placeholder="[isLoading ? '請等待完成回覆。':'請輸入內容']" @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
+        <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap" :disabled="isLoading">發送</button>
+      </div>
+
+
     </div>
-
-    <div class="chat-input-canvas">
-      <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText" :placeholder="[isLoading ? '請等待完成回覆。':'請輸入內容']" @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
-      <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap" :disabled="isLoading">發送</button>
-    </div>
-
-
   </div>
 
 </template>
@@ -155,6 +164,7 @@ export default {
       })
 
       this.isLoading = false;
+      this.scrollToBottom();
 
     },
 
@@ -206,6 +216,12 @@ export default {
       el.scrollTop = el.scrollHeight;
     },
 
+    endConversationBtnTap() {
+      if(confirm('你確認要結束對話嗎？')) {
+        this.$router.push('/end');
+      }
+    }
+
   }
 }
 </script>
@@ -214,11 +230,8 @@ export default {
 <style scoped>
 
 .main-canvas {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 
 .navigation-bar {
@@ -226,6 +239,9 @@ export default {
   width: 100%;
   height: 80px;
   padding: 0 20px 0 20px;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 .navigation-bar .avatar {
@@ -249,22 +265,25 @@ export default {
 
 .reset-conversation-btn {
   float: right;
-  height: 80px;
+  margin-top: 15px;
+  height: 50px;
   border: none;
 
   font-size: 1.2rem;
   font-weight: 700;
   color: #3175f1;
-  background-color: transparent;
+  background-color: rgba(197, 197, 197, 0.2);
+  border-radius: 5px;
 }
 
 .reset-conversation-btn:active {
   color: #2455af;
+  background-color: rgba(197, 197, 197, 0.3);
 }
 
 .chat-canvas {
   width: 100%;
-  height: calc(100vh - 148px);
+  height: calc(100vh - 160px);
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 20px 0 40px 0;
@@ -280,6 +299,24 @@ export default {
   padding: 10px 15px 10px 15px;
   font-weight: bold;
   word-wrap: break-word;
+
+  background-color: white;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+.receive-end-canvas {
+  max-width: calc(100% - 100px);
+  width: fit-content;
+  margin-left: 20px;
+  white-space: pre-line;
+
+  border-radius: 10px;
+  padding: 10px 15px 10px 15px;
+  font-weight: bold;
+  word-wrap: break-word;
+
+  color: #2455af;
+  text-decoration: underline;
 
   background-color: white;
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
@@ -305,7 +342,7 @@ export default {
   background-color: #f6f6f6;
   width: 100%;
   min-height: 80px;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   left: 0;
 }
@@ -314,7 +351,7 @@ export default {
   border: none;
   resize: none;
 
-  width: calc(100% - 105px);
+  width: calc(100% - 115px);
   height: 40px;
   font-size: 17px;
   line-height: 20px;
@@ -325,16 +362,19 @@ export default {
 }
 
 .chat-send-button {
-  background-color: transparent;
+  //background-color: transparent;
   position: absolute;
   bottom: 30px;
   border: None;
-  width: 70px;
+  width: 80px;
   height: 40px;
   font-size: 1.2rem;
   font-weight: 700;
   color: #3175f1;
   margin-left: 5px;
+
+  border-radius: 20px;
+  background-color: rgba(197, 197, 197, 0.2);
 }
 
 .chat-send-button-disable {
@@ -343,6 +383,7 @@ export default {
 
 .chat-send-button:active {
   color: #2455af;
+  background-color: rgba(197, 197, 197, 0.3);
 }
 
 .blinking-cursor {
