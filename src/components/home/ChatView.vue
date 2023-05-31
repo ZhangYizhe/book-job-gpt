@@ -314,7 +314,7 @@ export default {
   border: none;
   resize: none;
 
-  width: calc(100% - 105px);
+  width: calc(100% - 115px);
   height: 40px;
   font-size: 17px;
   line-height: 20px;
@@ -325,11 +325,11 @@ export default {
 }
 
 .chat-send-button {
-  background-color: transparent;
+  //background-color: transparent;
   position: absolute;
   bottom: 30px;
   border: None;
-  width: 70px;
+  width: 80px;
   height: 40px;
   font-size: 1.2rem;
   font-weight: 700;
