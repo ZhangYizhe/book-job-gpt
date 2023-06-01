@@ -1,6 +1,8 @@
 <template>
 
   <div class="container is-max-desktop">
+    <img src="/background.jpg" alt="" style="position: absolute; width: 100%; height: 100%; z-index: -1; object-fit: cover; overflow: hidden">
+
     <div class="main-canvas">
       <div class="navigation-bar">
         <img class="avatar" src="/slush-pana.png">
@@ -10,7 +12,9 @@
         <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>
       </div>
 
-      <div class="chat-canvas" ref="chatCanvas" style="background-image: url('/public/background.jpg');">
+
+
+      <div class="chat-canvas" ref="chatCanvas">
         <div class="columns is-mobile is-multiline">
           <div class="column is-full" v-for="message in messages">
             <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']" v-html="message.content">
