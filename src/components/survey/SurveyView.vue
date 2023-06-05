@@ -18,7 +18,7 @@
             <div class="control" v-if="question.type === 'selection'">
               <div class="columns is-mobile is-multiline">
                 <div class="column is-full py-2"  v-for="option in question.options">
-                  <label class="radio" style="font-size: 1.1rem">
+                  <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
                     <input type="radio" :value="option.id" v-model="question.value">
                     {{ option.text }}
                   </label>
@@ -85,6 +85,9 @@ export default {
   },
   computed: {
      isFilled() {
+       if (this.store.debug) {
+         return true
+       }
        return this.questionnaire.data.every(question => {
           if (question.required) {
             return question.value !== null && question.value !== undefined && question.value !== ''

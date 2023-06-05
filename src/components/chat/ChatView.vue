@@ -1,7 +1,8 @@
 <template>
 
   <div class="container is-max-desktop">
-    <img src="/background.jpg" alt="" style="position: absolute; width: 100%; height: 100%; z-index: -1; object-fit: cover; overflow: hidden">
+    <img src="/background.jpg" alt=""
+         style="position: absolute; width: 100%; height: 100%; z-index: -1; object-fit: cover; overflow: hidden">
 
     <div class="main-canvas">
       <div class="navigation-bar">
@@ -9,16 +10,14 @@
         <span class="username">
         Library Bot
       </span>
-<!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
+        <!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
         <button class="end-conversation-btn" @click="endConversationBtnTap">End Chat</button>
       </div>
-
-
 
       <div class="chat-canvas" ref="chatCanvas">
         <div class="columns is-mobile is-multiline">
           <div class="column is-full" v-for="message in messages">
-            <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']" v-html="message.content">
+            <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']" v-html="message.content + formatDate(message.time)">
             </div>
           </div>
 
@@ -31,21 +30,30 @@
             </div>
           </div>
 
-<!--          <div class="column is-full" v-if="!isLoading">-->
-<!--            <div :class="['receive-end-canvas']">-->
-<!--            <span @click="endConversationBtnTap">-->
-<!--              我已經得到想要的結果，請幫我結束對話-->
-<!--            </span>-->
-<!--            </div>-->
-<!--          </div>-->
+          <!--          <div class="column is-full" v-if="!isLoading">-->
+          <!--            <div :class="['receive-end-canvas']">-->
+          <!--            <span @click="endConversationBtnTap">-->
+          <!--              我已經得到想要的結果，請幫我結束對話-->
+          <!--            </span>-->
+          <!--            </div>-->
+          <!--          </div>-->
+
+          <div class="column is-full" v-if="!isLoading">
+            <div :class="['export-current-conversation-records']"  @click="exportCurrentConversationRecords">
+              Copy the current conversation log
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="chat-input-canvas">
-        <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText" :placeholder="[isLoading ? 'Please wait for a complete reply.':'Say something']" @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
-        <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap" :disabled="isLoading">Send</button>
+        <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText"
+                  :placeholder="[isLoading ? 'Loading...':'Say something']"
+                  @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
+        <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap"
+                :disabled="isLoading">Send
+        </button>
       </div>
-
 
     </div>
   </div>
@@ -55,7 +63,8 @@
 <script>
 import {store} from "@/data/store";
 import {Base64} from "js-base64";
-import { fetchEventSource } from "@microsoft/fetch-event-source"
+import {fetchEventSource} from "@microsoft/fetch-event-source";
+import moment from "moment";
 
 export default {
   name: "ChatView",
@@ -75,7 +84,7 @@ export default {
   computed: {
     token() {
       return Base64.decode(store.chatToken);
-    }
+    },
   },
   mounted() {
     this.resetConversation();
@@ -98,6 +107,7 @@ export default {
       this.messages.push({
         role: "user",
         content: message,
+        time: Math.floor(Date.now() / 1000)
       })
 
       this.scrollToBottom();
@@ -120,7 +130,12 @@ export default {
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
-          messages: this.messages,
+          messages: this.messages.map((message) => {
+            return {
+              "role": message.role,
+              "content": message.content
+            }
+          }),
           stream: true,
         }),
         async onopen(response) {
@@ -145,7 +160,8 @@ export default {
           if (finish_reason === 'stop') {
             const stopMessage = {
               "role": "assistant",
-              "content": subThis.tempMessage
+              "content": subThis.tempMessage,
+              "time": Math.floor(Date.now() / 1000)
             }
 
             subThis.isLoading = false;
@@ -174,7 +190,7 @@ export default {
     },
 
     resetConversationBtnTap() {
-      if(confirm('Are you sure you want to restart the conversation? This will lose all current session content.')) {
+      if (confirm('Are you sure you want to restart the conversation? This will lose all current session content.')) {
         this.resetConversation();
       }
     },
@@ -189,6 +205,7 @@ export default {
         {
           role: "assistant",
           content: "Hi, I'm Library Bot, and I'm happy to assist you!\nI can provide you with a book list based on your needs. Please give me a try!\n\nFor example:\n1. Hi, today is my girlfriend's birthday. She loves romantic novels. Can you please provide a list of books? I would like to choose one as a gift for her.\n2. My high school history teacher is retiring next week, and we had a special relationship. Can you recommend some books as a gift for him?",
+          time: Math.floor(Date.now() / 1000)
         }
       ]
 
@@ -222,12 +239,33 @@ export default {
     },
 
     endConversationBtnTap() {
-      if(confirm('Are you sure you want to end the conversation?')) {
+      if (confirm('Are you sure you want to end the conversation?')) {
         const query = {
           position: 2,
         }
         this.$router.push({path: '/survey', query: query});
       }
+    },
+
+    exportCurrentConversationRecords() {
+      // const logStr = JSON.stringify(this.messages);
+
+      let logStr = '';
+      for (const index in this.messages) {
+        const message = this.messages[index];
+
+        logStr += moment.unix(message.time).format('YYYY/MM/DD HH:mm:ss') + ' - ' +  message.role + ': ' + '\n' + message.content + '\n\n';
+      }
+
+
+      // Copy the text inside the text field
+      navigator.clipboard.writeText(logStr);
+
+      alert('The records have been copied to the clipboard.');
+    },
+
+    formatDate(timestamp) {
+      return "<p style='text-align: right; color: darkgray'>" + moment.unix(timestamp).format('HH:mm') + "</p>";
     }
 
   }
@@ -388,7 +426,6 @@ export default {
 }
 
 .chat-send-button {
-  //background-color: transparent;
   position: absolute;
   bottom: 30px;
   border: None;
@@ -396,22 +433,18 @@ export default {
   height: 40px;
   font-size: 1.2rem;
   font-weight: 700;
-  //color: #3175f1;
   color: white;
   margin-left: 5px;
 
   border-radius: 20px;
-  //background-color: rgba(197, 197, 197, 0.2);
   background-color: #3175f1;
 }
 
 .chat-send-button-disable {
-  color: gray;
+  background-color: lightgrey;
 }
 
 .chat-send-button:active {
-  //color: #2455af;
-  //background-color: rgba(197, 197, 197, 0.3);
   background-color: #204d9b;
 }
 
@@ -429,4 +462,12 @@ export default {
   }
 }
 
+.export-current-conversation-records {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #2455af;
+    text-decoration: underline;
+}
 </style>

@@ -10,6 +10,7 @@
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
     "js-base64": "^3.7.5",
+    "moment": "^2.29.4",
     "vue": "^3.3.2",
     "vue-router": "^4.2.2"
   },
