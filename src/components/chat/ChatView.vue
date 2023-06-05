@@ -141,10 +141,22 @@ export default {
         async onopen(response) {
           if (response.ok) {
             subThis.tempMessage = "";
-          } else if (response.status >= 400 && response.status < 500) {
-            alert(`Error Code: ${response.status}, please try again later.`);
-          } else {
-            alert("Undefined error");
+            return;
+          }
+
+          switch (response.status) {
+            case 401 :
+              alert(`Error Code: ${response.status}, invalid Authentication, please try again later.`);
+              break;
+            case 429 :
+              alert(`Error Code: ${response.status}, rate limit reached for requests, please try again later.`);
+              break;
+            case 500 :
+              alert(`Error Code: ${response.status}, the server had an error while processing your request, please try again later.`);
+              break;
+            default:
+              alert(`Error Code: ${response.status}, please try again later.`);
+              break;
           }
         },
         onmessage(msg) {
