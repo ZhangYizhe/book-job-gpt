@@ -6,7 +6,7 @@
           <div class="column">
             <div class="columns is-mobile">
               <div class="column">
-                <img src="/public/logos/PI-Lab-Logo-Small.jpg" alt="logo" style="width: 50%">
+                <img src="/public/endpoint-cuate.png" alt="logo" style="width: 80%">
                 <p style="font-size: 1.8rem;font-weight: bold">
                   Hong Kong Baptist University
                 </p>
