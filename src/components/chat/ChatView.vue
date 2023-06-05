@@ -7,9 +7,10 @@
       <div class="navigation-bar">
         <img class="avatar" src="/slush-pana.png">
         <span class="username">
-        Surprise Bot
+        Library Bot
       </span>
-        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>
+<!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
+        <button class="end-conversation-btn" @click="endConversationBtnTap">End Chat</button>
       </div>
 
 
@@ -30,19 +31,19 @@
             </div>
           </div>
 
-          <div class="column is-full" v-if="!isLoading">
-            <div :class="['receive-end-canvas']">
-            <span @click="endConversationBtnTap">
-              我已經得到想要的結果，請幫我結束對話
-            </span>
-            </div>
-          </div>
+<!--          <div class="column is-full" v-if="!isLoading">-->
+<!--            <div :class="['receive-end-canvas']">-->
+<!--            <span @click="endConversationBtnTap">-->
+<!--              我已經得到想要的結果，請幫我結束對話-->
+<!--            </span>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
       </div>
 
       <div class="chat-input-canvas">
-        <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText" :placeholder="[isLoading ? '請等待完成回覆。':'請輸入內容']" @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
-        <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap" :disabled="isLoading">發送</button>
+        <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText" :placeholder="[isLoading ? 'Please wait for a complete reply.':'Say something']" @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
+        <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap" :disabled="isLoading">Send</button>
       </div>
 
 
@@ -173,21 +174,21 @@ export default {
     },
 
     resetConversationBtnTap() {
-      if(confirm('你確認要重新開始對話嗎？這會丟失當前所有會話內容。')) {
+      if(confirm('Are you sure you want to restart the conversation? This will lose all current session content.')) {
         this.resetConversation();
       }
     },
 
     resetConversation() {
       if (this.isLoading) {
-        alert("請等待完成回覆。")
+        alert("Please wait for a complete reply.")
         return;
       }
 
       this.messages = [
         {
           role: "assistant",
-          content: "你好，我是 Surprise Bot，很高興為你服務！我可以根據你的需求推薦對應的內容給你，請試試看吧！\n\n例如：\n1. 請幫我爲女朋友生日挑選5本書。\n2.請你幫我推薦10首中文歌曲爲今天晚上的大學畢業歡送會。",
+          content: "Hi, I'm Library Bot, and I'm happy to assist you!\nI can provide you with a book list based on your needs. Please give me a try!\n\nFor example:\n1. Hi, today is my girlfriend's birthday. She loves romantic novels. Can you please provide a list of books? I would like to choose one as a gift for her.\n2. My high school history teacher is retiring next week, and we had a special relationship. Can you recommend some books as a gift for him?",
         }
       ]
 
@@ -221,8 +222,11 @@ export default {
     },
 
     endConversationBtnTap() {
-      if(confirm('你確認要結束對話嗎？')) {
-        this.$router.push('/end');
+      if(confirm('Are you sure you want to end the conversation?')) {
+        const query = {
+          position: 2,
+        }
+        this.$router.push({path: '/survey', query: query});
       }
     }
 
@@ -285,6 +289,24 @@ export default {
   background-color: rgba(197, 197, 197, 0.3);
 }
 
+.end-conversation-btn {
+  float: right;
+  margin-top: 15px;
+  height: 50px;
+  border: none;
+
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #d50f0f;
+  background-color: rgba(197, 197, 197, 0.2);
+  border-radius: 5px;
+}
+
+.end-conversation-btn:active {
+  color: #940b0b;
+  background-color: rgba(197, 197, 197, 0.3);
+}
+
 .chat-canvas {
   width: 100%;
   height: calc(100vh - 160px);
@@ -301,7 +323,7 @@ export default {
 
   border-radius: 10px;
   padding: 10px 15px 10px 15px;
-  font-weight: bold;
+  font-weight: normal;
   word-wrap: break-word;
 
   background-color: white;
@@ -335,7 +357,7 @@ export default {
 
   border-radius: 10px;
   padding: 10px 15px 10px 15px;
-  font-weight: bold;
+  font-weight: normal;
   word-wrap: break-word;
 
   background-color: #e8fed7;
@@ -374,11 +396,13 @@ export default {
   height: 40px;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #3175f1;
+  //color: #3175f1;
+  color: white;
   margin-left: 5px;
 
   border-radius: 20px;
-  background-color: rgba(197, 197, 197, 0.2);
+  //background-color: rgba(197, 197, 197, 0.2);
+  background-color: #3175f1;
 }
 
 .chat-send-button-disable {
@@ -386,8 +410,9 @@ export default {
 }
 
 .chat-send-button:active {
-  color: #2455af;
-  background-color: rgba(197, 197, 197, 0.3);
+  //color: #2455af;
+  //background-color: rgba(197, 197, 197, 0.3);
+  background-color: #204d9b;
 }
 
 .blinking-cursor {

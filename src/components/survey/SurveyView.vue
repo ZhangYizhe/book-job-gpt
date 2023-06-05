@@ -58,6 +58,7 @@
 import {store} from "@/data/store";
 import {preQuestionnaire} from "@/data/surveys/preQuestionnaire";
 import {guidelineQuestionnaire} from "@/data/surveys/guidelineQuestionnaire";
+import {postQuestionnaire} from "@/data/surveys/postQuestionnaire";
 
 export default {
   name: 'SurveyView',
@@ -107,14 +108,13 @@ export default {
          this.$router.push({path: '/survey', query: query});
 
        } else if (this.position === 1) {
-
          this.store.guidelineQuestionnaire = this.questionnaire;
          this.$router.push('/chat')
-
+       } else if (this.position === 2) {
+         this.store.postQuestionnaire = this.questionnaire;
+         this.$router.push('/end');
        } else {
-
          this.$router.push('/chat')
-
        }
     }
   },
@@ -134,6 +134,12 @@ export default {
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(guidelineQuestionnaire))
         }
+      } else if (this.position === 2) {
+        if (this.store.postQuestionnaire !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.postQuestionnaire))
+        } else {
+          this.questionnaire = JSON.parse(JSON.stringify(postQuestionnaire))
+        }
       }
     }
   },
@@ -151,6 +157,8 @@ export default {
   position: sticky;
   top: 0;
   left: 0;
+  z-index: 100;
+  background-color: white;
 }
 
 .questionnaire-text textarea {

@@ -8,10 +8,12 @@ export const store = reactive({
 
     preQuestionnaire: null,
     guidelineQuestionnaire: null,
+    postQuestionnaire: null,
 
     reset() {
         this.tag = 'home';
         this.preQuestionnaire = null;
         this.guidelineQuestionnaire = null;
+        this.postQuestionnaire = null;
     }
 })
