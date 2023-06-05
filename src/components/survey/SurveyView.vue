@@ -26,7 +26,7 @@
               </div>
             </div>
             <div class="control questionnaire-text" v-if="question.type === 'text'">
-            <textarea placeholder="請輸入內容" v-model="question.value">
+            <textarea placeholder="Please enter content" v-model="question.value">
 
             </textarea>
             </div>
