@@ -1,75 +1,94 @@
 <template>
-  <div class="container">
+  <div class="container" style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
     <div class="columns is-multiline is-mobile m-0">
-      <div class="column is-9 p-0">
-        <div>
-          <div class="main-canvas" style="position: relative">
+      <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
 
-            <div style="position: absolute; width: 100%; height: 100%;  overflow: hidden; z-index: -1">
-              <img src="/background.jpg" alt=""
-                   style="width: 100%; height: 100%; object-fit: cover">
-            </div>
-
-            <div class="navigation-bar">
-              <img class="avatar" src="/slush-pana.png">
-              <span class="username">
-                    Enoch
-                  </span>
-              <!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
-              <!--            <button class="end-conversation-btn" @click="endConversationBtnTap">End Chat</button>-->
-            </div>
-
-            <div class="chat-canvas" ref="chatCanvas">
-              <div class="columns is-mobile is-multiline">
-                <div class="column is-full">
-                  <div class="default-prompt" v-html="defaultPrompt">
-
-                  </div>
-                </div>
-                <div class="column is-full" v-for="message in messages">
-                  <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']"
-                       v-html="message.content + formatDate(message.time)">
-                  </div>
-                </div>
-
-                <div class="column is-full" v-if="isLoading">
-                  <div :class="['receive-canvas']">
-                        <span v-html="tempMessage">
-
-                        </span>
-                    <span class='blinking-cursor'>▋</span>
-                  </div>
-                </div>
-
-                <!--          <div class="column is-full" v-if="!isLoading">-->
-                <!--            <div :class="['receive-end-canvas']">-->
-                <!--            <span @click="endConversationBtnTap">-->
-                <!--              我已經得到想要的結果，請幫我結束對話-->
-                <!--            </span>-->
-                <!--            </div>-->
-                <!--          </div>-->
-
-                <div class="column is-full" v-if="!isLoading">
-                  <div :class="['export-current-conversation-records']" @click="exportCurrentConversationRecords">
-                    Copy the current conversation log
-                  </div>
-                </div>
+        <div class="booklist-canvas" v-if="books.length > 0" style="width: 100%; height: calc(100% - 78px); border-bottom: 1px solid #e1e1e1; overflow-y: scroll; overflow-x: hidden">
+            <div class="columns px-4 pt-4">
+              <div class="column" v-for="book in books" style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
+                <i class="bi bi-x-circle-fill" style="color: red"></i> {{ book }}
               </div>
             </div>
 
-            <div class="chat-input-canvas">
+            <p style="text-align: center; font-weight: bold; color: lightgrey">
+              {{books.length}} / {{ totalBooks }}
+            </p>
+        </div>
+        <div v-else>
+          <p class="pt-5" style="color: gray; text-align: center">
+            No books selected
+          </p>
+        </div>
+
+        <button class="button is-danger booklist-bottom-btn" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
+            Completed
+        </button>
+
+      </div>
+      <div class="column is-9 p-0">
+        <div class="main-canvas" style="position: relative">
+
+          <div style="position: absolute; width: 100%; height: 100%;  overflow: hidden; z-index: -1">
+            <img src="/background.jpg" alt=""
+                 style="width: 100%; height: 100%; object-fit: cover">
+          </div>
+
+          <div class="navigation-bar">
+            <img class="avatar" src="/slush-pana.png">
+            <span class="username">
+                    Enoch
+                  </span>
+            <!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
+            <!--            <button class="end-conversation-btn" @click="endConversationBtnTap">End Chat</button>-->
+          </div>
+
+          <div class="chat-canvas" ref="chatCanvas">
+            <div class="columns is-mobile is-multiline">
+              <div class="column is-full">
+                <div class="default-prompt" v-html="defaultPrompt">
+
+                </div>
+              </div>
+              <div class="column is-full" v-for="message in messages">
+                <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']"
+                     v-html="message.content + formatDate(message.time)">
+                </div>
+              </div>
+
+              <div class="column is-full" v-if="isLoading">
+                <div :class="['receive-canvas']">
+                        <span v-html="tempMessage">
+
+                        </span>
+                  <span class='blinking-cursor'>▋</span>
+                </div>
+              </div>
+
+              <!--          <div class="column is-full" v-if="!isLoading">-->
+              <!--            <div :class="['receive-end-canvas']">-->
+              <!--            <span @click="endConversationBtnTap">-->
+              <!--              我已經得到想要的結果，請幫我結束對話-->
+              <!--            </span>-->
+              <!--            </div>-->
+              <!--          </div>-->
+
+              <div class="column is-full" v-if="!isLoading">
+                <div :class="['export-current-conversation-records']" @click="exportCurrentConversationRecords">
+                  Copy the current conversation log
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-canvas">
                     <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText"
                               :placeholder="[isLoading ? 'Loading...':'Say something']"
                               @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
-              <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap"
-                      :disabled="isLoading">Send
-              </button>
-            </div>
+            <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap"
+                    :disabled="isLoading">Send
+            </button>
           </div>
         </div>
-      </div>
-      <div class="column is-3 p-0" style="background-color: white">
-
       </div>
     </div>
   </div>
@@ -99,6 +118,8 @@ export default {
 
       tempMessage: "",
       messages: [],
+      totalBooks: 5,
+      books: [],
     }
   },
   computed: {
@@ -136,6 +157,10 @@ export default {
       this.resizeTextarea();
 
       this.request();
+    },
+
+    favoriteBtnTap(event) {
+      console.log(event);
     },
 
     async request() {
@@ -204,7 +229,9 @@ export default {
           }
 
           if (delta['content'] !== undefined) {
-            subThis.tempMessage += delta["content"];
+            let content = delta["content"].replace(' "', '<span style=\'color: orange; border: none; background: transparent; margin-left: 2px;\' @click="favoriteBtnTap($event)"><i class=\"bi bi-star\"></i>"');
+            content = content.replace('" ', '"</span> ');
+            subThis.tempMessage += content;
             subThis.scrollToBottomWithoutTimer();
           }
         },
@@ -319,7 +346,6 @@ export default {
 
 .main-canvas {
   width: 100%;
-  margin-top: 20px;
   height: calc(100vh - 40px);
   overflow: hidden;
 }
