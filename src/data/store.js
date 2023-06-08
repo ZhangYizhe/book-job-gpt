@@ -1,5 +1,5 @@
 import {reactive} from 'vue'
-import {guidelineQuestionnaire} from "@/data/surveys/guidelineQuestionnaire";
+import {firstScenarioQuestionnaire} from "@/data/surveys/firstScenarioQuestionnaire";
 
 export const store = reactive({
     tag: 'home',
@@ -8,14 +8,24 @@ export const store = reactive({
 
     debug: true,
 
+    isPrompts: true,
+    round: 1,
+
     preQuestionnaire: null,
-    guidelineQuestionnaire: null,
+    firstScenarioQuestionnaire: null,
+    secondScenarioQuestionnaire: null,
     postQuestionnaire: null,
+    interviewQuestionnaire: null,
+
+    firstMessages: [],
+    secondMessages: [],
 
     reset() {
         this.tag = 'home';
         this.preQuestionnaire = null;
-        this.guidelineQuestionnaire = null;
-        this.postQuestionnaire = null;
+        this.firstScenarioQuestionnaire = null;
+        this.secondScenarioQuestionnaire = null;
+        this.firstPostQuestionnaire = null;
+        this.secondPostQuestionnaire = null;
     }
 })

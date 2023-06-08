@@ -1,6 +1,6 @@
 import {reactive} from 'vue'
 
-export const guidelineQuestionnaire = reactive({
+export const firstScenarioQuestionnaire = reactive({
     title: "Guideline",
     description: "The most important thing when communicating with ChatGPT is to understand how to correctly and fully express one's needs. The more information provided, the more it can return ideal results.\n\nFor example:\nIf I want to choose some English learning books for my 12-year-old daughter who is studying in primary school in Hong Kong, I might ask like this:\n<strong>Hello, can you help me generate a book list for my daughter? She's 12 years old and studying in Hong Kong. I hope this book list is suitable for her to practice English</strong>.",
     position: 1,

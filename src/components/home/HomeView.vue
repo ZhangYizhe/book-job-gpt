@@ -7,11 +7,11 @@
             <div class="columns is-mobile">
               <div class="column">
                 <img src="/public/logos/PI-Lab-Logo-Small.jpg" alt="logo" style="width: 50%">
-                <p style="font-size: 1.8rem;font-weight: bold">
-                  Hong Kong Baptist University
+                <p style="font-size: 1.8rem;font-weight: bold" v-html="title">
+
                 </p>
-                <p style="font-size: 1.3rem">
-                  Welcome to participate this research activity. <br> If you would like to start the experiment, please click the <span style="color: #2455af; font-weight: bold">START</span> button.
+                <p style="font-size: 1.3rem" v-html="description">
+
                 </p>
               </div>
             </div>
@@ -48,11 +48,16 @@ export default {
   data() {
     return {
       store,
+
+      title: "Hong Kong Baptist University",
+      description: "Thank you for participating in this experiment. This experiment aims to investigate whether chatbots can provide a better experience in the book recommendation task. <br><br> In this experiment, you will experience a book chatbot based on Chat-GPT. It can understand your needs by communicating with you, and recommend books to you based on chat content. <br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
     };
   },
 
   methods: {
     async startBtnTap() {
+      this.store.round = 1;
+
       const query = {
         position: 0,
       }

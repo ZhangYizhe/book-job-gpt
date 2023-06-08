@@ -1,60 +1,76 @@
 <template>
+  <div class="container">
+    <div class="columns is-multiline is-mobile m-0">
+      <div class="column is-9 p-0">
+        <div>
+          <div class="main-canvas" style="position: relative">
 
-  <div class="container is-max-desktop">
-    <img src="/background.jpg" alt=""
-         style="position: absolute; width: 100%; height: 100%; z-index: -1; object-fit: cover; overflow: hidden">
-
-    <div class="main-canvas">
-      <div class="navigation-bar">
-        <img class="avatar" src="/slush-pana.png">
-        <span class="username">
-        Library Bot
-      </span>
-        <!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
-        <button class="end-conversation-btn" @click="endConversationBtnTap">End Chat</button>
-      </div>
-
-      <div class="chat-canvas" ref="chatCanvas">
-        <div class="columns is-mobile is-multiline">
-          <div class="column is-full" v-for="message in messages">
-            <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']" v-html="message.content + formatDate(message.time)">
+            <div style="position: absolute; width: 100%; height: 100%;  overflow: hidden; z-index: -1">
+              <img src="/background.jpg" alt=""
+                   style="width: 100%; height: 100%; object-fit: cover">
             </div>
-          </div>
 
-          <div class="column is-full" v-if="isLoading">
-            <div :class="['receive-canvas']">
-            <span v-html="tempMessage">
-
-            </span>
-              <span class='blinking-cursor'>▋</span>
+            <div class="navigation-bar">
+              <img class="avatar" src="/slush-pana.png">
+              <span class="username">
+                    Enoch
+                  </span>
+              <!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
+              <!--            <button class="end-conversation-btn" @click="endConversationBtnTap">End Chat</button>-->
             </div>
-          </div>
 
-          <!--          <div class="column is-full" v-if="!isLoading">-->
-          <!--            <div :class="['receive-end-canvas']">-->
-          <!--            <span @click="endConversationBtnTap">-->
-          <!--              我已經得到想要的結果，請幫我結束對話-->
-          <!--            </span>-->
-          <!--            </div>-->
-          <!--          </div>-->
+            <div class="chat-canvas" ref="chatCanvas">
+              <div class="columns is-mobile is-multiline">
+                <div class="column is-full">
+                  <div class="default-prompt" v-html="defaultPrompt">
 
-          <div class="column is-full" v-if="!isLoading">
-            <div :class="['export-current-conversation-records']"  @click="exportCurrentConversationRecords">
-              Copy the current conversation log
+                  </div>
+                </div>
+                <div class="column is-full" v-for="message in messages">
+                  <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']"
+                       v-html="message.content + formatDate(message.time)">
+                  </div>
+                </div>
+
+                <div class="column is-full" v-if="isLoading">
+                  <div :class="['receive-canvas']">
+                        <span v-html="tempMessage">
+
+                        </span>
+                    <span class='blinking-cursor'>▋</span>
+                  </div>
+                </div>
+
+                <!--          <div class="column is-full" v-if="!isLoading">-->
+                <!--            <div :class="['receive-end-canvas']">-->
+                <!--            <span @click="endConversationBtnTap">-->
+                <!--              我已經得到想要的結果，請幫我結束對話-->
+                <!--            </span>-->
+                <!--            </div>-->
+                <!--          </div>-->
+
+                <div class="column is-full" v-if="!isLoading">
+                  <div :class="['export-current-conversation-records']" @click="exportCurrentConversationRecords">
+                    Copy the current conversation log
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-input-canvas">
+                    <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText"
+                              :placeholder="[isLoading ? 'Loading...':'Say something']"
+                              @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
+              <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap"
+                      :disabled="isLoading">Send
+              </button>
             </div>
           </div>
         </div>
       </div>
+      <div class="column is-3 p-0" style="background-color: white">
 
-      <div class="chat-input-canvas">
-        <textarea class="chat-input-textarea" ref="inputTextRef" v-model="inputText"
-                  :placeholder="[isLoading ? 'Loading...':'Say something']"
-                  @keyup.enter.exact="sendBtnTap" :disabled="isLoading"></textarea>
-        <button :class="['chat-send-button', isLoading ? 'chat-send-button-disable' : '']" @click="sendBtnTap"
-                :disabled="isLoading">Send
-        </button>
       </div>
-
     </div>
   </div>
 
@@ -72,6 +88,10 @@ export default {
   data() {
     return {
       store,
+
+      defaultPrompt: "Hi, I'm Book Bot called Enoch, and I'm happy to assist you!\nI can provide you with a book list based on your needs. Please give me a try!\n\nYou may start the conversation with me in this way:" +
+          "\n" +
+          "<strong>“I would like you to act as a personalized book recommender to help me find books as a gift for someone in my life. You can ask me questions one by one and wait for my answers. Try to adjust the recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.”</strong>",
 
       inputText: '',
 
@@ -214,11 +234,11 @@ export default {
       }
 
       this.messages = [
-        {
-          role: "assistant",
-          content: "Hi, I'm Library Bot, and I'm happy to assist you!\nI can provide you with a book list based on your needs. Please give me a try!\n\nFor example:\n1. Hi, today is my girlfriend's birthday. She loves romantic novels. Can you please provide a list of books? I would like to choose one as a gift for her.\n2. My high school history teacher is retiring next week, and we had a special relationship. Can you recommend some books as a gift for him?",
-          time: Math.floor(Date.now() / 1000)
-        }
+        // {
+        //   role: "assistant",
+        //   content: "",
+        //   time: Math.floor(Date.now() / 1000)
+        // }
       ]
 
       this.inputText = ''
@@ -252,10 +272,20 @@ export default {
 
     endConversationBtnTap() {
       if (confirm('Are you sure you want to end the conversation?')) {
-        const query = {
-          position: 2,
+        if (this.store.round === 1) {
+          this.store.firstMessages = this.messages;
+          this.store.round = 2;
+          const query = {
+            position: 1,
+          }
+          this.$router.push({path: '/survey', query: query});
+        } else {
+          this.store.secondMessages = this.messages;
+          const query = {
+            position: 2,
+          }
+          this.$router.push({path: '/survey', query: query});
         }
-        this.$router.push({path: '/survey', query: query});
       }
     },
 
@@ -266,7 +296,7 @@ export default {
       for (const index in this.messages) {
         const message = this.messages[index];
 
-        logStr += moment.unix(message.time).format('YYYY/MM/DD HH:mm:ss') + ' - ' +  message.role + ': ' + '\n' + message.content + '\n\n';
+        logStr += moment.unix(message.time).format('YYYY/MM/DD HH:mm:ss') + ' - ' + message.role + ': ' + '\n' + message.content + '\n\n';
       }
 
 
@@ -289,7 +319,9 @@ export default {
 
 .main-canvas {
   width: 100%;
-  height: 100vh;
+  margin-top: 20px;
+  height: calc(100vh - 40px);
+  overflow: hidden;
 }
 
 .navigation-bar {
@@ -359,10 +391,20 @@ export default {
 
 .chat-canvas {
   width: 100%;
-  height: calc(100vh - 160px);
+  height: calc(100% - 160px);
   overflow-y: scroll;
   overflow-x: hidden;
   padding: 20px 0 40px 0;
+}
+
+.default-prompt {
+  width: calc(100% - 40px);
+  margin-left: 20px;
+  padding: 10px;
+  white-space: pre-line;
+  background-color: white;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
 .receive-canvas {
@@ -475,11 +517,11 @@ export default {
 }
 
 .export-current-conversation-records {
-    width: 100%;
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #2455af;
-    text-decoration: underline;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #2455af;
+  text-decoration: underline;
 }
 </style>

@@ -56,9 +56,11 @@
 
 <script>
 import {store} from "@/data/store";
-import {preQuestionnaire} from "@/data/surveys/preQuestionnaire";
-import {guidelineQuestionnaire} from "@/data/surveys/guidelineQuestionnaire";
-import {postQuestionnaire} from "@/data/surveys/postQuestionnaire";
+import { preQuestionnaire } from "@/data/surveys/preQuestionnaire";
+import { firstScenarioQuestionnaire } from "@/data/surveys/firstScenarioQuestionnaire";
+import { secondScenarioQuestionnaire } from "@/data/surveys/secondScenarioQuestionnaire";
+import { postQuestionnaire } from "@/data/surveys/postQuestionnaire";
+import { interviewQuestionnaire } from "@/data/surveys/interviewQuestionnaire";
 
 export default {
   name: 'SurveyView',
@@ -110,11 +112,22 @@ export default {
          }
          this.$router.push({path: '/survey', query: query});
 
-       } else if (this.position === 1) {
-         this.store.guidelineQuestionnaire = this.questionnaire;
+       } else if (this.position === 1 && this.store.round === 1) {
+         this.store.firstScenarioQuestionnaire = this.questionnaire;
+         this.$router.push('/chat')
+       } else if (this.position === 1 && this.store.round === 2) {
+         this.store.secondScenarioQuestionnaire = this.questionnaire;
          this.$router.push('/chat')
        } else if (this.position === 2) {
          this.store.postQuestionnaire = this.questionnaire;
+
+         const query = {
+           position: 3,
+         }
+         this.$router.push({path: '/survey', query: query});
+
+       } else if (this.position === 3) {
+         this.store.interviewQuestionnaire = this.questionnaire;
          this.$router.push('/end');
        } else {
          this.$router.push('/chat')
@@ -131,17 +144,29 @@ export default {
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(preQuestionnaire))
         }
-      } else if (this.position === 1) {
-        if (this.store.guidelineQuestionnaire !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.guidelineQuestionnaire))
+      } else if (this.position === 1 && this.store.round === 1) {
+        if (this.store.firstScenarioQuestionnaire !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.firstScenarioQuestionnaire))
         } else {
-          this.questionnaire = JSON.parse(JSON.stringify(guidelineQuestionnaire))
+          this.questionnaire = JSON.parse(JSON.stringify(firstScenarioQuestionnaire))
+        }
+      } else if (this.position === 1 && this.store.round === 2) {
+        if (this.store.secondScenarioQuestionnaire !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.secondScenarioQuestionnaire))
+        } else {
+          this.questionnaire = JSON.parse(JSON.stringify(secondScenarioQuestionnaire))
         }
       } else if (this.position === 2) {
         if (this.store.postQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.postQuestionnaire))
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(postQuestionnaire))
+        }
+      } else if (this.position === 3) {
+        if (this.store.interviewQuestionnaire !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.interviewQuestionnaire))
+        } else {
+          this.questionnaire = JSON.parse(JSON.stringify(interviewQuestionnaire))
         }
       }
     }
