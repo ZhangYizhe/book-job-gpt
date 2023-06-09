@@ -2,16 +2,18 @@
   <div class="container" style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
     <div class="columns is-multiline is-mobile m-0">
       <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
-
-        <div class="booklist-canvas" v-if="books.length > 0" style="width: 100%; height: calc(100% - 78px); border-bottom: 1px solid #e1e1e1; overflow-y: scroll; overflow-x: hidden">
-            <div class="columns px-4 pt-4">
-              <div class="column" v-for="book in books" style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
-                <i class="bi bi-x-circle-fill" style="color: red"></i> {{ book }}
+        <p class="pt-3 pb-3" style="color: gray; text-align: center; border-bottom: 1px solid #e1e1e1; font-size: 1.3rem; font-weight: bold; color: black">
+          #{{round}} Book List
+        </p>
+        <div class="booklist-canvas" v-if="books.size > 0" style="width: 100%; height: calc(100% - 80px); overflow-y: scroll; overflow-x: hidden">
+            <div class="columns is-multiline is-mobile px-4 pt-4">
+              <div class="column is-full" v-for="book in books" style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
+                <i class="bi bi-x-circle" style="color: red; cursor: pointer" @click="disFavoriteBtnTap(book)"></i> {{ book }}
               </div>
             </div>
 
             <p style="text-align: center; font-weight: bold; color: lightgrey">
-              {{books.length}} / {{ totalBooks }}
+              {{books.size}} / {{ totalBooks }}
             </p>
         </div>
         <div v-else>
@@ -20,9 +22,12 @@
           </p>
         </div>
 
-        <button class="button is-danger booklist-bottom-btn" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
-            Completed
-        </button>
+        <div style="position: absolute; width: 100%; bottom: 20px; padding-top: 20px; border-top: 1px solid #e1e1e1;">
+          <button class="button is-link booklist-bottom-btn" style="left: 50%; transform: translateX(-50%);" @click="endConversationBtnTap" :disabled="!isCompleted && !store.debug">
+            Next Step
+          </button>
+        </div>
+
 
       </div>
       <div class="column is-9 p-0">
@@ -50,13 +55,13 @@
                 </div>
               </div>
               <div class="column is-full" v-for="message in messages">
-                <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas']"
+                <div :class="[message.role === 'assistant' ? 'receive-canvas' : 'send-canvas', 'normal-chat-content-canvas']"
                      v-html="message.content + formatDate(message.time)">
                 </div>
               </div>
 
               <div class="column is-full" v-if="isLoading">
-                <div :class="['receive-canvas']">
+                <div :class="['receive-canvas', 'temp-chat-content-canvas']">
                         <span v-html="tempMessage">
 
                         </span>
@@ -73,8 +78,8 @@
               <!--          </div>-->
 
               <div class="column is-full" v-if="!isLoading">
-                <div :class="['export-current-conversation-records']" @click="exportCurrentConversationRecords">
-                  Copy the current conversation log
+                <div :class="['export-current-conversation-records']">
+                  <p><span @click="exportCurrentConversationRecords" style="cursor: pointer;">Copy the current conversation log</span></p>
                 </div>
               </div>
             </div>
@@ -107,10 +112,7 @@ export default {
   data() {
     return {
       store,
-
-      defaultPrompt: "Hi, I'm Book Bot called Enoch, and I'm happy to assist you!\nI can provide you with a book list based on your needs. Please give me a try!\n\nYou may start the conversation with me in this way:" +
-          "\n" +
-          "<strong>“I would like you to act as a personalized book recommender to help me find books as a gift for someone in my life. You can ask me questions one by one and wait for my answers. Try to adjust the recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.”</strong>",
+      round: 1,
 
       inputText: '',
 
@@ -119,16 +121,57 @@ export default {
       tempMessage: "",
       messages: [],
       totalBooks: 5,
-      books: [],
+      books: new Set(),
+
+      systemMessage: [
+        {
+          role: "system",
+          content: 'If your reply includes books (no matter where it appears), you must surround the title with <book></book> tags. For example:\n'
+              + "<book>\"How Steel Was Tempered\"</book>\n" +
+              "<book>\"The Old Man and the Sea\"</book>\n" +
+              "However, out of the three books I recommended, <book>\"Draw Your Day: An Inspiring Guide to Keeping a Sketch Journal\"</book> by Samantha Dion Baker might be the most appealing to someone who enjoys drawing." +
+              "\n\n" + "Please double check that all book titles are surrounded by <book></book> tags before returning results."
+          ,
+        }
+      ]
     }
   },
   computed: {
     token() {
       return Base64.decode(store.chatToken);
     },
+
+    defaultPrompt() {
+
+      const welcomeMessage = "Hi, I'm Book Bot called Enoch, and I'm happy to assist you!\nI can provide you with a book list based on your needs. Please give me a try!\nNote: \n - Please follow <strong>the #" + this.round +  " task requirement</strong> to create the book list. \n - If you want to add a book to your booklist, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
+
+
+      if (this.store.isPrompts) {
+        return welcomeMessage + "\n\nYou may start the conversation with me in this way:\n" +
+        "<strong>“I would like you to act as a personalized book recommender to help me find books as a gift for someone in my life. You can ask me questions one by one and wait for my answers. Try to adjust the recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.”</strong>"
+      } else {
+        return welcomeMessage
+      }
+    },
+
+    isCompleted() {
+      return this.books.size >= this.totalBooks;
+    }
   },
   mounted() {
-    this.resetConversation();
+    window.favoriteBtnTap = this.favoriteBtnTap;
+  },
+  created() {
+    this.$watch(
+        () => this.$route.params,
+        () => {
+          this.round = this.$route.query.round === undefined ? 1 : parseInt(this.$route.query.round);
+          this.books = this.round === 1 ? store.firstBooks : store.secondBooks
+        },
+        // fetch the data when the view is created and the data is
+        // already being observed
+        {immediate: true}
+    )
   },
   watch: {
     inputText() {
@@ -159,8 +202,16 @@ export default {
       this.request();
     },
 
-    favoriteBtnTap(event) {
-      console.log(event);
+    favoriteBtnTap(title) {
+      if (this.books.size >= this.totalBooks) {
+        return
+      }
+
+      this.books.add(Base64.decode(title));
+    },
+
+    disFavoriteBtnTap(title) {
+      this.books.delete(title);
     },
 
     async request() {
@@ -175,12 +226,12 @@ export default {
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
-          messages: this.messages.map((message) => {
+          messages: [...this.messages.map((message) => {
             return {
               "role": message.role,
               "content": message.content
             }
-          }),
+          }), ...this.systemMessage],
           stream: true,
         }),
         async onopen(response) {
@@ -229,9 +280,18 @@ export default {
           }
 
           if (delta['content'] !== undefined) {
-            let content = delta["content"].replace(' "', '<span style=\'color: orange; border: none; background: transparent; margin-left: 2px;\' @click="favoriteBtnTap($event)"><i class=\"bi bi-star\"></i>"');
-            content = content.replace('" ', '"</span> ');
-            subThis.tempMessage += content;
+            let content = delta["content"]
+            let tempMessage = subThis.tempMessage + content;
+
+            const re = new RegExp("<book>(.*?)</book>", "g");
+            const titles = tempMessage.match(re);
+
+            for (const i in titles) {
+              const title = titles[i].replace("<book>", "").replace("</book>", "");
+              const titleEncode = Base64.encode(title);
+              tempMessage = tempMessage.replaceAll(titles[i], "<span class=\'book-btn\' onclick=\'favoriteBtnTap(\"" + titleEncode + "\")\'><i class=\'bi bi-plus-circle\'></i>" + title + "</span>")
+            }
+            subThis.tempMessage = tempMessage;
             subThis.scrollToBottomWithoutTimer();
           }
         },
@@ -267,6 +327,9 @@ export default {
         //   time: Math.floor(Date.now() / 1000)
         // }
       ]
+      this.tempMessage = ""
+      this.messages = []
+      this.books = new Set()
 
       this.inputText = ''
       this.resizeTextarea()
@@ -299,15 +362,18 @@ export default {
 
     endConversationBtnTap() {
       if (confirm('Are you sure you want to end the conversation?')) {
-        if (this.store.round === 1) {
+        if (this.round === 1) {
           this.store.firstMessages = this.messages;
-          this.store.round = 2;
+          this.store.firstBooks = this.books;
+
           const query = {
             position: 1,
+            round: 2,
           }
           this.$router.push({path: '/survey', query: query});
         } else {
           this.store.secondMessages = this.messages;
+          this.store.secondBooks = this.books;
           const query = {
             position: 2,
           }
@@ -431,6 +497,28 @@ export default {
   background-color: white;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
+}
+
+.temp-chat-content-canvas :deep(.book-btn) {
+  color: gray;
+  font-size: 1rem;
+  cursor: not-allowed;
+}
+
+.temp-chat-content-canvas :deep(.book-btn:hover) {
+  color: black;
+}
+
+.normal-chat-content-canvas :deep(.book-btn) {
+  color: orange;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.normal-chat-content-canvas :deep(.book-btn:hover) {
+  color: #e39402;
 }
 
 .receive-canvas {

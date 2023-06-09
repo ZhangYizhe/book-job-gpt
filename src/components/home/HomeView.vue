@@ -56,9 +56,8 @@ export default {
 
   methods: {
     async startBtnTap() {
-      this.store.round = 1;
-
       const query = {
+        round: 1,
         position: 0,
       }
       this.$router.push({path: '/survey', query: query});

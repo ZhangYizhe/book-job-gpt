@@ -8,18 +8,28 @@
     <div class="section pt-4">
       <div class="container">
         <div class="columns is-mobile is-multiline">
-          <div class="column is-full pb-4 mb-4" style="border-bottom: 1px solid #e8e8e8" v-if="questionnaire.description !== ''">
+          <div class="column is-full pb-4 mb-4" style="border-bottom: 1px solid #e8e8e8"
+               v-if="questionnaire.description !== ''">
             <p style="white-space: pre-wrap; font-size: 1.1rem" v-html="questionnaire.description"></p>
           </div>
           <div class="column is-full py-3" v-for="question in questionnaire.data">
             <p class="pb-5" style="font-size: 1.1rem; font-weight: bold">
-              {{question.id}}. <span v-html="question.title"></span> <span v-if="question.required" style="color: red">*</span>
+              {{ question.id }}. <span v-html="question.title"></span> <span v-if="question.required"
+                                                                             style="color: red">*</span>
             </p>
             <div class="control" v-if="question.type === 'selection'">
               <div class="columns is-mobile is-multiline">
-                <div class="column is-full py-2"  v-for="option in question.options">
+                <div class="column is-full py-2" v-for="option in question.options">
                   <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
                     <input type="radio" :value="option.id" v-model="question.value">
+                    <template v-if="question.answer !== undefined & question.answer !== null & question.value === option.id">
+                      <template v-if="question.answer === question.value">
+                        <i class="bi bi-clipboard2-check pl-2" style="color: green;"></i>
+                      </template>
+                      <template v-else>
+                        <i class="bi bi-clipboard2-x pl-2" style="color: red"></i>
+                      </template>
+                    </template>
                     {{ option.text }}
                   </label>
                 </div>
@@ -32,7 +42,9 @@
             </div>
           </div>
           <div class="column is-full py-3 mb-5">
-            <button class="button is-link" style="width: 100%;" @click="nextStepBtnTap" :disabled="!isFilled">Next Step</button>
+            <button class="button is-link" style="width: 100%;" @click="nextStepBtnTap" :disabled="!isFilled">Next
+              Step
+            </button>
           </div>
         </div>
       </div>
@@ -56,11 +68,11 @@
 
 <script>
 import {store} from "@/data/store";
-import { preQuestionnaire } from "@/data/surveys/preQuestionnaire";
-import { firstScenarioQuestionnaire } from "@/data/surveys/firstScenarioQuestionnaire";
-import { secondScenarioQuestionnaire } from "@/data/surveys/secondScenarioQuestionnaire";
-import { postQuestionnaire } from "@/data/surveys/postQuestionnaire";
-import { interviewQuestionnaire } from "@/data/surveys/interviewQuestionnaire";
+import {preQuestionnaire} from "@/data/surveys/preQuestionnaire";
+import {firstScenarioQuestionnaire} from "@/data/surveys/firstScenarioQuestionnaire";
+import {secondScenarioQuestionnaire} from "@/data/surveys/secondScenarioQuestionnaire";
+import {postQuestionnaire} from "@/data/surveys/postQuestionnaire";
+import {interviewQuestionnaire} from "@/data/surveys/interviewQuestionnaire";
 
 export default {
   name: 'SurveyView',
@@ -86,57 +98,79 @@ export default {
     )
   },
   computed: {
-     isFilled() {
-       if (this.store.debug) {
-         return true
-       }
-       return this.questionnaire.data.every(question => {
-          if (question.required) {
-            return question.value !== null && question.value !== undefined && question.value !== ''
+    isFilled() {
+      if (this.store.debug) {
+        return true
+      }
+      return this.questionnaire.data.every(question => {
+        if (question.required) {
+          if (question.answer !== undefined && question.answer !== null) {
+            if (question.value !== null && question.value !== undefined && question.value !== '') {
+              return question.answer === question.value
+            }
           }
 
-          return true
-       });
-     },
+          return question.value !== null && question.value !== undefined && question.value !== ''
+        }
+
+        return true
+      });
+    },
 
     nextStepBtnTap() {
-       if (!this.isFilled) {
-         return
-       }
+      if (!this.isFilled) {
+        return
+      }
 
-       if (this.position === 0) {
-         this.store.preQuestionnaire = this.questionnaire;
+      if (this.position === 0) {
+        this.store.preQuestionnaire = this.questionnaire;
 
-         const query = {
-           position: 1,
-         }
-         this.$router.push({path: '/survey', query: query});
+        const query = {
+          round: 1,
+          position: 1,
+        }
+        this.$router.push({path: '/survey', query: query});
 
-       } else if (this.position === 1 && this.store.round === 1) {
-         this.store.firstScenarioQuestionnaire = this.questionnaire;
-         this.$router.push('/chat')
-       } else if (this.position === 1 && this.store.round === 2) {
-         this.store.secondScenarioQuestionnaire = this.questionnaire;
-         this.$router.push('/chat')
-       } else if (this.position === 2) {
-         this.store.postQuestionnaire = this.questionnaire;
+      } else if (this.position === 1 && this.round === 1) {
+        this.store.firstScenarioQuestionnaire = this.questionnaire;
+        const query = {
+          round: 1,
+          position: 1,
+        }
+        this.$router.push({path: '/chat', query: query});
+      } else if (this.position === 1 && this.round === 2) {
+        this.store.secondScenarioQuestionnaire = this.questionnaire;
+        const query = {
+          round: 2,
+          position: 1,
+        }
+        this.$router.push({path: '/chat', query: query});
+      } else if (this.position === 2) {
+        this.store.postQuestionnaire = this.questionnaire;
 
-         const query = {
-           position: 3,
-         }
-         this.$router.push({path: '/survey', query: query});
+        const query = {
+          round: 2,
+          position: 3,
+        }
+        this.$router.push({path: '/survey', query: query});
 
-       } else if (this.position === 3) {
-         this.store.interviewQuestionnaire = this.questionnaire;
-         this.$router.push('/end');
-       } else {
-         this.$router.push('/chat')
-       }
+      } else if (this.position === 3) {
+        this.store.interviewQuestionnaire = this.questionnaire;
+        this.$router.push('/end');
+      } else {
+
+        const query = {
+          round: 1,
+          position: 1,
+        }
+        this.$router.push({path: '/chat', query: query});
+      }
     }
   },
   methods: {
     reloadQuestionnaire() {
       this.position = this.$route.query.position === undefined ? 0 : parseInt(this.$route.query.position);
+      this.round = this.$route.query.round === undefined ? 1 : parseInt(this.$route.query.round);
 
       if (this.position === 0) {
         if (this.store.preQuestionnaire !== null) {
@@ -144,13 +178,13 @@ export default {
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(preQuestionnaire))
         }
-      } else if (this.position === 1 && this.store.round === 1) {
+      } else if (this.position === 1 && this.round === 1) {
         if (this.store.firstScenarioQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.firstScenarioQuestionnaire))
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(firstScenarioQuestionnaire))
         }
-      } else if (this.position === 1 && this.store.round === 2) {
+      } else if (this.position === 1 && this.round === 2) {
         if (this.store.secondScenarioQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.secondScenarioQuestionnaire))
         } else {

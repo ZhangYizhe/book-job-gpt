@@ -26,5 +26,19 @@ export const interviewQuestionnaire = reactive({
             value: null,
             required: true,
         },
+        {
+            id: 4,
+            title: 'Compared to the traditional recommender system (e.g., Amazon, eBay), what do you think is the major difference in using ChatGPT for obtaining recommendations?',
+            type: 'text',
+            value: null,
+            required: true,
+        },
+        {
+            id: 5,
+            title: 'In general, do you think ChatGPT is a useful tool or not for obtaining recommendations in your daily life?',
+            type: 'text',
+            value: null,
+            required: true,
+        },
     ]
 })

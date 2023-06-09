@@ -9,7 +9,6 @@ export const store = reactive({
     debug: true,
 
     isPrompts: true,
-    round: 1,
 
     preQuestionnaire: null,
     firstScenarioQuestionnaire: null,
@@ -20,12 +19,15 @@ export const store = reactive({
     firstMessages: [],
     secondMessages: [],
 
+    firstBooks: new Set(),
+    secondBooks: new Set(),
+
     reset() {
         this.tag = 'home';
         this.preQuestionnaire = null;
         this.firstScenarioQuestionnaire = null;
         this.secondScenarioQuestionnaire = null;
-        this.firstPostQuestionnaire = null;
-        this.secondPostQuestionnaire = null;
+        this.postQuestionnaire = null;
+        this.interviewQuestionnaire = null;
     }
 })

@@ -90,23 +90,23 @@ export const preQuestionnaire = reactive({
             options: [
                 {
                     id: 1,
-                    text: 'High school graduate',
+                    text: 'No Schooling / Kindergarten',
                 },
                 {
                     id: 2,
-                    text: 'Completed some college',
+                    text: 'Primary (P.1 – P.6)',
                 },
                 {
                     id: 3,
-                    text: 'Associate degree',
+                    text: 'Junior Secondary (F.1 – F.3)',
                 },
                 {
                     id: 4,
-                    text: 'Bachelor’s degree',
+                    text: 'Senior Secondary (F.4 – F.6 / F.7)',
                 },
                 {
                     id: 5,
-                    text: 'Completed some postgraduate',
+                    text: 'Project Yi Jin',
                 },
                 {
                     id: 6,
@@ -114,15 +114,23 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 7,
-                    text: 'Ph.D.',
+                    text: 'Technical / Vocational Training (Craft course / Apprenticeship)',
                 },
                 {
                     id: 8,
-                    text: 'Law or medical degree',
+                    text: 'Technical / Vocational Training (Diploma / Cert. course)',
                 },
                 {
                     id: 9,
-                    text: 'Others',
+                    text: 'Tertiary Education (Non-degree / Sub-degree courses)',
+                },
+                {
+                    id: 10,
+                    text: 'Tertiary Education (Bachelor’s degree courses)',
+                },
+                {
+                    id: 11,
+                    text: 'Tertiary Education (Master’s / Doctoral degree courses)',
                 }
             ],
             value: null,
@@ -137,12 +145,12 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 5,
-            title: 'In the past, I learned about how recommender systems work. (Likert scale)',
+            title: 'I am familiar with recommender systems.',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: '1',
+                    text: '1 (Strongly Disagree)',
                 },
                 {
                     id: 2,
@@ -158,7 +166,7 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 5,
-                    text: '5',
+                    text: '5 (Strongly Agree)',
                 }
             ],
             value: null,
@@ -166,12 +174,12 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 6,
-            title: 'I have a background in computer science, software engineering, or something similar. (Likert scale)',
+            title: 'I used recommender systems frequently.',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: '1',
+                    text: '1 (Strongly Disagree)',
                 },
                 {
                     id: 2,
@@ -187,7 +195,7 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 5,
-                    text: '5',
+                    text: '5 (Strongly Agree)',
                 }
             ],
             value: null,
@@ -195,12 +203,12 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 7,
-            title: 'I have expert knowledge of machine learning or artificial intelligence. (Likert scale)',
+            title: 'I consider myself to be an expert in using ChatGPT.',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: '1',
+                    text: '1 (Strongly Disagree)',
                 },
                 {
                     id: 2,
@@ -216,7 +224,7 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 5,
-                    text: '5',
+                    text: '5 (Strongly Agree)',
                 }
             ],
             value: null,
@@ -224,12 +232,12 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 8,
-            title: 'I consider myself to be an expert in using a chatbot. (Likert scale)',
+            title: 'I am knowledgeable about ChatGPT.',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: '1',
+                    text: '1 (Strongly Disagree)',
                 },
                 {
                     id: 2,
@@ -245,7 +253,7 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 5,
-                    text: '5',
+                    text: '5 (Strongly Agree)',
                 }
             ],
             value: null,
@@ -253,12 +261,12 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 9,
-            title: 'I am knowledgeable about chatbots. (Likert scale)',
+            title: 'I have extensive experience in using ChatGPT.',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: '1',
+                    text: '1 (Strongly Disagree)',
                 },
                 {
                     id: 2,
@@ -274,7 +282,7 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 5,
-                    text: '5',
+                    text: '5 (Strongly Agree)',
                 }
             ],
             value: null,
@@ -282,7 +290,7 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 10,
-            title: 'I have extensive experience in using chatbots. (Likert scale)',
+            title: 'I often use a chatbot (such as Siri or Cortana) on my personal devices. (Likert scale)',
             type: 'selection',
             options: [
                 {
@@ -311,7 +319,7 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 11,
-            title: 'I consider myself to be an expert in using a conversational recommender system. (Likert scale)',
+            title: 'I am confident when it comes to trying new technology. (Likert scale)',
             type: 'selection',
             options: [
                 {
