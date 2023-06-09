@@ -290,12 +290,12 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 10,
-            title: 'I often use a chatbot (such as Siri or Cortana) on my personal devices. (Likert scale)',
+            title: 'I often use a chatbot (such as Siri or Cortana) on my personal devices.',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: '1',
+                    text: '1 (Strongly Disagree)',
                 },
                 {
                     id: 2,
@@ -311,7 +311,7 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 5,
-                    text: '5',
+                    text: '5 (Strongly Agree)',
                 }
             ],
             value: null,
@@ -319,12 +319,12 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 11,
-            title: 'I am confident when it comes to trying new technology. (Likert scale)',
+            title: 'I am confident when it comes to trying new technology.',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: '1',
+                    text: '1 (Strongly Disagree)',
                 },
                 {
                     id: 2,
@@ -340,7 +340,7 @@ export const preQuestionnaire = reactive({
                 },
                 {
                     id: 5,
-                    text: '5',
+                    text: '5 (Strongly Agree)',
                 }
             ],
             value: null,

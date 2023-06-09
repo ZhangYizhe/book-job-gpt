@@ -8,6 +8,7 @@ export const store = reactive({
 
     debug: true,
 
+    isAgreeConsent: false,
     isPrompts: true,
 
     preQuestionnaire: null,
