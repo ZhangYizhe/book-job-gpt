@@ -5,7 +5,7 @@
         <p class="pt-3 pb-3" style="color: gray; text-align: center; border-bottom: 1px solid #e1e1e1; font-size: 1.3rem; font-weight: bold; color: black">
           #{{round}} Book List
         </p>
-        <div class="booklist-canvas" v-if="books.size > 0" style="width: 100%; height: calc(100% - 80px); overflow-y: scroll; overflow-x: hidden">
+        <div class="pb-4" v-if="books.size > 0" style="width: 100%; height: calc(100vh - 177px); overflow-y: scroll; overflow-x: hidden">
             <div class="columns is-multiline is-mobile px-4 pt-4">
               <div class="column is-full" v-for="book in books" style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
                 <i class="bi bi-x-circle" style="color: red; cursor: pointer" @click="disFavoriteBtnTap(book)"></i> {{ book }}
@@ -22,7 +22,7 @@
           </p>
         </div>
 
-        <div style="position: absolute; width: 100%; bottom: 20px; padding-top: 20px; border-top: 1px solid #e1e1e1;">
+        <div style="position: absolute; width: 100%; bottom: 20px; padding-top: 20px; border-top: 1px solid #e1e1e1; background-color: white">
           <button class="button is-link booklist-bottom-btn" style="left: 50%; transform: translateX(-50%);" @click="endConversationBtnTap" :disabled="!isCompleted && !store.debug">
             Next Step
           </button>
