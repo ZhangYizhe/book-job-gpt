@@ -19,7 +19,7 @@
           <div class="column">
             <label class="checkbox mb-5">
               <input type="checkbox" v-model="store.isAgreeConsent">
-              I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/Informed%20Consent%20Statement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
+              I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/public/Informed%20Consent%20Statement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
             </label>
             <button class="button is-link" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent">START</button>
           </div>
