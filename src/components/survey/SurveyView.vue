@@ -73,6 +73,7 @@ import {firstScenarioQuestionnaire} from "@/data/surveys/firstScenarioQuestionna
 import {secondScenarioQuestionnaire} from "@/data/surveys/secondScenarioQuestionnaire";
 import {postQuestionnaire} from "@/data/surveys/postQuestionnaire";
 import {interviewQuestionnaire} from "@/data/surveys/interviewQuestionnaire";
+import {secondPostQuestionnaire} from "@/data/surveys/secondPostQuestionnaire";
 
 export default {
   name: 'SurveyView',
@@ -145,8 +146,17 @@ export default {
           position: 1,
         }
         this.$router.push({path: '/chat', query: query});
-      } else if (this.position === 2) {
+      } else if (this.position === 2 && this.round === 1) {
         this.store.postQuestionnaire = this.questionnaire;
+
+        const query = {
+          round: 2,
+          position: 1,
+        }
+        this.$router.push({path: '/chat', query: query});
+
+      } else if (this.position === 2 && this.round === 2) {
+        this.store.secondPostQuestionnaire = this.questionnaire;
 
         const query = {
           round: 2,
@@ -190,11 +200,17 @@ export default {
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(secondScenarioQuestionnaire))
         }
-      } else if (this.position === 2) {
+      } else if (this.position === 2 && this.round === 1) {
         if (this.store.postQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.postQuestionnaire))
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(postQuestionnaire))
+        }
+      } else if (this.position === 2 && this.round === 2) {
+        if (this.store.secondPostQuestionnaire !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.secondPostQuestionnaire))
+        } else {
+          this.questionnaire = JSON.parse(JSON.stringify(secondPostQuestionnaire))
         }
       } else if (this.position === 3) {
         if (this.store.interviewQuestionnaire !== null) {

@@ -15,6 +15,7 @@ export const store = reactive({
     firstScenarioQuestionnaire: null,
     secondScenarioQuestionnaire: null,
     postQuestionnaire: null,
+    secondPostQuestionnaire: null,
     interviewQuestionnaire: null,
 
     firstMessages: [],
@@ -29,6 +30,7 @@ export const store = reactive({
         this.firstScenarioQuestionnaire = null;
         this.secondScenarioQuestionnaire = null;
         this.postQuestionnaire = null;
+        this.secondPostQuestionnaire = null;
         this.interviewQuestionnaire = null;
     }
 })

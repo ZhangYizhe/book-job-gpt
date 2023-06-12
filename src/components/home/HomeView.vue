@@ -2,11 +2,11 @@
   <div class="container">
     <section class="hero is-fullheight">
       <div class="hero-body">
-        <div class="columns  is-vcentered main-canvas">
-          <div class="column">
+        <div class="columns is-multiline main-canvas">
+          <div class="column is-full">
             <div class="columns is-mobile">
               <div class="column">
-                <img src="/public/logos/PI-Lab-Logo-Small.jpg" alt="logo" style="width: 50%">
+                <img src="/public/logos/PI-Lab-Logo-Small.jpg" alt="logo" style="height: 10vh">
                 <p style="font-size: 1.8rem;font-weight: bold" v-html="title">
 
                 </p>
@@ -16,7 +16,7 @@
               </div>
             </div>
           </div>
-          <div class="column">
+          <div class="column is-full">
             <label class="checkbox mb-5">
               <input type="checkbox" v-model="store.isAgreeConsent">
               I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/bookbot/Informed%20Consent%20Statement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
@@ -25,21 +25,21 @@
           </div>
         </div>
       </div>
-      <div class="hero-foot pb-5">
-        <div class="container is-max-widescreen">
-          <div class="content has-text-centered">
-            <p>
-              Copyright © 2023 <a href="https://hci.comp.hkbu.edu.hk"><strong>PI Lab</strong></a>. All Rights Reserved.
-            </p>
-            <p>
-              <a href="https://bupdpo.hkbu.edu.hk/policies-and-procedures/pps-pics/" target="_blank">Privacy Policy</a> |
-              <a href="https://storyset.com" target="_blank">Illustrations by Storyset</a>
-            </p>
-            <a href="https://www.comp.hkbu.edu.hk" target="_blank"><img src="/public/logos/comp-logo.png" alt="logo" style="height: 30px; margin-right: 20px"></a>
-            <a href="https://hkbu.edu.hk" target="_blank"><img src="/public/logos/bu-logo.png" alt="logo" style="height: 30px;"></a>
-          </div>
-        </div>
-      </div>
+<!--      <div class="hero-foot pb-5">-->
+<!--        <div class="container is-max-widescreen">-->
+<!--          <div class="content has-text-centered">-->
+<!--            <p>-->
+<!--              Copyright © 2023 <a href="https://hci.comp.hkbu.edu.hk"><strong>PI Lab</strong></a>. All Rights Reserved.-->
+<!--            </p>-->
+<!--            <p>-->
+<!--              <a href="https://bupdpo.hkbu.edu.hk/policies-and-procedures/pps-pics/" target="_blank">Privacy Policy</a> |-->
+<!--              <a href="https://storyset.com" target="_blank">Illustrations by Storyset</a>-->
+<!--            </p>-->
+<!--            <a href="https://www.comp.hkbu.edu.hk" target="_blank"><img src="/public/logos/comp-logo.png" alt="logo" style="height: 30px; margin-right: 20px"></a>-->
+<!--            <a href="https://hkbu.edu.hk" target="_blank"><img src="/public/logos/bu-logo.png" alt="logo" style="height: 30px;"></a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </section>
   </div>
 </template>

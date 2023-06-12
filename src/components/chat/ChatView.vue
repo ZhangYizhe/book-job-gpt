@@ -367,8 +367,8 @@ export default {
           this.store.firstBooks = this.books;
 
           const query = {
-            position: 1,
-            round: 2,
+            position: 2,
+            round: 1,
           }
           this.$router.push({path: '/survey', query: query});
         } else {
@@ -376,6 +376,7 @@ export default {
           this.store.secondBooks = this.books;
           const query = {
             position: 2,
+            round: 2,
           }
           this.$router.push({path: '/survey', query: query});
         }
