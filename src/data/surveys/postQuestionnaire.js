@@ -3,7 +3,7 @@ import {reactive} from 'vue'
 export const postQuestionnaire = reactive({
     title: "Post-study Questionnaire",
     description: "",
-    position: 2,
+    position: 3,
     data: [
         {
             id: 1,

@@ -6,16 +6,20 @@ export const store = reactive({
     aiProxy: 'https://ai.yizheyun.cn',
     chatToken: 'c2stQko5bGt4d0JHR0FSUnpmODlsVHhUM0JsYmtGSjY4NGlTWTFhZlpBSjNsajZoSFky',
 
-    debug: false,
+    debug: true,
 
     isAgreeConsent: false,
     isPrompts: true,
 
     preQuestionnaire: null,
     firstScenarioQuestionnaire: null,
-    secondScenarioQuestionnaire: null,
+    firstBookListQuestionnaire: null,
     postQuestionnaire: null,
+
+    secondScenarioQuestionnaire: null,
+    secondBookListQuestionnaire: null,
     secondPostQuestionnaire: null,
+
     interviewQuestionnaire: null,
 
     firstMessages: [],
