@@ -22,6 +22,11 @@
               I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/bookbot/InformedConsentStatement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
             </label>
             <button class="button is-link" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent">START</button>
+
+            <label class="checkbox mt-5">
+              <input type="checkbox" v-model="store.isPrompts">
+              Prompts group
+            </label>
           </div>
         </div>
       </div>

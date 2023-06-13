@@ -2,7 +2,12 @@
   <div v-if="questionnaire">
     <div class="section p-0 is-vcentered navigation-bar">
       <p style="text-align: center">
-        {{ questionnaire.title }}
+        <template v-if="position === 2">
+          Task {{ round }} {{ questionnaire.title }}
+        </template>
+        <template v-else>
+          {{ questionnaire.title }}
+        </template>
       </p>
     </div>
     <div class="section pt-4">
@@ -17,6 +22,7 @@
               {{ question.id }}. <span v-html="question.title"></span> <span v-if="question.required"
                                                                                                                                                                                                  style="color: red">*</span>
             </p>
+            <!--   General Selection    -->
             <div class="control" v-if="question.type === 'selection'">
               <div class="columns is-mobile is-multiline">
                 <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="option in question.options">
@@ -27,6 +33,20 @@
                 </div>
               </div>
             </div>
+
+            <!--   Book list Selection    -->
+            <div class="control" v-if="question.type === 'selection-bookList'">
+              <div class="columns is-mobile is-multiline">
+                <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="title in bookList">
+                  <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
+                    <input type="radio" :value="title" v-model="question.value">&nbsp;
+                    {{ title }}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!--   General Text    -->
             <div class="control questionnaire-text" v-if="question.type === 'text'">
             <textarea placeholder="Please enter content" v-model="question.value">
 
@@ -76,7 +96,9 @@ export default {
       store,
 
       position: null,
+      round: null,
 
+      bookList: [],
       questionnaire: null,
     };
   },
@@ -106,6 +128,10 @@ export default {
     },
 
     isAllCorrect() {
+      if (this.store.debug) {
+        return true
+      }
+
       return this.questionnaire.data.every(question => {
         if (question.answer !== undefined && question.answer !== null) {
           if (question.value !== null && question.value !== undefined && question.value !== '') {
@@ -222,12 +248,14 @@ export default {
           this.questionnaire = JSON.parse(JSON.stringify(secondScenarioQuestionnaire))
         }
       } else if (this.position === 2 && this.round === 1) {
+        this.bookList = this.store.firstBooks;
         if (this.store.firstBookListQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.firstBookListQuestionnaire))
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(bookListQuestionnaire))
         }
       } else if (this.position === 2 && this.round === 2) {
+        this.bookList = this.store.secondBooks;
         if (this.store.secondBookListQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.secondBookListQuestionnaire))
         } else {

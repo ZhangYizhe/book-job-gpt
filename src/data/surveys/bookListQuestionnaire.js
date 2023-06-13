@@ -8,7 +8,10 @@ export const bookListQuestionnaire = reactive({
         {
             id: 1,
             title: 'Please choose your favorite one from the book list generated just now.',
-            type: 'text',
+            type: 'selection-bookList',
+            options: [
+
+            ],
             value: null,
             required: true,
         },

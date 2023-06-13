@@ -1,8 +1,8 @@
 import {reactive} from 'vue'
 
 export const secondScenarioQuestionnaire = reactive({
-    title: "Task #2 Guideline",
-    description: "The most important thing when communicating with ChatGPT is to understand how to correctly and fully express one's needs. The more information provided, the more it can return ideal results.\n\n<strong>Task #2\nLet's say your daughter is 12 years old and she has a special interest in drawing, especially nature. So she asks you to help her complete a book list, hoping that this book list can contain books related to her interests to improve her creative ability. You will get book recommendations through Chat-GPT.</strong>",
+    title: "Second Task Guideline",
+    description: "The most important thing when communicating with ChatGPT is to understand how to correctly and fully express one's needs. The more information provided, the more it can return ideal results.\n\n<strong>Second Task:</strong><br>- Vacation is coming up soon, and you want to be able to pick out a book list for yourself with ChatGPT’s recommendations.\n- Note: You have to choose <strong>5 books for creating the book list.</strong><br><hr><p style='font-size: 1.4rem; font-weight: bold'>Guideline</p><strong>In order to enable ChatGPT to better understand your needs, you can refer to the following prompts to start the conversation:</strong><br>“I would like you to act as a personalized book recommender to help me find books as a gift for someone in my life. You can ask me questions one by one and wait for my answers. Try to adjust the recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.”<br><br><strong>Then, if you're interested in a particular book, you can ask for an explanation of it:</strong><br>“The \"_____\" book you recommended is very good, but I want to know why you recommend this book to me, whether it is suitable for my needs, can you please give me some explanation of the recommendation, it will be very helpful for my choice.”",
     position: 1,
     prompts: [1, 2],
     data: [
@@ -13,19 +13,19 @@ export const secondScenarioQuestionnaire = reactive({
             options: [
                 {
                     id: 1,
-                    text: 'I hope you can help me find some books for my daughter. She likes reading books very much. I hope you can recommend some useful ones.',
+                    text: 'Hello, I want to generate a book list. I will read the books on the book list during the holidays. I hope they help me pass the time and improve myself. Because I don\'t usually like reading, I don\'t know which books are better. Maybe you can help me, so that I can easily choose the book I like. Thank you for your help.',
                 },
                 {
                     id: 2,
-                    text: 'I would like you to act as a personalized book recommender to help me find books as a gift for someone in my life. You can ask me questions one by one and wait for my answers. Try to adjust the recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.',
+                    text: 'I like reading very much, and I plan to arrange to read 5 books in the next vacation. I hope them can improve my insight. These books must be suitable for me to read and can broaden my horizons. I am very interesting in the field of technologies. Maybe I can learn more about this field, and I can choose books by myself in the future.',
                 },
                 {
                     id: 3,
-                    text: 'Hello, my daughter is 12 years old, she loves to read, recently it was her birthday, I thought it would be very nice to buy a few books for her, so that she can be special Happy, please help me.',
+                    text: 'I would like you to act as a personalized book recommender to help me find books as a gift for someone in my life. You can ask me questions one by one and wait for my answers. Try to adjust the recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.',
                 },
             ],
             value: null,
-            answer: 2,
+            answer: 3,
             required: true,
         },
         {
@@ -35,15 +35,15 @@ export const secondScenarioQuestionnaire = reactive({
             options: [
                 {
                     id: 1,
-                    text: 'The "XXX" book you recommended is very good, but I want to know why you recommend this book to me, whether it is suitable for my needs, can you please give me some explanation of the recommendation, it will be very helpful for my choice.',
+                    text: 'The "_____" book you recommended is very good, but I want to know why you recommend this book to me, whether it is suitable for my needs, can you please give me some explanation of the recommendation, it will be very helpful for my choice.',
                 },
                 {
                     id: 2,
-                    text: 'I think this first book is very interesting, can you tell me more about it?',
+                    text: 'Thank you for your help, I think some of the books you provided are very suitable for my needs, but I don\'t know enough about these books to know why you provided them to me.',
                 },
                 {
                     id: 3,
-                    text: 'Well, thank you for your help. You give me some good recommendations, I don\'t know which one to choose. Can you tell me more about the first book?',
+                    text: 'Wow, your answer is really great. I like all these books, especially the second one. Can you please tell me why I chose this book? Maybe this way I can understand my needs and be better able to make a decision.',
                 },
             ],
             value: null,
@@ -52,24 +52,35 @@ export const secondScenarioQuestionnaire = reactive({
         },
         {
             id: 3,
-            title: 'Who is task #2 asking you to choose books for?',
+            title: 'How many books do you need to choose to make the book list?',
             type: 'selection',
             options: [
                 {
                     id: 1,
-                    text: 'Younger siblings',
+                    text: '3',
                 },
                 {
                     id: 2,
-                    text: 'Your Child',
+                    text: '4',
                 },
                 {
                     id: 3,
-                    text: 'Girlfriend/boyfriend',
+                    text: '5',
+                },
+                {
+                    id: 4,
+                    text: '6',
                 },
             ],
             value: null,
-            answer: 2,
+            answer: 3,
+            required: true,
+        },
+        {
+            id: 4,
+            title: 'About the second task, who do you want to choose books for?',
+            type: 'text',
+            value: null,
             required: true,
         },
     ]
