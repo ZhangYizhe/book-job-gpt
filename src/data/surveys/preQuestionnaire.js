@@ -9,6 +9,7 @@ export const preQuestionnaire = reactive({
             id: 1,
             title: 'Age',
             type: 'selection',
+            layout: 'vertical',
             options: [
                 {
                     id: 1,
@@ -66,6 +67,7 @@ export const preQuestionnaire = reactive({
             id: 2,
             title: 'Gender',
             type: 'selection',
+            layout: 'vertical',
             options: [
                 {
                     id: 1,
@@ -87,6 +89,7 @@ export const preQuestionnaire = reactive({
             id: 3,
             title: 'Education',
             type: 'selection',
+            layout: 'vertical',
             options: [
                 {
                     id: 1,
@@ -145,8 +148,9 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 5,
-            title: 'I am familiar with recommender systems.',
+            title: 'I am familiar with recommender systems (e.g., personalized book recommendations from Amazon).',
             type: 'selection',
+            layout: 'horizontal',
             options: [
                 {
                     id: 1,
@@ -176,6 +180,7 @@ export const preQuestionnaire = reactive({
             id: 6,
             title: 'I used recommender systems frequently.',
             type: 'selection',
+            layout: 'horizontal',
             options: [
                 {
                     id: 1,
@@ -205,6 +210,7 @@ export const preQuestionnaire = reactive({
             id: 7,
             title: 'I consider myself to be an expert in using ChatGPT.',
             type: 'selection',
+            layout: 'horizontal',
             options: [
                 {
                     id: 1,
@@ -234,6 +240,7 @@ export const preQuestionnaire = reactive({
             id: 8,
             title: 'I am knowledgeable about ChatGPT.',
             type: 'selection',
+            layout: 'horizontal',
             options: [
                 {
                     id: 1,
@@ -263,64 +270,7 @@ export const preQuestionnaire = reactive({
             id: 9,
             title: 'I have extensive experience in using ChatGPT.',
             type: 'selection',
-            options: [
-                {
-                    id: 1,
-                    text: '1 (Strongly Disagree)',
-                },
-                {
-                    id: 2,
-                    text: '2',
-                },
-                {
-                    id: 3,
-                    text: '3',
-                },
-                {
-                    id: 4,
-                    text: '4',
-                },
-                {
-                    id: 5,
-                    text: '5 (Strongly Agree)',
-                }
-            ],
-            value: null,
-            required: true,
-        },
-        {
-            id: 10,
-            title: 'I often use a chatbot (such as Siri or Cortana) on my personal devices.',
-            type: 'selection',
-            options: [
-                {
-                    id: 1,
-                    text: '1 (Strongly Disagree)',
-                },
-                {
-                    id: 2,
-                    text: '2',
-                },
-                {
-                    id: 3,
-                    text: '3',
-                },
-                {
-                    id: 4,
-                    text: '4',
-                },
-                {
-                    id: 5,
-                    text: '5 (Strongly Agree)',
-                }
-            ],
-            value: null,
-            required: true,
-        },
-        {
-            id: 11,
-            title: 'I am confident when it comes to trying new technology.',
-            type: 'selection',
+            layout: 'horizontal',
             options: [
                 {
                     id: 1,

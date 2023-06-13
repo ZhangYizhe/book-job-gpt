@@ -3,7 +3,7 @@
     <div class="columns is-multiline is-mobile m-0">
       <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
         <p class="pt-3 pb-3" style="color: gray; text-align: center; border-bottom: 1px solid #e1e1e1; font-size: 1.3rem; font-weight: bold; color: black">
-          #{{round}} Book List
+          Task {{round}} Book List
         </p>
         <div class="pb-4" v-if="books.size > 0" style="width: 100%; height: calc(100vh - 177px); overflow-y: scroll; overflow-x: hidden">
             <div class="columns is-multiline is-mobile px-4 pt-4">
@@ -41,7 +41,7 @@
           <div class="navigation-bar">
             <img class="avatar" src="/slush-pana.png">
             <span class="username">
-                    Enoch
+                    Book Recommender Bot
                   </span>
             <!--        <button class="reset-conversation-btn" @click="resetConversationBtnTap">開啓新對話</button>-->
             <!--            <button class="end-conversation-btn" @click="endConversationBtnTap">End Chat</button>-->
@@ -143,7 +143,9 @@ export default {
 
     defaultPrompt() {
 
-      const welcomeMessage = "Hi, I'm Book Bot called Enoch, and I'm happy to assist you!\nI can provide you with a book list based on your needs. Please give me a try!\nNote: \n - Please follow <strong>the #" + this.round +  " task requirement</strong> to create the book list. \n - If you want to add a book to your booklist, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
+      const roundStr = this.round === 1 ? 'First' : 'Second';
+
+      const welcomeMessage = "Hi, I'm a book recommender bot based on Chat-GPT, and I'm happy to assist you! I can provide you with a book list based on your needs. Please give me a try!\nNote: \n - Please follow <strong>the " + roundStr +  " task requirement</strong> to create the book list. \n - If you want to add a book to your booklist, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
 
 
       if (this.store.isPrompts) {
@@ -361,7 +363,7 @@ export default {
     },
 
     endConversationBtnTap() {
-      if (confirm('Are you sure you want to end the conversation?')) {
+      if (confirm('Are you sure you have completed the book list？')) {
         if (this.round === 1) {
           this.store.firstMessages = this.messages;
           this.store.firstBooks = this.books;

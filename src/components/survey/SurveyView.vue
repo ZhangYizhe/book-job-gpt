@@ -13,23 +13,15 @@
             <p style="white-space: pre-wrap; font-size: 1.1rem" v-html="questionnaire.description"></p>
           </div>
           <div class="column is-full py-3" v-for="question in questionnaire.data">
-            <p class="pb-5" style="font-size: 1.1rem; font-weight: bold">
+            <p class="pb-3 pt-3" :style="['font-size: 1.1rem; font-weight: bold']">
               {{ question.id }}. <span v-html="question.title"></span> <span v-if="question.required"
-                                                                             style="color: red">*</span>
+                                                                                                                                                                                                 style="color: red">*</span>
             </p>
             <div class="control" v-if="question.type === 'selection'">
               <div class="columns is-mobile is-multiline">
-                <div class="column is-full py-2" v-for="option in question.options">
+                <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="option in question.options">
                   <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
-                    <input type="radio" :value="option.id" v-model="question.value">
-                    <template v-if="question.answer !== undefined & question.answer !== null & question.value === option.id">
-                      <template v-if="question.answer === question.value">
-                        <i class="bi bi-clipboard2-check pl-2" style="color: green;"></i>
-                      </template>
-                      <template v-else>
-                        <i class="bi bi-clipboard2-x pl-2" style="color: red"></i>
-                      </template>
-                    </template>
+                    <input type="radio" :value="option.id" v-model="question.value">&nbsp;
                     {{ option.text }}
                   </label>
                 </div>
@@ -105,12 +97,6 @@ export default {
       }
       return this.questionnaire.data.every(question => {
         if (question.required) {
-          if (question.answer !== undefined && question.answer !== null) {
-            if (question.value !== null && question.value !== undefined && question.value !== '') {
-              return question.answer === question.value
-            }
-          }
-
           return question.value !== null && question.value !== undefined && question.value !== ''
         }
 
@@ -118,8 +104,24 @@ export default {
       });
     },
 
+    isAllCorrect() {
+      return this.questionnaire.data.every(question => {
+        if (question.answer !== undefined && question.answer !== null) {
+          if (question.value !== null && question.value !== undefined && question.value !== '') {
+            return question.answer === question.value
+          }
+        }
+        return true;
+      });
+    },
+
     nextStepBtnTap() {
       if (!this.isFilled) {
+        return
+      }
+
+      if (!this.isAllCorrect) {
+        alert('Sorry, some questions were answered incorrectly, please read the Guideline carefully and answer the questions again.')
         return
       }
 
