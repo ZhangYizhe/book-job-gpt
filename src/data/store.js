@@ -6,7 +6,7 @@ export const store = reactive({
     aiProxy: 'https://ai.yizheyun.cn',
     chatToken: 'c2stQko5bGt4d0JHR0FSUnpmODlsVHhUM0JsYmtGSjY4NGlTWTFhZlpBSjNsajZoSFky',
 
-    debug: true,
+    debug: false,
 
     isAgreeConsent: false,
     isPrompts: true,
@@ -27,6 +27,9 @@ export const store = reactive({
 
     firstBooks: new Set(),
     secondBooks: new Set(),
+
+    firstBookRates: {},
+    secondBookRates: {},
 
     reset() {
         this.tag = 'home';

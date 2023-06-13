@@ -1,4 +1,5 @@
 <template>
+
   <div class="container" style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
     <div class="columns is-multiline is-mobile m-0">
       <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
@@ -8,7 +9,13 @@
         <div class="pb-4" v-if="books.size > 0" style="width: 100%; height: calc(100vh - 177px); overflow-y: scroll; overflow-x: hidden">
             <div class="columns is-multiline is-mobile px-4 pt-4">
               <div class="column is-full" v-for="book in books" style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
-                <i class="bi bi-x-circle" style="color: red; cursor: pointer" @click="disFavoriteBtnTap(book)"></i> {{ book }}
+                <i class="bi bi-x-circle mr-2" style="color: red; cursor: pointer" @click="disFavoriteBtnTap(book)"></i>
+                <template v-for="i in bookRates[book]">
+                  <i class="bi bi-star-fill" style="color: orange"></i>
+                </template>
+                <br>
+                {{ book }}
+
               </div>
             </div>
 
@@ -98,6 +105,39 @@
     </div>
   </div>
 
+  <div class="rate-canvas" v-if="currentBookTitle">
+    <div class="rate-canvas-pop">
+        <p>
+          <template v-if="round === 1">
+            How much do you think your family member likes this book:
+          </template>
+          <template v-else>
+            How much do you like this book:
+          </template>
+        </p>
+        <p class="mb-3" style="text-align: center">
+          <strong>
+            {{ currentBookTitle }}
+          </strong>
+        </p>
+
+      <div class="buttons has-addons is-centered">
+        <button class="button" style="color: orange" @click="favoriteBtnTap(1)"><i class="bi bi-star-fill"></i></button>
+        <button class="button" style="color: orange" @click="favoriteBtnTap(2)"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
+        <button class="button" style="color: orange" @click="favoriteBtnTap(3)"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
+        <button class="button" style="color: orange" @click="favoriteBtnTap(4)"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
+        <button class="button" style="color: orange" @click="favoriteBtnTap(5)"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
+      </div>
+
+      <div class="buttons has-addons is-centered">
+        <button class="button is-danger" @click="currentBookTitle = null">Cancel</button>
+      </div>
+
+    </div>
+    <div style="width: 100%; height: 100%; background: red; background: rgba(0, 0, 0, 0.2);" @click="currentBookTitle = null">
+
+    </div>
+  </div>
 </template>
 
 <script>
@@ -122,6 +162,8 @@ export default {
       messages: [],
       totalBooks: 5,
       books: new Set(),
+      bookRates: {},
+      currentBookTitle: "",
 
       systemMessage: [
         {
@@ -161,14 +203,15 @@ export default {
     }
   },
   mounted() {
-    window.favoriteBtnTap = this.favoriteBtnTap;
+    window.chooseFavoriteBtnTap = this.chooseFavoriteBtnTap;
   },
   created() {
     this.$watch(
         () => this.$route.params,
         () => {
           this.round = this.$route.query.round === undefined ? 1 : parseInt(this.$route.query.round);
-          this.books = this.round === 1 ? store.firstBooks : store.secondBooks
+          this.books = this.round === 1 ? store.firstBooks : store.secondBooks;
+          this.bookRates = this.round === 1 ? store.firstBookRates : store.secondBookRates;
         },
         // fetch the data when the view is created and the data is
         // already being observed
@@ -204,12 +247,24 @@ export default {
       this.request();
     },
 
-    favoriteBtnTap(title) {
+    chooseFavoriteBtnTap(title) {
+      if (this.books.size >= this.totalBooks) {
+        alert("You have already selected " + this.totalBooks + " books.")
+        return
+      }
+
+      this.currentBookTitle = Base64.decode(title);
+    },
+
+    favoriteBtnTap(rate) {
       if (this.books.size >= this.totalBooks) {
         return
       }
 
-      this.books.add(Base64.decode(title));
+      this.books.add(this.currentBookTitle);
+      this.bookRates[this.currentBookTitle] = rate;
+
+      this.currentBookTitle = null;
     },
 
     disFavoriteBtnTap(title) {
@@ -291,7 +346,7 @@ export default {
             for (const i in titles) {
               const title = titles[i].replace("<book>", "").replace("</book>", "");
               const titleEncode = Base64.encode(title);
-              tempMessage = tempMessage.replaceAll(titles[i], "<span class=\'book-btn\' onclick=\'favoriteBtnTap(\"" + titleEncode + "\")\'><i class=\'bi bi-plus-circle\'></i>" + title + "</span>")
+              tempMessage = tempMessage.replaceAll(titles[i], "<span class=\'book-btn\' onclick=\'chooseFavoriteBtnTap(\"" + titleEncode + "\")\'><i class=\'bi bi-plus-circle\'></i>" + title + "</span>")
             }
             subThis.tempMessage = tempMessage;
             subThis.scrollToBottomWithoutTimer();
@@ -367,6 +422,7 @@ export default {
         if (this.round === 1) {
           this.store.firstMessages = this.messages;
           this.store.firstBooks = this.books;
+          this.store.firstBookRates = this.bookRates;
 
           const query = {
             position: 2,
@@ -376,6 +432,8 @@ export default {
         } else {
           this.store.secondMessages = this.messages;
           this.store.secondBooks = this.books;
+          this.store.secondBookRates = this.bookRates;
+
           const query = {
             position: 2,
             round: 2,
@@ -640,5 +698,24 @@ export default {
   font-weight: bold;
   color: #2455af;
   text-decoration: underline;
+}
+
+.rate-canvas {
+  position: fixed;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.rate-canvas-pop {
+  border-radius: 10px;
+  padding: 20px;
+  background: white;
+  position: absolute;
+  margin-left: 50vw;
+  margin-top: 50vh;
+  transform: translate(-50%, -50%);
 }
 </style>
