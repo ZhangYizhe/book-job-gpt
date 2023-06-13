@@ -17,9 +17,13 @@
                v-if="questionnaire.description !== ''">
             <p style="white-space: pre-wrap; font-size: 1.1rem" v-html="questionnaire.description"></p>
           </div>
-          <div class="column is-full py-3" v-for="question in questionnaire.data">
+          <div class="column is-full pb-4 mb-4" style="border-bottom: 1px solid #e8e8e8"
+               v-if="store.isPrompts && questionnaire.guideline !== ''">
+            <p style="white-space: pre-wrap; font-size: 1.1rem" v-html="questionnaire.guideline"></p>
+          </div>
+          <div class="column is-full py-3" v-for="(question, index) in questionnaire.data">
             <p class="pb-3 pt-3" :style="['font-size: 1.1rem; font-weight: bold']">
-              {{ question.id }}. <span v-html="question.title"></span> <span v-if="question.required"
+              {{ index + 1 }}. <span v-html="question.title"></span> <span v-if="question.required"
                                                                                                                                                                                                  style="color: red">*</span>
             </p>
             <!--   General Selection    -->
@@ -46,14 +50,21 @@
               </div>
             </div>
 
+            <!--   country/region Selection    -->
+            <div class="control" v-if="question.type === 'country/region'">
+              <div class="select">
+                <select v-model="question.value">
+                  <option v-for="item in question.options">{{ item.name }}</option>
+                </select>
+              </div>
+            </div>
+
             <!--   General Text    -->
             <div class="control questionnaire-text" v-if="question.type === 'text'">
-            <textarea placeholder="Please enter content" v-model="question.value">
-
-            </textarea>
+            <textarea placeholder="Please enter content" v-model="question.value"></textarea>
             </div>
           </div>
-          <div class="column is-full py-3 mb-5">
+          <div class="column is-full py-3 mt-3 mb-5">
             <button class="button is-link" style="width: 100%;" @click="nextStepBtnTap" :disabled="!isFilled">Next
               Step
             </button>
@@ -239,13 +250,27 @@ export default {
         if (this.store.firstScenarioQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.firstScenarioQuestionnaire))
         } else {
-          this.questionnaire = JSON.parse(JSON.stringify(firstScenarioQuestionnaire))
+          let tempQ = JSON.parse(JSON.stringify(firstScenarioQuestionnaire))
+          if (!this.store.isPrompts) {
+            tempQ.data = tempQ.data.filter(question => {
+              return !tempQ.prompts.includes(question.id);
+            })
+          }
+
+          this.questionnaire = JSON.parse(JSON.stringify(tempQ))
         }
       } else if (this.position === 1 && this.round === 2) {
         if (this.store.secondScenarioQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.secondScenarioQuestionnaire))
         } else {
-          this.questionnaire = JSON.parse(JSON.stringify(secondScenarioQuestionnaire))
+          let tempQ = JSON.parse(JSON.stringify(secondScenarioQuestionnaire))
+          if (!this.store.isPrompts) {
+            tempQ.data = tempQ.data.filter(question => {
+              return !tempQ.prompts.includes(question.id);
+            })
+          }
+
+          this.questionnaire = JSON.parse(JSON.stringify(tempQ))
         }
       } else if (this.position === 2 && this.round === 1) {
         this.bookList = this.store.firstBooks;
