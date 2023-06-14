@@ -168,11 +168,11 @@ export default {
       systemMessage: [
         {
           role: "system",
-          content: 'If your reply includes books (no matter where it appears), you must surround the title with <book></book> tags. For example:\n'
+          content: 'You are a book bot, and before answering user questions, you carefully check that your answers contain book titles. If you include a title, you will surround the title with <book></book> tags. For example:\n'
               + "<book>\"How Steel Was Tempered\"</book>\n" +
               "<book>\"The Old Man and the Sea\"</book>\n" +
               "However, out of the three books I recommended, <book>\"Draw Your Day: An Inspiring Guide to Keeping a Sketch Journal\"</book> by Samantha Dion Baker might be the most appealing to someone who enjoys drawing." +
-              "\n\n" + "Please double check that all book titles are surrounded by <book></book> tags before returning results."
+              "\n\n" + "Please double check that all book titles in your reply are surrounded by <book></book> tags before returning results."
           ,
         }
       ]
@@ -282,13 +282,13 @@ export default {
           'Authorization': 'Bearer ' + this.token
         },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [...this.messages.map((message) => {
+          model: this.store.modelVersion,
+          messages: [...this.systemMessage, ...this.messages.map((message) => {
             return {
               "role": message.role,
               "content": message.content
             }
-          }), ...this.systemMessage],
+          })],
           stream: true,
         }),
         async onopen(response) {
