@@ -314,15 +314,6 @@ export default {
         },
         onmessage(msg) {
           if (msg.data === '[DONE]') {
-            subThis.isLoading = false;
-            return;
-          }
-          const msgData = JSON.parse(msg.data)
-
-          const delta = msgData['choices'][0]['delta']
-          const finish_reason = msgData['choices'][0]['finish_reason']
-
-          if (finish_reason === 'stop') {
             const stopMessage = {
               "role": "assistant",
               "content": subThis.tempMessage,
@@ -335,6 +326,11 @@ export default {
             subThis.messages.push(stopMessage);
             return;
           }
+          const msgData = JSON.parse(msg.data)
+
+          const delta = msgData['choices'][0]['delta']
+          // const finish_reason = msgData['choices'][0]['finish_reason']
+
 
           if (delta['content'] !== undefined) {
             let content = delta["content"]
