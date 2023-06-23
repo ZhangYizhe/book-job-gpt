@@ -4,7 +4,7 @@ import {firstScenarioQuestionnaire} from "@/data/surveys/firstScenarioQuestionna
 export const store = reactive({
     tag: 'home',
     aiProxy: 'https://ai.yizheyun.cn',
-    modelVersion: 'gpt-3.5-turbo', // gpt-3.5-turbo-0613
+    modelVersion: 'gpt-3.5-turbo-0613', // gpt-3.5-turbo-0613
     chatToken: 'c2stQko5bGt4d0JHR0FSUnpmODlsVHhUM0JsYmtGSjY4NGlTWTFhZlpBSjNsajZoSFky',
 
     debug: false,
