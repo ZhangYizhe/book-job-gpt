@@ -189,7 +189,7 @@ export default {
   },
   computed: {
     token() {
-      return Base64.decode(store.chatToken);
+      return "";
     },
 
     defaultPrompt() {
@@ -288,7 +288,7 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.token
+          // 'Authorization': 'Bearer ' + this.token
         },
         body: JSON.stringify({
           model: this.store.modelVersion,
