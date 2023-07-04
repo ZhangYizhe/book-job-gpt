@@ -93,47 +93,39 @@ export const preQuestionnaire = reactive({
             options: [
                 {
                     id: 1,
-                    text: 'No Schooling / Kindergarten',
+                    text: 'High school graduate',
                 },
                 {
                     id: 2,
-                    text: 'Primary (P.1 – P.6)',
+                    text: 'Completed some college',
                 },
                 {
                     id: 3,
-                    text: 'Junior Secondary (F.1 – F.3)',
+                    text: 'Associate degree',
                 },
                 {
                     id: 4,
-                    text: 'Senior Secondary (F.4 – F.6 / F.7)',
+                    text: 'Bachelor\'s degree',
                 },
                 {
                     id: 5,
-                    text: 'Project Yi Jin',
+                    text: 'Completed some postgraduate',
                 },
                 {
                     id: 6,
-                    text: 'Master’s degree',
+                    text: 'Master\'s degree',
                 },
                 {
                     id: 7,
-                    text: 'Technical / Vocational Training (Craft course / Apprenticeship)',
+                    text: 'Ph.D.',
                 },
                 {
                     id: 8,
-                    text: 'Technical / Vocational Training (Diploma / Cert. course)',
+                    text: 'Law or Medical degree',
                 },
                 {
                     id: 9,
-                    text: 'Tertiary Education (Non-degree / Sub-degree courses)',
-                },
-                {
-                    id: 10,
-                    text: 'Tertiary Education (Bachelor’s degree courses)',
-                },
-                {
-                    id: 11,
-                    text: 'Tertiary Education (Master’s / Doctoral degree courses)',
+                    text: 'Others',
                 }
             ],
             value: null,
@@ -148,7 +140,7 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 5,
-            title: 'I am familiar with recommender systems (e.g., personalized book recommendations from Amazon).',
+            title: 'I am familiar with recommender systems (e.g., book recommendations from Amazon or job recommendations from LinkedIn).',
             type: 'selection',
             layout: 'horizontal',
             options: [
@@ -178,7 +170,7 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 6,
-            title: 'I used recommender systems frequently.',
+            title: 'I have used recommender systems frequently.',
             type: 'selection',
             layout: 'horizontal',
             options: [

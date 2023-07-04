@@ -2,12 +2,7 @@
   <div v-if="questionnaire">
     <div class="section p-0 is-vcentered navigation-bar">
       <p style="text-align: center">
-        <template v-if="position === 2">
-          Task {{ round }} {{ questionnaire.title }}
-        </template>
-        <template v-else>
-          {{ questionnaire.title }}
-        </template>
+        {{ questionnaire.title }}
       </p>
     </div>
     <div class="section pt-4">
@@ -42,10 +37,14 @@
             <div class="control" v-if="question.type === 'selection-itemList'">
               <div class="columns is-mobile is-multiline">
                 <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="title in itemList">
-                  <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
-                    <input type="radio" :value="title" v-model="question.value">&nbsp;
-                    {{ title }}
-                  </label>
+                  <div class="columns">
+                    <div class="column"><strong>{{ title }}</strong></div>
+                    <div class="column" v-for="value in generateArray(itemList.size, 1)">
+                      <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
+                        <input type="radio" :value="title" v-model="itemRank[value]">&nbsp; {{ value }}
+                      </label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -96,7 +95,7 @@
 import {store} from "@/data/store";
 import {preQuestionnaire} from "@/data/surveys/preQuestionnaire";
 import {interviewQuestionnaire} from "@/data/surveys/interviewQuestionnaire";
-import {bookListQuestionnaire} from "@/data/surveys/bookListQuestionnaire";
+import {itemListQuestionnaires} from "@/data/surveys/itemListQuestionnaires";
 import {postQuestionnaires} from "@/data/surveys/postQuestionnaires";
 import {scenarioQuestionnaires} from "@/data/surveys/scenarioQuestionnaires";
 
@@ -113,6 +112,7 @@ export default {
       round: null,
 
       itemList: [],
+      itemRank: {},
       questionnaire: null,
     };
   },
@@ -134,6 +134,10 @@ export default {
       }
       return this.questionnaire.data.every(question => {
         if (question.required) {
+          if (question.type === 'selection-itemList') {
+            question.value = JSON.stringify(this.itemRank);
+            return this.itemList.size === (new Set(Object.values(this.itemRank)).size);
+          }
           return question.value !== null && question.value !== undefined && question.value !== ''
         }
 
@@ -184,10 +188,11 @@ export default {
         }
       } else if (this.position === 2) {
         this.itemList = this.store.items[tag];
+        this.itemRank = this.store.itemsRanks[tag];
         if (this.store.listQuestionnaires[tag] !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.listQuestionnaires[tag]))
         } else {
-          this.questionnaire = JSON.parse(JSON.stringify(bookListQuestionnaire))
+          this.questionnaire = JSON.parse(JSON.stringify(itemListQuestionnaires[tag]))
         }
       } else if (this.position === 3) {
         if (this.store.postQuestionnaires[tag] !== null) {
@@ -210,7 +215,7 @@ export default {
       }
 
       if (!this.isAllCorrect) {
-        alert('Sorry, some questions were answered incorrectly, please read the Guideline carefully and answer the questions again.')
+        alert('Sorry, the answer is not correct, Please read the guidelines carefully and answer the question again.')
         return
       }
 
@@ -275,6 +280,10 @@ export default {
       this.isLoading = true;
       await this.store.submit();
       this.$router.push('/end');
+    },
+
+    generateArray(size, start) {
+      return Array.from({length: size}, (_, index) => index + start);
     }
   },
 };

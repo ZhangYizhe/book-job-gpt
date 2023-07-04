@@ -63,7 +63,7 @@ export default {
       isLoading: true,
 
       title: "Hong Kong Baptist University",
-      description: "Thank you for participating in this experiment. This experiment aims to investigate whether chatbots can provide a better experience in the book recommendation task.<br><br>In this experiment, you will experience a book chatbot based on Chat-GPT. It can understand your needs by communicating with you, and recommend items to you based on your preferences.<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
+      description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT can provide a satisfying user experience in accomplishing the book recommendation task or the job recommendations task.<br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It may understand your needs by communicating with you, and recommend books or job titles to you.<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
     };
   },
 

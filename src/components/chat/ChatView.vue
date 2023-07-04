@@ -4,7 +4,7 @@
     <div class="columns is-multiline is-mobile m-0">
       <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
         <p class="pt-3 pb-3" style="color: gray; text-align: center; border-bottom: 1px solid #e1e1e1; font-size: 1.3rem; font-weight: bold; color: black">
-          Task {{round}} Item List
+          {{ tag === 'book' ? 'Book' : 'Job'}} List
         </p>
         <div class="pb-4" v-if="items.size > 0" style="width: 100%; height: calc(100vh - 177px); overflow-y: scroll; overflow-x: hidden">
             <div class="columns is-multiline is-mobile px-4 pt-4">
@@ -107,7 +107,12 @@
   <div class="rate-canvas" v-if="currentItemTitle">
     <div class="rate-canvas-pop">
         <p>
-          How much do you like this item:
+          <template v-if="tag === 'book'">
+            How much would you like this book:
+          </template>
+          <template v-else>
+            How much would you like this job:
+          </template>
         </p>
         <p class="mb-3" style="text-align: left">
           <strong>
@@ -186,16 +191,17 @@ export default {
       return "";
     },
 
+    tag() {
+      return this.store.order[this.round];
+    },
+
     defaultPrompt() {
-
-      const roundStr = this.round === 1 ? 'First' : 'Second';
-
-      const welcomeMessage = "Hi, I'm a book recommender bot based on Chat-GPT, and I'm happy to assist you! I can provide you with a book list based on your needs. Please give me a try!\nNote: \n - Please follow <strong>the " + roundStr +  " task requirement</strong> to create the book list. \n - If you want to add a book to your booklist, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
+      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender bot based on Chat-GPT, and I'm happy to assist you!\n\nNote: \n - Please follow <strong>the task requirement</strong> to create the " + this.tag +  " list. \n - If you want to add a " + this.tag +  " to your " + this.tag +  " list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
 
 
       if (this.store.isPrompts) {
         return welcomeMessage + "\n\nYou may start the conversation with me in this way:\n" +
-        "<strong>“I would like you to act as a personalized book recommender to help me find items as a gift for someone in my life. You can ask me questions one by one and wait for my answers. Try to adjust the recommendations based on my answers. You can also help me compare different items so that I can make the right choices. Let’s start with this first question.”</strong>"
+        "<strong>" + (this.tag === "book" ? "“I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. ”" : "“I would like you to act as a personalised job recommender to help me find jobs which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different jobs so that I can make the right choices.”") +"</strong>"
       } else {
         return welcomeMessage
       }
@@ -424,7 +430,8 @@ export default {
     },
 
     endConversationBtnTap() {
-      if (confirm('Are you sure you have completed the book list？')) {
+      const confirmStr = this.tag === "book" ? "Are you sure you have found all the suitable books in this list?" : "Are you sure you have found all the suitable jobs in this list?"
+      if (confirm(confirmStr)) {
         const tag = this.store.order[this.round - 1]
 
         this.store.messages[tag] = this.messages;
