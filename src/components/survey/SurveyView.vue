@@ -39,9 +39,9 @@
             </div>
 
             <!--   Book list Selection    -->
-            <div class="control" v-if="question.type === 'selection-bookList'">
+            <div class="control" v-if="question.type === 'selection-itemList'">
               <div class="columns is-mobile is-multiline">
-                <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="title in bookList">
+                <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="title in itemList">
                   <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
                     <input type="radio" :value="title" v-model="question.value">&nbsp;
                     {{ title }}
@@ -92,12 +92,10 @@
 <script>
 import {store} from "@/data/store";
 import {preQuestionnaire} from "@/data/surveys/preQuestionnaire";
-import {firstScenarioQuestionnaire} from "@/data/surveys/firstScenarioQuestionnaire";
-import {secondScenarioQuestionnaire} from "@/data/surveys/secondScenarioQuestionnaire";
-import {postQuestionnaire} from "@/data/surveys/postQuestionnaire";
 import {interviewQuestionnaire} from "@/data/surveys/interviewQuestionnaire";
-import {secondPostQuestionnaire} from "@/data/surveys/secondPostQuestionnaire";
 import {bookListQuestionnaire} from "@/data/surveys/bookListQuestionnaire";
+import {postQuestionnaires} from "@/data/surveys/postQuestionnaires";
+import {scenarioQuestionnaires} from "@/data/surveys/scenarioQuestionnaires";
 
 export default {
   name: 'SurveyView',
@@ -109,7 +107,7 @@ export default {
       position: null,
       round: null,
 
-      bookList: [],
+      itemList: [],
       questionnaire: null,
     };
   },
@@ -163,70 +161,55 @@ export default {
         return
       }
 
+      const tag = this.store.order[this.round - 1]
+
       if (this.position === 0) {
         this.store.preQuestionnaire = this.questionnaire;
 
         const query = {
-          round: 1,
+          round: this.round,
           position: 1,
         }
         this.$router.push({path: '/survey', query: query});
-
-      } else if (this.position === 1 && this.round === 1) {
-        this.store.firstScenarioQuestionnaire = this.questionnaire;
+      } else if (this.position === 1) {
+        this.store.scenarioQuestionnaires[tag] = this.questionnaire;
         const query = {
-          round: 1,
-          position: 1,
+          round: this.round,
+          position: this.position,
         }
         this.$router.push({path: '/chat', query: query});
-      } else if (this.position === 1 && this.round === 2) {
-        this.store.secondScenarioQuestionnaire = this.questionnaire;
-        const query = {
-          round: 2,
-          position: 1,
-        }
-        this.$router.push({path: '/chat', query: query});
-      } else if (this.position === 2 && this.round === 1) {
-        this.store.firstBookListQuestionnaire = this.questionnaire;
+      } else if (this.position === 2) {
+        this.store.items[tag] = this.questionnaire;
 
         const query = {
-          round: 1,
+          round: this.round,
           position: 3,
         }
         this.$router.push({path: '/survey', query: query});
 
-      } else if (this.position === 2 && this.round === 2) {
-        this.store.secondBookListQuestionnaire = this.questionnaire;
+      } else if (this.position === 3) {
+        this.store.postQuestionnaires[tag] = this.questionnaire;
 
-        const query = {
-          round: 2,
-          position: 3,
+        let query = {};
+
+        if (this.round === 1) {
+          query = {
+            round: 2,
+            position: 1,
+          }
+        } else {
+          query = {
+            round: 2,
+            position: 4,
+          }
         }
-        this.$router.push({path: '/survey', query: query});
 
-      } else if (this.position === 3 && this.round === 1) {
-        this.store.postQuestionnaire = this.questionnaire;
-
-        const query = {
-          round: 2,
-          position: 1,
-        }
-        this.$router.push({path: '/survey', query: query});
-
-      } else if (this.position === 3 && this.round === 2) {
-        this.store.secondPostQuestionnaire = this.questionnaire;
-
-        const query = {
-          round: 2,
-          position: 4,
-        }
         this.$router.push({path: '/survey', query: query});
 
       } else if (this.position === 4) {
         this.store.interviewQuestionnaire = this.questionnaire;
         this.$router.push('/end');
       } else {
-
         const query = {
           round: 1,
           position: 1,
@@ -240,17 +223,19 @@ export default {
       this.position = this.$route.query.position === undefined ? 0 : parseInt(this.$route.query.position);
       this.round = this.$route.query.round === undefined ? 1 : parseInt(this.$route.query.round);
 
+      const tag = this.store.order[this.round - 1]
+
       if (this.position === 0) {
         if (this.store.preQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.preQuestionnaire))
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(preQuestionnaire))
         }
-      } else if (this.position === 1 && this.round === 1) {
-        if (this.store.firstScenarioQuestionnaire !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.firstScenarioQuestionnaire))
+      } else if (this.position === 1) {
+        if (this.store.scenarioQuestionnaires[tag] !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.scenarioQuestionnaires[tag]))
         } else {
-          let tempQ = JSON.parse(JSON.stringify(firstScenarioQuestionnaire))
+          let tempQ = JSON.parse(JSON.stringify(scenarioQuestionnaires[tag]))
           if (!this.store.isPrompts) {
             tempQ.data = tempQ.data.filter(question => {
               return !tempQ.prompts.includes(question.id);
@@ -259,46 +244,20 @@ export default {
 
           this.questionnaire = JSON.parse(JSON.stringify(tempQ))
         }
-      } else if (this.position === 1 && this.round === 2) {
-        if (this.store.secondScenarioQuestionnaire !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.secondScenarioQuestionnaire))
-        } else {
-          let tempQ = JSON.parse(JSON.stringify(secondScenarioQuestionnaire))
-          if (!this.store.isPrompts) {
-            tempQ.data = tempQ.data.filter(question => {
-              return !tempQ.prompts.includes(question.id);
-            })
-          }
-
-          this.questionnaire = JSON.parse(JSON.stringify(tempQ))
-        }
-      } else if (this.position === 2 && this.round === 1) {
-        this.bookList = this.store.firstBooks;
-        if (this.store.firstBookListQuestionnaire !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.firstBookListQuestionnaire))
+      } else if (this.position === 2) {
+        this.itemList = this.store.items[tag];
+        if (this.store.listQuestionnaires[tag] !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.listQuestionnaires[tag]))
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(bookListQuestionnaire))
         }
-      } else if (this.position === 2 && this.round === 2) {
-        this.bookList = this.store.secondBooks;
-        if (this.store.secondBookListQuestionnaire !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.secondBookListQuestionnaire))
+      } else if (this.position === 3) {
+        if (this.store.postQuestionnaires[tag] !== null) {
+          this.questionnaire = JSON.parse(JSON.stringify(this.store.postQuestionnaires[tag]))
         } else {
-          this.questionnaire = JSON.parse(JSON.stringify(bookListQuestionnaire))
+          this.questionnaire = JSON.parse(JSON.stringify(postQuestionnaires[tag]))
         }
-      } else if (this.position === 3 && this.round === 1) {
-        if (this.store.postQuestionnaire !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.postQuestionnaire))
-        } else {
-          this.questionnaire = JSON.parse(JSON.stringify(postQuestionnaire))
-        }
-      } else if (this.position === 3 && this.round === 2) {
-        if (this.store.secondPostQuestionnaire !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.secondPostQuestionnaire))
-        } else {
-          this.questionnaire = JSON.parse(JSON.stringify(secondPostQuestionnaire))
-        }
-      } else if (this.position === 4) {
+      }  else if (this.position === 4) {
         if (this.store.interviewQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.interviewQuestionnaire))
         } else {

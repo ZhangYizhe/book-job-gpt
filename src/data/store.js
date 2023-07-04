@@ -1,5 +1,4 @@
 import {reactive} from 'vue'
-import {firstScenarioQuestionnaire} from "@/data/surveys/firstScenarioQuestionnaire";
 
 export const store = reactive({
     tag: 'home',
@@ -8,38 +7,73 @@ export const store = reactive({
     modelVersion: 'gpt-35-turbo',
     apiVersion: '2023-05-15',
 
-    debug: false,
+    debug: true,
 
     isAgreeConsent: false,
     isPrompts: true,
 
-    preQuestionnaire: null,
-    firstScenarioQuestionnaire: null,
-    firstBookListQuestionnaire: null,
-    postQuestionnaire: null,
+    order: ['book', 'job'],
 
-    secondScenarioQuestionnaire: null,
-    secondBookListQuestionnaire: null,
-    secondPostQuestionnaire: null,
+    preQuestionnaire: null,
+
+    scenarioQuestionnaires: {
+        'book': null,
+        'job': null,
+    },
+    listQuestionnaires: {
+        'book': null,
+        'job': null,
+    },
+    postQuestionnaires: {
+        'book': null,
+        'job': null,
+    },
 
     interviewQuestionnaire: null,
 
-    firstMessages: [],
-    secondMessages: [],
+    messages: {
+        'book': [],
+        'job': [],
+    },
 
-    firstBooks: new Set(),
-    secondBooks: new Set(),
+    items: {
+        'book': new Set(),
+        'job': new Set(),
+    },
 
-    firstBookRates: {},
-    secondBookRates: {},
+    itemsRates: {
+        'book': {},
+        'job': {},
+    },
 
     reset() {
         this.tag = 'home';
         this.preQuestionnaire = null;
-        this.firstScenarioQuestionnaire = null;
-        this.secondScenarioQuestionnaire = null;
-        this.postQuestionnaire = null;
-        this.secondPostQuestionnaire = null;
+        this.scenarioQuestionnaires = {
+            'book': null,
+            'job': null,
+        };
+        this.listQuestionnaires = {
+            'book': null,
+            'job': null,
+        };
+        this.postQuestionnaires = {
+            'book': null,
+            'job': null,
+        };
         this.interviewQuestionnaire = null;
+
+        this.messages = {
+            'book': [],
+            'job': [],
+        };
+        this.items = {
+            'book': new Set(),
+            'job': new Set(),
+        };
+        this.itemsRates = {
+            'book': {},
+            'job': {},
+        };
     }
 })

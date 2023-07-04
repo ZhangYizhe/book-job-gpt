@@ -213,8 +213,10 @@ export default {
         () => this.$route.params,
         () => {
           this.round = this.$route.query.round === undefined ? 1 : parseInt(this.$route.query.round);
-          this.items = this.round === 1 ? store.firstBooks : store.secondBooks;
-          this.itemRates = this.round === 1 ? store.firstBookRates : store.secondBookRates;
+          const tag = this.store.order[this.round - 1]
+
+          this.items = this.round === 1 ? this.store.items[tag] : store.items[tag];
+          this.itemRates = this.round === 1 ? store.itemsRates[tag] : store.itemsRates[tag];
         },
         // fetch the data when the view is created and the data is
         // already being observed
@@ -423,27 +425,26 @@ export default {
 
     endConversationBtnTap() {
       if (confirm('Are you sure you have completed the book list？')) {
-        if (this.round === 1) {
-          this.store.firstMessages = this.messages;
-          this.store.firstBooks = this.items;
-          this.store.firstBookRates = this.itemRates;
+        const tag = this.store.order[this.round - 1]
 
-          const query = {
+        this.store.messages[tag] = this.messages;
+        this.store.items[tag] = this.items;
+        this.store.itemsRates[tag] = this.itemRates;
+
+        let query = {}
+
+        if (this.round === 1) {
+          query = {
             position: 2,
             round: 1,
           }
-          this.$router.push({path: '/survey', query: query});
         } else {
-          this.store.secondMessages = this.messages;
-          this.store.secondBooks = this.items;
-          this.store.secondBookRates = this.itemRates;
-
-          const query = {
+          query = {
             position: 2,
             round: 2,
           }
-          this.$router.push({path: '/survey', query: query});
         }
+        this.$router.push({path: '/survey', query: query});
       }
     },
 
