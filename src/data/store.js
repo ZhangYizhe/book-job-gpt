@@ -3,8 +3,10 @@ import {firstScenarioQuestionnaire} from "@/data/surveys/firstScenarioQuestionna
 
 export const store = reactive({
     tag: 'home',
-    aiProxy: 'https://ai.yizheyun.cn',
-    modelVersion: 'gpt-3.5-turbo-0613', // gpt-3.5-turbo-0613
+    aiProxy: 'https://bookbot.yizheyun.cn',
+    elecoxyKey: '4lcGSr1UwchK',
+    modelVersion: 'gpt-35-turbo',
+    apiVersion: '2023-05-15',
 
     debug: false,
 

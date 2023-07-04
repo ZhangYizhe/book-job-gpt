@@ -284,14 +284,13 @@ export default {
       this.isLoading = true;
       const subThis = this;
 
-      await fetchEventSource(this.store.aiProxy + '/v1/chat/completions', {
+      await fetchEventSource(this.store.aiProxy + `/openai/deployments/${this.store.modelVersion}/chat/completions?api-version=${this.store.apiVersion}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer ' + this.token
+          'elecoxy-key': this.store.elecoxyKey,
         },
         body: JSON.stringify({
-          model: this.store.modelVersion,
           messages: [...this.systemMessage, ...this.messages.map((message) => {
             return {
               "role": message.role,
@@ -301,14 +300,20 @@ export default {
           stream: true,
         }),
         async onopen(response) {
-          if (response.ok) {
+          if (response.status === 200) {
             subThis.tempMessage = "";
             return;
           }
 
           switch (response.status) {
+            case 201 :
+              alert(`Error Code: ${response.status}, invalid Elecoxy key.`);
+              break;
             case 401 :
-              alert(`Error Code: ${response.status}, invalid Authentication, please try again later.`);
+              alert(`Error Code: ${response.status}, invalid Authentication.`);
+              break;
+            case 403 :
+              alert(`Error Code: ${response.status}, invalid Elecoxy Authentication, please try again later.`);
               break;
             case 429 :
               alert(`Error Code: ${response.status}, rate limit reached for requests, please try again later.`);
@@ -322,7 +327,12 @@ export default {
           }
         },
         onmessage(msg) {
-          if (msg.data === '[DONE]') {
+          const data = JSON.parse(msg.data);
+          const delta = data.choices[0].delta;
+          const finish_reason = data.choices[0].finish_reason;
+
+
+          if (finish_reason !== null) {
             const stopMessage = {
               "role": "assistant",
               "content": subThis.tempMessage,
@@ -335,11 +345,6 @@ export default {
             subThis.messages.push(stopMessage);
             return;
           }
-          const msgData = JSON.parse(msg.data)
-
-          const delta = msgData['choices'][0]['delta']
-          // const finish_reason = msgData['choices'][0]['finish_reason']
-
 
           if (delta['content'] !== undefined) {
             let content = delta["content"]
