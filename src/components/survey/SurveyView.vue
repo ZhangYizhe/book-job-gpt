@@ -65,8 +65,11 @@
             </div>
           </div>
           <div class="column is-full py-3 mt-3 mb-5">
-            <button class="button is-link" style="width: 100%;" @click="nextStepBtnTap" :disabled="!isFilled">Next
-              Step
+            <template v-if="isLoading">
+              <p class="mb-2" style="color: red; font-weight: bold">Currently submitting, please refrain from refreshing or leaving this page.</p>
+            </template>
+            <button :class="['button is-link', isLoading ? 'is-loading' : '']" style="width: 100%;" @click="nextStepBtnTap" :disabled="!isFilled || isLoading">
+              Next Step
             </button>
           </div>
         </div>
@@ -103,6 +106,8 @@ export default {
   data() {
     return {
       store,
+
+      isLoading: false,
 
       position: null,
       round: null,
@@ -150,73 +155,6 @@ export default {
         return true;
       });
     },
-
-    nextStepBtnTap() {
-      if (!this.isFilled) {
-        return
-      }
-
-      if (!this.isAllCorrect) {
-        alert('Sorry, some questions were answered incorrectly, please read the Guideline carefully and answer the questions again.')
-        return
-      }
-
-      const tag = this.store.order[this.round - 1]
-
-      if (this.position === 0) {
-        this.store.preQuestionnaire = this.questionnaire;
-
-        const query = {
-          round: this.round,
-          position: 1,
-        }
-        this.$router.push({path: '/survey', query: query});
-      } else if (this.position === 1) {
-        this.store.scenarioQuestionnaires[tag] = this.questionnaire;
-        const query = {
-          round: this.round,
-          position: this.position,
-        }
-        this.$router.push({path: '/chat', query: query});
-      } else if (this.position === 2) {
-        this.store.items[tag] = this.questionnaire;
-
-        const query = {
-          round: this.round,
-          position: 3,
-        }
-        this.$router.push({path: '/survey', query: query});
-
-      } else if (this.position === 3) {
-        this.store.postQuestionnaires[tag] = this.questionnaire;
-
-        let query = {};
-
-        if (this.round === 1) {
-          query = {
-            round: 2,
-            position: 1,
-          }
-        } else {
-          query = {
-            round: 2,
-            position: 4,
-          }
-        }
-
-        this.$router.push({path: '/survey', query: query});
-
-      } else if (this.position === 4) {
-        this.store.interviewQuestionnaire = this.questionnaire;
-        this.$router.push('/end');
-      } else {
-        const query = {
-          round: 1,
-          position: 1,
-        }
-        this.$router.push({path: '/chat', query: query});
-      }
-    }
   },
   methods: {
     reloadQuestionnaire() {
@@ -264,6 +202,79 @@ export default {
           this.questionnaire = JSON.parse(JSON.stringify(interviewQuestionnaire))
         }
       }
+    },
+
+    nextStepBtnTap() {
+      if (!this.isFilled) {
+        return
+      }
+
+      if (!this.isAllCorrect) {
+        alert('Sorry, some questions were answered incorrectly, please read the Guideline carefully and answer the questions again.')
+        return
+      }
+
+      const tag = this.store.order[this.round - 1]
+
+      if (this.position === 0) {
+        this.store.preQuestionnaire = this.questionnaire;
+
+        const query = {
+          round: this.round,
+          position: 1,
+        }
+        this.$router.push({path: '/survey', query: query});
+      } else if (this.position === 1) {
+        this.store.scenarioQuestionnaires[tag] = this.questionnaire;
+        const query = {
+          round: this.round,
+          position: this.position,
+        }
+        this.$router.push({path: '/chat', query: query});
+      } else if (this.position === 2) {
+        this.store.listQuestionnaires[tag] = this.questionnaire;
+
+        const query = {
+          round: this.round,
+          position: 3,
+        }
+        this.$router.push({path: '/survey', query: query});
+
+      } else if (this.position === 3) {
+        this.store.postQuestionnaires[tag] = this.questionnaire;
+
+        let query = {};
+
+        if (this.round === 1) {
+          query = {
+            round: 2,
+            position: 1,
+          }
+        } else {
+          query = {
+            round: 2,
+            position: 4,
+          }
+        }
+
+        this.$router.push({path: '/survey', query: query});
+
+      } else if (this.position === 4) {
+        this.recordSubmit();
+      } else {
+        const query = {
+          round: 1,
+          position: 1,
+        }
+        this.$router.push({path: '/chat', query: query});
+      }
+    },
+
+    async recordSubmit() {
+      this.store.interviewQuestionnaire = this.questionnaire;
+      this.isLoading = true;
+      await this.store.submit();
+      this.$router.push('/end');
     }
   },
 };

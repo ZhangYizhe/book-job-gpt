@@ -1,9 +1,13 @@
 import {reactive} from 'vue'
+import { firebaseDB } from "@/firebaseInit";
+import { doc, setDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from 'uuid';
 
 export const store = reactive({
     tag: 'home',
+    db: firebaseDB,
     aiProxy: 'https://bookbot.yizheyun.cn',
-    elecoxyKey: '4lcGSr1UwchK',
+    elecoxyKey: '',
     modelVersion: 'gpt-35-turbo',
     apiVersion: '2023-05-15',
 
@@ -44,6 +48,71 @@ export const store = reactive({
     itemsRates: {
         'book': {},
         'job': {},
+    },
+
+    async submit() {
+
+        const _items = {}
+        this.order.forEach((key) => {
+            _items[key] = Array.from(this.items[key])
+        })
+
+        const _scenarioQuestionnaires = {}
+        this.order.forEach((key) => {
+            _scenarioQuestionnaires[key] = this.scenarioQuestionnaires[key].data.map((item) => {
+                return {
+                    "id": item.id,
+                    "title": item.title,
+                    "value": item.value
+                }
+            })
+        })
+
+        const _postQuestionnaires = {}
+        this.order.forEach((key) => {
+            _postQuestionnaires[key] = this.postQuestionnaires[key].data.map((item) => {
+                return {
+                    "id": item.id,
+                    "title": item.title,
+                    "value": item.value
+                }
+            })
+        })
+
+        await setDoc(doc(this.db, "records", uuidv4()), {
+            basic: {
+                aiProxy: this.aiProxy,
+                modelVersion: this.modelVersion,
+                apiVersion: this.apiVersion,
+
+                debug: this.debug,
+
+                isAgreeConsent: this.debug,
+                isPrompts: this.debug,
+
+                order: this.order,
+            },
+            data: {
+                preQuestionnaire: JSON.stringify(this.preQuestionnaire.data.map((item) => {
+                    return {
+                        "id": item.id,
+                        "title": item.title,
+                        "value": item.value
+                    }
+                })),
+
+                scenarioQuestionnaires: JSON.stringify(_scenarioQuestionnaires),
+                listQuestionnaires: JSON.stringify(this.listQuestionnaires),
+                postQuestionnaires: JSON.stringify(_postQuestionnaires),
+                interviewQuestionnaire: JSON.stringify(this.interviewQuestionnaire),
+            },
+            chat: {
+                messages:  JSON.stringify(this.messages),
+                items: JSON.stringify(_items),
+                itemsRates:  JSON.stringify(this.itemsRates),
+            },
+            timestamp: Date.now(),
+        });
     },
 
     reset() {

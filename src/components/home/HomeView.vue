@@ -21,7 +21,7 @@
               <input type="checkbox" v-model="store.isAgreeConsent">
               I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/bookbot/InformedConsentStatement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
             </label>
-            <button class="button is-link" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent">START</button>
+            <button :class="['button is-link', isLoading ? 'is-loading' : '']" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent">START</button>
 
             <label class="checkbox mt-5">
               <input type="checkbox" v-model="store.isPrompts">
@@ -51,25 +51,62 @@
 
 <script>
 import {store} from "@/data/store";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+
 export default {
   name: 'HomeView',
   components: {},
   data() {
     return {
       store,
+      db: store.db,
+      isLoading: true,
 
       title: "Hong Kong Baptist University",
       description: "Thank you for participating in this experiment. This experiment aims to investigate whether chatbots can provide a better experience in the book recommendation task.<br><br>In this experiment, you will experience a book chatbot based on Chat-GPT. It can understand your needs by communicating with you, and recommend items to you based on your preferences.<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
     };
   },
 
+  mounted() {
+    this.initialize();
+  },
+
   methods: {
-    async startBtnTap() {
+    startBtnTap() {
       const query = {
         round: 1,
         position: 0,
       }
       this.$router.push({path: '/survey', query: query});
+    },
+
+    async initialize() {
+      this.shuffle(this.store.order);
+
+      // getOrder
+      const docRef = doc(this.db, "basic", "info");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const info = docSnap.data();
+        this.store.elecoxyKey = info["elecoxyKey"];
+
+        let visitCount = parseInt(info["visitCount"]) + 1;
+        this.store.isPrompts = visitCount % 2 === 0;
+        await updateDoc(docRef, {
+          visitCount: visitCount,
+        })
+
+        this.isLoading = false;
+      } else {
+        alert('Sorry, unable to start the experiment, please refresh the page and try again later!');
+      }
+
+    },
+    shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
     }
   },
 };

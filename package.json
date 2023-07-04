@@ -1,5 +1,5 @@
 {
-  "name": "chatgpt",
+  "name": "smart-gpt",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
+    "firebase": "^9.23.0",
     "js-base64": "^3.7.5",
     "moment": "^2.29.4",
+    "uuid": "^9.0.0",
     "vue": "^3.3.2",
     "vue-router": "^4.2.2"
   },
