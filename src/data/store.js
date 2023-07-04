@@ -11,7 +11,7 @@ export const store = reactive({
     modelVersion: 'gpt-35-turbo',
     apiVersion: '2023-05-15',
 
-    debug: false,
+    debug: true,
 
     isAgreeConsent: false,
     isPrompts: true,
@@ -41,8 +41,8 @@ export const store = reactive({
     },
 
     items: {
-        'book': new Set(['123', "465"]),
-        'job': new Set(['123', "465"]),
+        'book': new Set(),
+        'job': new Set(),
     },
 
     itemsRanks: {
