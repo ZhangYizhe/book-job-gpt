@@ -192,7 +192,7 @@ export default {
     },
 
     tag() {
-      return this.store.order[this.round];
+      return this.store.order[this.round - 1];
     },
 
     defaultPrompt() {

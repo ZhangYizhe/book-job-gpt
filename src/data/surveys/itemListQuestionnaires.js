@@ -8,7 +8,7 @@ export const itemListQuestionnaires = reactive({
         data: [
             {
                 id: 1,
-                title: 'Please rank these five books.',
+                title: 'Please rank these five books',
                 type: 'selection-itemList',
                 options: [
 
@@ -33,7 +33,7 @@ export const itemListQuestionnaires = reactive({
         data: [
             {
                 id: 1,
-                title: 'Please rank these five jobs.',
+                title: 'Please rank these five jobs',
                 type: 'selection-itemList',
                 options: [
 
