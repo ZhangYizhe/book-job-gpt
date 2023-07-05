@@ -7,16 +7,9 @@ export const useDefaultStore = defineStore('default', {
     persist: true,
     state: () => {
         return {
-            tag: 'home',
-            aiProxy: 'https://bookbot.yizheyun.cn',
             elecoxyKey: '',
-            modelVersion: 'gpt-35-turbo',
-            apiVersion: '2023-05-15',
-
-            debug: false,
-
+            isPrompts: '',
             isAgreeConsent: false,
-            isPrompts: true,
 
             order: ['book', 'job'],
 
@@ -59,6 +52,11 @@ export const useDefaultStore = defineStore('default', {
         }
     },
     getters: {
+        tag: () => 'home',
+        aiProxy: () => 'https://bookbot.yizheyun.cn',
+        modelVersion: () => 'gpt-35-turbo',
+        apiVersion: () => '2023-05-15',
+        debug: () => false,
         db: () => firebaseDB,
     },
 

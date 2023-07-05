@@ -70,6 +70,8 @@ export default {
   },
 
   mounted() {
+    this.store.$reset();
+
     this.db = this.store.db;
 
     this.initialize();
