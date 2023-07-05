@@ -200,8 +200,8 @@ export default {
 
 
       if (this.store.isPrompts) {
-        return welcomeMessage + "\n\nYou may start the conversation with me in this way:\n" +
-        "<strong>“" + this.firstPrompt +"”</strong>"
+        return welcomeMessage + "\n\nYou may start the conversation with me in this way \n(Clicking on the following content will automatically fill to the input box.):\n" +
+        "<strong>“<span class=\'item-btn\' onclick=\'fillContentBtnTap(\"" + this.firstPrompt + "\")\'>" + this.firstPrompt +"</span>”</strong>"
       } else {
         return welcomeMessage
       }
@@ -217,6 +217,7 @@ export default {
   },
   mounted() {
     window.chooseFavoriteTap = this.chooseFavoriteTap;
+    window.fillContentBtnTap = this.fillContentBtnTap;
   },
   created() {
     this.$watch(
@@ -260,6 +261,10 @@ export default {
       this.resizeTextarea();
 
       this.request();
+    },
+
+    fillContentBtnTap(content) {
+      this.inputText = content;
     },
 
     chooseFavoriteTap(title) {
@@ -574,6 +579,17 @@ export default {
   background-color: white;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
+}
+
+.default-prompt :deep(.item-btn) {
+  color: orange;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.default-prompt :deep(.item-btn:hover) {
+  color: #d98e06;
 }
 
 .temp-chat-content-canvas :deep(.item-btn) {
