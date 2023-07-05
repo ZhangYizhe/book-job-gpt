@@ -13,51 +13,27 @@ export const preQuestionnaire = reactive({
             options: [
                 {
                     id: 1,
-                    text: '18 - 22',
+                    text: '18 to 24',
                 },
                 {
                     id: 2,
-                    text: '23 - 27',
+                    text: '25 to 34',
                 },
                 {
                     id: 3,
-                    text: '28 - 32',
+                    text: '35 to 44',
                 },
                 {
                     id: 4,
-                    text: '33 - 37',
+                    text: '45 to 54',
                 },
                 {
                     id: 5,
-                    text: '38 - 42',
+                    text: '55 to 64',
                 },
                 {
                     id: 6,
-                    text: '43 - 47',
-                },
-                {
-                    id: 7,
-                    text: '48 - 52',
-                },
-                {
-                    id: 8,
-                    text: '53 - 57',
-                },
-                {
-                    id: 9,
-                    text: '58 - 62',
-                },
-                {
-                    id: 10,
-                    text: '63 - 67',
-                },
-                {
-                    id: 11,
-                    text: '68 - 72',
-                },
-                {
-                    id: 12,
-                    text: '73 and above',
+                    text: '65 or over',
                 }
             ],
             value: null,
