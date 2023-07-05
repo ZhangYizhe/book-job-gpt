@@ -201,10 +201,14 @@ export default {
 
       if (this.store.isPrompts) {
         return welcomeMessage + "\n\nYou may start the conversation with me in this way:\n" +
-        "<strong>" + (this.tag === "book" ? "“I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. ”" : "“I would like you to act as a personalised job recommender to help me find jobs which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different jobs so that I can make the right choices.”") +"</strong>"
+        "<strong>“" + this.firstPrompt +"”</strong>"
       } else {
         return welcomeMessage
       }
+    },
+
+    firstPrompt() {
+      return this.tag === "book" ? "I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. You may ask me the first question now." : "I would like you to act as a personalised job recommender to help me find jobs which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different jobs so that I can make the right choices. You may ask me the first question now."
     },
 
     isCompleted() {

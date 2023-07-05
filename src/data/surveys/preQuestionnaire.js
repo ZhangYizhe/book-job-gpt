@@ -176,7 +176,7 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 7,
-            title: 'I consider myself to be an expert in using ChatGPT.',
+            title: 'I tend to trust a new technology, even though I have little knowledge of it.',
             type: 'selection',
             layout: 'horizontal',
             options: [
@@ -206,7 +206,7 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 8,
-            title: 'I am knowledgeable about ChatGPT.',
+            title: 'Trusting someone or something is difficult.',
             type: 'selection',
             layout: 'horizontal',
             options: [
@@ -236,6 +236,96 @@ export const preQuestionnaire = reactive({
         },
         {
             id: 9,
+            title: 'I am confident when it comes to try a new technology.',
+            type: 'selection',
+            layout: 'horizontal',
+            options: [
+                {
+                    id: 1,
+                    text: '1 (Strongly Disagree)',
+                },
+                {
+                    id: 2,
+                    text: '2',
+                },
+                {
+                    id: 3,
+                    text: '3',
+                },
+                {
+                    id: 4,
+                    text: '4',
+                },
+                {
+                    id: 5,
+                    text: '5 (Strongly Agree)',
+                }
+            ],
+            value: null,
+            required: true,
+        },
+        {
+            id: 10,
+            title: 'I consider myself to be an expert in using ChatGPT.',
+            type: 'selection',
+            layout: 'horizontal',
+            options: [
+                {
+                    id: 1,
+                    text: '1 (Strongly Disagree)',
+                },
+                {
+                    id: 2,
+                    text: '2',
+                },
+                {
+                    id: 3,
+                    text: '3',
+                },
+                {
+                    id: 4,
+                    text: '4',
+                },
+                {
+                    id: 5,
+                    text: '5 (Strongly Agree)',
+                }
+            ],
+            value: null,
+            required: true,
+        },
+        {
+            id: 11,
+            title: 'I am knowledgeable about ChatGPT.',
+            type: 'selection',
+            layout: 'horizontal',
+            options: [
+                {
+                    id: 1,
+                    text: '1 (Strongly Disagree)',
+                },
+                {
+                    id: 2,
+                    text: '2',
+                },
+                {
+                    id: 3,
+                    text: '3',
+                },
+                {
+                    id: 4,
+                    text: '4',
+                },
+                {
+                    id: 5,
+                    text: '5 (Strongly Agree)',
+                }
+            ],
+            value: null,
+            required: true,
+        },
+        {
+            id: 12,
             title: 'I have extensive experience in using ChatGPT.',
             type: 'selection',
             layout: 'horizontal',

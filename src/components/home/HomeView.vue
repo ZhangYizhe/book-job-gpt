@@ -23,10 +23,12 @@
             </label>
             <button :class="['button is-link', isLoading ? 'is-loading' : '']" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent">START</button>
 
-            <label class="checkbox mt-5">
+            <label class="checkbox mt-5 mb-3">
               <input type="checkbox" v-model="store.isPrompts">
               Prompts group
             </label>
+
+            <p style=''>[1] ChatGPT - ChatGPT is an advanced language model developed by OpenAI. ChatGPT has been trained on a vast amount of text data from the internet, allowing it to provide informative and engaging responses to various questions or prompts.</p>
           </div>
         </div>
       </div>
@@ -63,7 +65,7 @@ export default {
       isLoading: true,
 
       title: "Hong Kong Baptist University",
-      description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT can provide a satisfying user experience in accomplishing the book recommendation task and the job recommendations task.<br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It may understand your needs by communicating with you, and recommend books or job titles to you.<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
+      description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT<small>[1]</small> can provide a satisfying user experience in accomplishing two tasks:  book recommendation task and job recommendations task.<br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It may understand your needs by communicating with you, and recommend books (or job titles) to you (the order of the two recommendation tasks will be randomly shuffled).<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
     };
   },
 

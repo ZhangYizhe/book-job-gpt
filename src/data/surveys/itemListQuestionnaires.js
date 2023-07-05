@@ -16,13 +16,13 @@ export const itemListQuestionnaires = reactive({
                 value: null,
                 required: true,
             },
-            {
-                id: 2,
-                title: 'Please explain why you rank for these books.',
-                type: 'text',
-                value: null,
-                required: true,
-            }
+            // {
+            //     id: 2,
+            //     title: 'Please explain why you rank for these books.',
+            //     type: 'text',
+            //     value: null,
+            //     required: true,
+            // }
         ]
     },
 
@@ -41,13 +41,13 @@ export const itemListQuestionnaires = reactive({
                 value: null,
                 required: true,
             },
-            {
-                id: 2,
-                title: 'Please explain why you rank for these jobs.',
-                type: 'text',
-                value: null,
-                required: true,
-            }
+            // {
+            //     id: 2,
+            //     title: 'Please explain why you rank for these jobs.',
+            //     type: 'text',
+            //     value: null,
+            //     required: true,
+            // }
         ]
     }
 })
