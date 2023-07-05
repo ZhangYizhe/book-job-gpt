@@ -19,7 +19,7 @@
           <div class="column is-full">
             <label class="checkbox mb-5">
               <input type="checkbox" v-model="store.isAgreeConsent">
-              I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/bookbot/InformedConsentStatement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
+              I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/smart-gpt/InformedConsentStatement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
             </label>
             <button :class="['button is-link', isLoading ? 'is-loading' : '']" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent">START</button>
 
@@ -52,16 +52,16 @@
 </template>
 
 <script>
-import {store} from "@/data/store";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {useDefaultStore} from "@/data/store";
 
 export default {
   name: 'HomeView',
   components: {},
   data() {
     return {
-      store,
-      db: store.db,
+      store:  useDefaultStore(),
+      db: null,
       isLoading: true,
 
       title: "Hong Kong Baptist University",
@@ -70,6 +70,8 @@ export default {
   },
 
   mounted() {
+    this.db = this.store.db;
+
     this.initialize();
   },
 
@@ -112,7 +114,6 @@ export default {
     }
   },
 };
-
 </script>
 
 <style scoped>

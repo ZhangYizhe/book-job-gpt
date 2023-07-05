@@ -41,14 +41,14 @@
 </template>
 
 <script>
-import {store} from "@/data/store";
+import {useDefaultStore} from "@/data/store";
 
 export default {
   name: 'EndView',
   components: {},
   data() {
     return {
-      store,
+      store:  useDefaultStore(),
     };
   },
 

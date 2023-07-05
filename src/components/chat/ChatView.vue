@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import {store} from "@/data/store";
+import {useDefaultStore} from "@/data/store";
 import {Base64} from "js-base64";
 import {fetchEventSource} from "@microsoft/fetch-event-source";
 import moment from "moment";
@@ -150,7 +150,7 @@ export default {
   components: {},
   data() {
     return {
-      store,
+      store:  useDefaultStore(),
       round: 1,
 
       inputText: '',
@@ -226,8 +226,8 @@ export default {
           this.round = this.$route.query.round === undefined ? 1 : parseInt(this.$route.query.round);
           const tag = this.store.order[this.round - 1]
 
-          this.items = this.round === 1 ? this.store.items[tag] : store.items[tag];
-          this.itemRates = this.round === 1 ? store.itemsRates[tag] : store.itemsRates[tag];
+          this.items = this.round === 1 ? this.store.items[tag] : this.store.items[tag];
+          this.itemRates = this.round === 1 ? this.store.itemsRates[tag] : this.store.itemsRates[tag];
         },
         // fetch the data when the view is created and the data is
         // already being observed

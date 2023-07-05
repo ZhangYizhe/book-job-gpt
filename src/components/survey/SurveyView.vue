@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import {store} from "@/data/store";
+import {useDefaultStore} from "@/data/store";
 import {preQuestionnaire} from "@/data/surveys/preQuestionnaire";
 import {interviewQuestionnaire} from "@/data/surveys/interviewQuestionnaire";
 import {itemListQuestionnaires} from "@/data/surveys/itemListQuestionnaires";
@@ -105,7 +105,7 @@ export default {
   components: {},
   data() {
     return {
-      store,
+      store:  useDefaultStore(),
 
       isLoading: false,
 
