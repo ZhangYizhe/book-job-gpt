@@ -284,8 +284,16 @@ export default {
         return
       }
 
-      this.items.add(this.currentItemTitle);
-      this.itemRates[this.currentItemTitle] = rate;
+      try {
+        this.items.add(this.currentItemTitle);
+        this.itemRates[this.currentItemTitle] = rate;
+      } catch {
+        this.items = new Set()
+        this.itemRates = {}
+
+        this.items.add(this.currentItemTitle);
+        this.itemRates[this.currentItemTitle] = rate;
+      }
 
       this.currentItemTitle = null;
     },

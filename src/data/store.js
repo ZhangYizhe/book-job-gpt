@@ -57,7 +57,7 @@ export const useDefaultStore = defineStore('default', {
         aiProxy: () => 'https://bookbot.yizheyun.cn',
         modelVersion: () => 'gpt-35-turbo',
         apiVersion: () => '2023-05-15',
-        debug: () => true,
+        debug: () => false,
         db: () => firebaseDB,
     },
 
@@ -123,8 +123,8 @@ export const useDefaultStore = defineStore('default', {
 
                     debug: this.debug,
 
-                    isAgreeConsent: this.debug,
-                    isPrompts: this.debug,
+                    isAgreeConsent: this.isAgreeConsent,
+                    isPrompts: this.isPrompts,
 
                     order: this.order,
                 },
