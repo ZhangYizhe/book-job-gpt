@@ -35,15 +35,18 @@
 
             <!--   Book list Selection    -->
             <div class="control" v-if="question.type === 'selection-itemList'">
-              <div class="mb-3">Note: - From {{itemList.size}} "Most favourite" to 1 "Least favourite".</div>
               <div class="columns is-mobile is-multiline">
                 <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="title in itemList">
-                  <div class="columns">
-                    <div class="column"><strong>{{ title }}</strong></div>
-                    <div class="column" v-for="value in generateArray(itemList.size, itemList.size)">
-                      <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
-                        <input type="radio" :value="title" v-model="itemRank[value]">&nbsp; {{ value }}
-                      </label>
+                  <div class="columns py-3" style="border-bottom: 1px solid lightgrey">
+                    <div class="column is-3"><strong>{{ title }}</strong></div>
+                    <div class="column has-text-centered">
+                      <div class="columns">
+                        <div class="column" v-for="value in generateArray(itemList.size, itemList.size)">
+                          <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
+                            <input type="radio" :value="title" v-model="itemRank[value]">&nbsp; {{ value }}{{ value === 1 ? ' ( Least favourite )' : '' }}{{ value === itemList.size ? ' ( Most favourite )' : '' }}
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

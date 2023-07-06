@@ -3,6 +3,7 @@ import {reactive} from 'vue'
 export const interviewQuestionnaire = reactive({
     title: "Final Interview (Open-end questionnaire)",
     description: "",
+    guideline: "",
     position: 4,
     data: [
         {

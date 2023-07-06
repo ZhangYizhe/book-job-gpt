@@ -3,6 +3,7 @@ import {reactive} from 'vue'
 export const preQuestionnaire = reactive({
     title: "Pre-study Questionnaire",
     description: "",
+    guideline: "",
     position: 0,
     data: [
         {

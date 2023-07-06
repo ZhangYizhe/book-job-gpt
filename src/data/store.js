@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { firebaseDB } from "@/firebaseInit";
+
 import { doc, setDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -56,38 +57,63 @@ export const useDefaultStore = defineStore('default', {
         aiProxy: () => 'https://bookbot.yizheyun.cn',
         modelVersion: () => 'gpt-35-turbo',
         apiVersion: () => '2023-05-15',
-        debug: () => false,
+        debug: () => true,
         db: () => firebaseDB,
     },
 
     actions: {
         async submit() {
+            let _preQuestionnaire = {}
+            try {
+                _preQuestionnaire = this.preQuestionnaire.data.map((item) => {
+                    return {
+                        "id": item.id,
+                        "title": item.title,
+                        "value": item.value
+                    }
+                })
+            } catch (e) {
+                console.log(e)
+            }
+
             const _items = {}
-            this.order.forEach((key) => {
-                _items[key] = Array.from(this.items[key])
-            })
+            try {
+                this.order.forEach((key) => {
+                    _items[key] = Array.from(this.items[key])
+                })
+            } catch (e) {
+                console.log(e)
+            }
 
             const _scenarioQuestionnaires = {}
-            this.order.forEach((key) => {
-                _scenarioQuestionnaires[key] = this.scenarioQuestionnaires[key].data.map((item) => {
-                    return {
-                        "id": item.id,
-                        "title": item.title,
-                        "value": item.value
-                    }
+            try {
+                this.order.forEach((key) => {
+                    _scenarioQuestionnaires[key] = this.scenarioQuestionnaires[key].data.map((item) => {
+                        return {
+                            "id": item.id,
+                            "title": item.title,
+                            "value": item.value
+                        }
+                    })
                 })
-            })
+            } catch (e) {
+                console.log(e)
+            }
 
             const _postQuestionnaires = {}
-            this.order.forEach((key) => {
-                _postQuestionnaires[key] = this.postQuestionnaires[key].data.map((item) => {
-                    return {
-                        "id": item.id,
-                        "title": item.title,
-                        "value": item.value
-                    }
+            try {
+                this.order.forEach((key) => {
+                    _postQuestionnaires[key] = this.postQuestionnaires[key].data.map((item) => {
+                        return {
+                            "id": item.id,
+                            "title": item.title,
+                            "value": item.value
+                        }
+                    })
                 })
-            })
+            } catch (e) {
+                console.log(e)
+            }
 
             await setDoc(doc(this.db, "records", uuidv4()), {
                 basic: {
@@ -103,13 +129,7 @@ export const useDefaultStore = defineStore('default', {
                     order: this.order,
                 },
                 data: {
-                    preQuestionnaire: JSON.stringify(this.preQuestionnaire.data.map((item) => {
-                        return {
-                            "id": item.id,
-                            "title": item.title,
-                            "value": item.value
-                        }
-                    })),
+                    preQuestionnaire: JSON.stringify(_preQuestionnaire),
 
                     scenarioQuestionnaires: JSON.stringify(_scenarioQuestionnaires),
                     listQuestionnaires: JSON.stringify(this.listQuestionnaires),

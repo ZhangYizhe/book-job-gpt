@@ -4,6 +4,7 @@ export const postQuestionnaires = reactive({
     'book': {
         title: "For Book Recommendation",
         description: "",
+        guideline: "",
         type: "post-study",
         task: "book",
         data: [
@@ -552,6 +553,7 @@ export const postQuestionnaires = reactive({
     'job': {
         title: "For Job Recommendation",
         description: "",
+        guideline: "",
         type: "post-study",
         task: "job",
         data: [

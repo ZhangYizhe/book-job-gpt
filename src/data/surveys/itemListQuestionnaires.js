@@ -3,6 +3,7 @@ import {reactive} from 'vue'
 export const itemListQuestionnaires = reactive({
     "book": {
         title: "Book List Questionnaire",
+        guideline: "",
         description: "",
         position: 2,
         data: [
@@ -28,6 +29,7 @@ export const itemListQuestionnaires = reactive({
 
     "job": {
         title: "Job List Questionnaire",
+        guideline: "",
         description: "",
         position: 2,
         data: [
