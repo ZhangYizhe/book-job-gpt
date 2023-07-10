@@ -28,15 +28,13 @@
               Prompts group
             </label>
             <label class="checkbox mt-5 mb-3" v-else>
-              <template v-if="store.isPrompts">
-                Group A
-              </template>
-              <template v-else>
-                Group B
-              </template>
+<!--              <template v-if="store.isPrompts">-->
+<!--                Group A-->
+<!--              </template>-->
+<!--              <template v-else>-->
+<!--                Group B-->
+<!--              </template>-->
             </label>
-
-            <p style=''>[1] ChatGPT - ChatGPT is an advanced language model developed by OpenAI. ChatGPT has been trained on a vast amount of text data from the internet, allowing it to provide informative and engaging responses to various questions or prompts.</p>
           </div>
         </div>
       </div>
@@ -77,7 +75,7 @@ export default {
       jobNuml: 0,
 
       title: "Hong Kong Baptist University",
-      description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT<small>[1]</small> can provide a satisfying user experience in accomplishing two tasks:  book recommendation task and job recommendations task.<br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It may understand your needs by communicating with you, and recommend books (or job titles) to you (the order of the two recommendation tasks will be randomly shuffled).<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
+      description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT can provide a satisfying user experience in accomplishing two tasks:  book recommendation task and job recommendations task.<br><small style='font-style: italic; color: gray'><strong>Note:</strong> ChatGPT is an AI language model developed by OpenAI. It is designed to generate human-like responses in text-based conversations. ChatGPT uses deep learning techniques to produce language-based conversations and is capable of engaging in dynamic and interactive exchanges with users.</small><br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It may understand your needs by communicating with you, and recommend books (or job titles) to you (the order of the two recommendation tasks will be randomly shuffled).<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
     };
   },
 
