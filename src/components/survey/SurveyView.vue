@@ -19,7 +19,7 @@
           <div class="column is-full py-3" v-for="(question, index) in questionnaire.data">
             <p class="pb-3 pt-3" :style="['font-size: 1.1rem; font-weight: bold']">
               {{ index + 1 }}. <span v-html="question.title"></span> <span v-if="question.required"
-                                                                                                                                                                                                 style="color: red">*</span>
+                                                                                                                                                                                                 style="color: red">[Required]</span>
             </p>
             <!--   General Selection    -->
             <div class="control" v-if="question.type === 'selection'">
@@ -53,11 +53,22 @@
               </div>
             </div>
 
-            <!--   country/region Selection    -->
+            <!--   country/region Dropdown    -->
             <div class="control" v-if="question.type === 'country/region'">
               <div class="select">
                 <select v-model="question.value">
+                  <option :value="null" disabled>Please choose</option>
                   <option v-for="item in question.options">{{ item.name }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!--   general Dropdown    -->
+            <div class="control" v-if="question.type === 'dropdown'">
+              <div class="select">
+                <select v-model="question.value">
+                  <option :value="null" disabled>Please choose</option>
+                  <option v-for="item in question.options">{{ item.text }}</option>
                 </select>
               </div>
             </div>
@@ -163,6 +174,25 @@ export default {
         return true;
       });
     },
+
+    allInCorrectItems() {
+      let items = [];
+      let index = 0;
+
+      this.questionnaire.data.forEach(question => {
+        index += 1;
+
+        if (question.answer !== undefined && question.answer !== null) {
+          if (question.value !== null && question.value !== undefined && question.value !== '') {
+            if (question.answer !== question.value) {
+              items.push(index)
+            }
+          }
+        }
+      });
+
+      return items;
+    }
   },
   methods: {
     reloadQuestionnaire() {
@@ -219,7 +249,7 @@ export default {
       }
 
       if (!this.isAllCorrect) {
-        alert('Sorry, the answer is not correct, Please read the guidelines carefully and answer the question again.')
+        alert('Sorry, the answer to [Question ' + this.allInCorrectItems[0] + '] is not correct. Please read the guidelines carefully and answer the question again.')
         return
       }
 
