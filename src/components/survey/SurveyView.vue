@@ -18,7 +18,13 @@
           </div>
           <div class="column is-full py-3" v-for="(question, index) in questionnaire.data">
             <p class="pb-3 pt-3" :style="['font-size: 1.1rem; font-weight: bold']">
-              {{ index + 1 }}. <span v-html="question.title"></span> <span v-if="question.required"
+              <template v-if="questionnaire.type === 'interview-study'">
+                {{ question.displayId }}.
+              </template>
+              <template v-else>
+                {{ index + 1 }}.
+              </template>
+              <span v-html="question.title"></span> <span v-if="question.required"
                                                                                                                                                                                                  style="color: red">[Required]</span>
             </p>
             <!--   General Selection    -->

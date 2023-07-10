@@ -3,7 +3,7 @@ import {reactive} from 'vue'
 export const postQuestionnaires = reactive({
     'book': {
         title: "For Book Recommendation",
-        description: "",
+        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the job/book chatbot.</p>",
         guideline: "",
         type: "post-study",
         task: "book",
@@ -552,7 +552,7 @@ export const postQuestionnaires = reactive({
     },
     'job': {
         title: "For Job Recommendation",
-        description: "",
+        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the job/book chatbot.</p>",
         guideline: "",
         type: "post-study",
         task: "job",

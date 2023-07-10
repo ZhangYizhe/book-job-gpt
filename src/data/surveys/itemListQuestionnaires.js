@@ -5,6 +5,7 @@ export const itemListQuestionnaires = reactive({
         title: "Book List Questionnaire",
         guideline: "",
         description: "",
+        type: "list-study",
         position: 2,
         data: [
             {
