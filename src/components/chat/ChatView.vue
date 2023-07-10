@@ -85,7 +85,7 @@
               <!--            </div>-->
               <!--          </div>-->
 
-              <div class="column is-full" v-if="!isLoading">
+              <div class="column is-full" v-if="!isLoading && store.debug">
                 <div :class="['export-current-conversation-records']">
                   <p><span @click="exportCurrentConversationRecords" style="cursor: pointer;">Copy the current conversation log</span></p>
                 </div>
@@ -198,7 +198,7 @@ export default {
     },
 
     defaultPrompt() {
-      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender bot based on Chat-GPT, and I'm happy to assist you!\n\nNote: \n - Please follow <strong>the task requirement</strong> to create the " + this.tag +  " list. \n - If you want to add a " + this.tag +  " to your " + this.tag +  " list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
+      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender bot based on Chat-GPT, and I'm happy to assist you!\n\nNote: \n - Please follow <strong>the task requirement</strong> to create the wish list. \n - If you want to add a " + this.tag +  " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
 
 
       if (this.store.isPrompts) {
@@ -271,7 +271,7 @@ export default {
 
     chooseFavoriteTap(title) {
       if (this.items.size >= this.totalItems) {
-        alert("You have already selected " + this.totalItems + " items.")
+        alert("You have already selected " + this.totalItems + " items. You can click the “Next Step” button.")
         return
       }
 
@@ -449,7 +449,7 @@ export default {
     },
 
     endConversationBtnTap() {
-      const confirmStr = this.tag === "book" ? "Are you sure you have found all the suitable books in this list?" : "Are you sure you have found all the suitable jobs in this list?"
+      const confirmStr = this.tag === "book" ? "Are you sure you have found all the suitable books in this list?" : "Are you sure you have found all the suitable job types in this list?"
       if (confirm(confirmStr)) {
         const tag = this.store.order[this.round - 1]
 
@@ -461,12 +461,12 @@ export default {
 
         if (this.round === 1) {
           query = {
-            position: 2,
+            position: 3,
             round: 1,
           }
         } else {
           query = {
-            position: 2,
+            position: 3,
             round: 2,
           }
         }
