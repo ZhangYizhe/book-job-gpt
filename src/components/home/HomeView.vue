@@ -23,9 +23,17 @@
             </label>
             <button :class="['button is-link', isLoading ? 'is-loading' : '']" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent || isLoading">START</button>
 
-            <label class="checkbox mt-5 mb-3">
+            <label class="checkbox mt-5 mb-3" v-if="store.debug">
               <input type="checkbox" v-model="store.isPrompts">
               Prompts group
+            </label>
+            <label class="checkbox mt-5 mb-3" v-else>
+              <template v-if="store.isPrompts">
+                Group A
+              </template>
+              <template v-else>
+                Group B
+              </template>
             </label>
 
             <p style=''>[1] ChatGPT - ChatGPT is an advanced language model developed by OpenAI. ChatGPT has been trained on a vast amount of text data from the internet, allowing it to provide informative and engaging responses to various questions or prompts.</p>
@@ -64,6 +72,10 @@ export default {
       db: null,
       isLoading: true,
 
+      startCount: 0,
+      bookNum: 0,
+      jobNuml: 0,
+
       title: "Hong Kong Baptist University",
       description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT<small>[1]</small> can provide a satisfying user experience in accomplishing two tasks:  book recommendation task and job recommendations task.<br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It may understand your needs by communicating with you, and recommend books (or job titles) to you (the order of the two recommendation tasks will be randomly shuffled).<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
     };
@@ -78,7 +90,16 @@ export default {
   },
 
   methods: {
-    startBtnTap() {
+    async startBtnTap() {
+      this.isLoading = true;
+
+      const docRef = doc(this.db, "basic", "info");
+      await updateDoc(docRef, {
+        startCount: this.startCount,
+        bookNum: this.bookNum,
+        jobNum: this.jobNum,
+      })
+
       const query = {
         round: 1,
         position: 0,
@@ -96,11 +117,26 @@ export default {
         const info = docSnap.data();
         this.store.elecoxyKey = info["elecoxyKey"];
 
-        let visitCount = parseInt(info["visitCount"]) + 1;
-        this.store.isPrompts = visitCount % 2 === 0;
-        await updateDoc(docRef, {
-          visitCount: visitCount,
-        })
+        this.bookNum = parseInt(info["bookNum"]);
+        this.jobNum = parseInt(info["jobNum"]);
+
+        if (this.bookNum === this.jobNum) {
+          this.shuffle(this.store.order);
+          if (this.store.order[0] === 'book') {
+            this.bookNum += 1;
+          } else {
+            this.jobNum += 1;
+          }
+        } else if (this.bookNum > this.jobNum) {
+          this.store.order = ['job', 'book']
+          this.jobNum += 1;
+        } else {
+          this.store.order = ['book', 'job']
+          this.bookNum += 1;
+        }
+
+        this.startCount = parseInt(info["startCount"]) + 1;
+        this.store.isPrompts = this.startCount % 2 === 0;
 
         this.isLoading = false;
       } else {

@@ -1,5 +1,4 @@
 <template>
-
   <div class="container" style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
     <div class="columns is-multiline is-mobile m-0">
       <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
@@ -597,7 +596,7 @@ export default {
   color: orange;
   font-size: 1rem;
   cursor: pointer;
-  text-decoration: underline;
+  //text-decoration: underline;
 }
 
 .default-prompt :deep(.item-btn:hover) {
@@ -619,7 +618,7 @@ export default {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  text-decoration: underline;
+  //text-decoration: underline;
 }
 
 .normal-chat-content-canvas :deep(.item-btn:hover) {
@@ -653,7 +652,7 @@ export default {
   word-wrap: break-word;
 
   color: #2455af;
-  text-decoration: underline;
+  //text-decoration: underline;
 
   background-color: white;
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
@@ -741,7 +740,7 @@ export default {
   font-size: 0.9rem;
   font-weight: bold;
   color: #2455af;
-  text-decoration: underline;
+  //text-decoration: underline;
 }
 
 .rate-canvas {
