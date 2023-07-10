@@ -551,7 +551,7 @@ export const postQuestionnaires = reactive({
         ]
     },
     'job': {
-        title: "For Job Recommendation",
+        title: "For Job Types Recommendation",
         description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the job/book chatbot.</p>",
         guideline: "",
         type: "post-study",
