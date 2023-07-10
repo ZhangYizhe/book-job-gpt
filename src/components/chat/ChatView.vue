@@ -3,7 +3,7 @@
     <div class="columns is-multiline is-mobile m-0">
       <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
         <p class="pt-3 pb-3" style="color: gray; text-align: center; border-bottom: 1px solid #e1e1e1; font-size: 1.3rem; font-weight: bold; color: black">
-          {{ tag === 'book' ? 'Book' : 'Job'}} List
+          Wish List
         </p>
         <div class="pb-4" v-if="items.size > 0" style="width: 100%; height: calc(100vh - 177px); overflow-y: scroll; overflow-x: hidden">
             <div class="columns is-multiline is-mobile px-4 pt-4">
