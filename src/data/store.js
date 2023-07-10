@@ -12,6 +12,8 @@ export const useDefaultStore = defineStore('default', {
             isPrompts: '',
             isAgreeConsent: false,
 
+            startDate: null,
+
             order: ['book', 'job'],
 
             preQuestionnaire: null,
@@ -141,7 +143,8 @@ export const useDefaultStore = defineStore('default', {
                     items: JSON.stringify(_items),
                     itemsRates:  JSON.stringify(this.itemsRates),
                 },
-                timestamp: Date.now(),
+                startDate: this.startDate,
+                endDate: Date.now(),
             });
         },
     }
