@@ -16,6 +16,17 @@
                v-if="store.isPrompts && questionnaire.guideline !== ''">
             <p style="white-space: pre-wrap; font-size: 1.1rem" v-html="questionnaire.guideline"></p>
           </div>
+
+          <div class="column is-full pb-0" >
+            <strong style='font-size: 1.4rem; font-weight: bold;' v-if="questionnaire.type === 'scenario-study'">Quiz</strong>
+          </div>
+
+          <div class="column is-full py-0">
+            <p style="white-space: pre-wrap; font-size: 1.1rem; color: red">
+              Please note: All of the following questions must be answered.
+            </p>
+          </div>
+
           <div class="column is-full py-3" v-for="(question, index) in questionnaire.data">
             <p class="pb-3 pt-3" :style="['font-size: 1.1rem; font-weight: bold']">
               <template v-if="questionnaire.type === 'interview-study'">
@@ -24,8 +35,8 @@
               <template v-else>
                 {{ index + 1 }}.
               </template>
-              <span v-html="question.title"></span> <span v-if="question.required"
-                                                                                                                                                                                                 style="color: red">[Required]</span>
+              <span v-html="question.title"></span>
+<!--              <span v-if="question.required" style="color: red">[Required]</span>-->
             </p>
             <!--   General Selection    -->
             <div class="control" v-if="question.type === 'selection'">
@@ -81,7 +92,7 @@
 
             <!--   General Text    -->
             <div class="control questionnaire-text" v-if="question.type === 'text'">
-            <textarea placeholder="Please enter content" v-model="question.value"></textarea>
+            <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
             </div>
           </div>
           <div class="column is-full py-3 mt-3 mb-5">

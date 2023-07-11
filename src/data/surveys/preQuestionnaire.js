@@ -119,6 +119,7 @@ export const preQuestionnaire = reactive({
             id: 5,
             title: 'Job domain / Education major',
             type: 'text',
+            placeholder: 'E.g., software engineer, major in law',
             value: null,
             required: true,
         },
