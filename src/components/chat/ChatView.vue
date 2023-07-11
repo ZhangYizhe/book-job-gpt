@@ -275,7 +275,7 @@ export default {
         return
       }
 
-      this.currentItemTitle = Base64.decode(title);
+      this.currentItemTitle = decodeURI(Base64.decode(title));
     },
 
     favoriteBtnTap(rate) {
@@ -376,7 +376,7 @@ export default {
 
             for (const i in titles) {
               const title = titles[i].replace("<name>", "").replace("</name>", "");
-              const titleEncode = Base64.encode(title);
+              const titleEncode = Base64.encode(encodeURI(title));
               tempMessage = tempMessage.replaceAll(titles[i], "<span class=\'item-btn\' onclick=\'chooseFavoriteTap(\"" + titleEncode + "\")\'><i class=\'bi bi-plus-circle\'></i>" + title + "</span>")
             }
             subThis.tempMessage = tempMessage;
