@@ -206,10 +206,17 @@ export default {
     defaultPrompt() {
       const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNote: \n - Please follow <strong>the task requirements</strong> to create the wish list. \n - If you want to add a " + (this.tag === "book" ? "book" : "job type") +  " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon." + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '')
 
+      let button = ""
+
+      if (this.originalMessage.length === 0) {
+        button = "<br><div class='button mt-2 is-link' onclick=\'fillContentBtnTap(\"" + this.firstPrompt + "\")\'>Ask me in this way</div>"
+      }
+
 
       if (this.store.isPrompts) {
-        return welcomeMessage + "\n\nYou can start the conversation with me in this way (Clicking on the following content will automatically fill to the input box):\n" +
-        "<strong>“<span class=\'item-btn\' onclick=\'fillContentBtnTap(\"" + this.firstPrompt + "\")\'>" + this.firstPrompt +"</span>”</strong>"
+        return welcomeMessage + "\n\nYou can start the conversation with me in this way:\n" +
+        "<strong>“<span>" + this.firstPrompt +"</span>”</strong>" + button
+
       } else {
         return welcomeMessage
       }
@@ -276,6 +283,8 @@ export default {
 
     fillContentBtnTap(content) {
       this.inputText = content;
+
+      this.sendBtnTap();
     },
 
     chooseFavoriteTap(title) {
