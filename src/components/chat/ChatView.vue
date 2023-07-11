@@ -159,8 +159,12 @@ export default {
 
       isLoading: false,
 
+      tempOriginalMessage: "",
       tempMessage: "",
+
+      originalMessage: [],
       messages: [],
+
       totalItems: 5,
       items: new Set(),
       itemRates: {},
@@ -180,6 +184,8 @@ export default {
               '<name>"How Steel Was Tempered"</name>\n' +
               '<name>"The Old Man and the Sea"</name>\n' +
               'However, out of the three items I recommended, <name>"Draw Your Day: An Inspiring Guide to Keeping a Sketch Journal"</name> by Samantha Dion Baker might be the most appealing to someone who enjoys drawing.\n' +
+              '<name>UX Designer</name>\n' +
+              '<name>Product Manager</name>\n' +
               '"""\n' +
               '\n' +
               'Please make sure that your reply not only includes the titles but also surrounds it with <name></name> tags.'
@@ -251,11 +257,14 @@ export default {
         return
       }
 
-      this.messages.push({
+      const userMessage = {
         role: "user",
         content: message,
         time: Math.floor(Date.now() / 1000)
-      })
+      }
+
+      this.originalMessage.push(userMessage)
+      this.messages.push(userMessage)
 
       this.scrollToBottom();
 
@@ -312,7 +321,7 @@ export default {
           'elecoxy-key': this.store.elecoxyKey,
         },
         body: JSON.stringify({
-          messages: [...this.systemMessage, ...this.messages.map((message) => {
+          messages: [...this.systemMessage, ...this.originalMessage.map((message) => {
             return {
               "role": message.role,
               "content": message.content
@@ -322,6 +331,7 @@ export default {
         }),
         async onopen(response) {
           if (response.status === 200) {
+            subThis.tempOriginalMessage = "";
             subThis.tempMessage = "";
             return;
           }
@@ -354,16 +364,21 @@ export default {
 
 
           if (finish_reason !== null) {
-            const stopMessage = {
+            subThis.originalMessage.push({
+              "role": "assistant",
+              "content": subThis.tempOriginalMessage,
+              "time": Math.floor(Date.now() / 1000)
+            });
+            subThis.messages.push({
               "role": "assistant",
               "content": subThis.tempMessage,
               "time": Math.floor(Date.now() / 1000)
-            }
+            });
 
             subThis.isLoading = false;
+            subThis.tempOriginalMessage = "";
             subThis.tempMessage = "";
 
-            subThis.messages.push(stopMessage);
             return;
           }
 
@@ -379,7 +394,10 @@ export default {
               const titleEncode = Base64.encode(encodeURI(title));
               tempMessage = tempMessage.replaceAll(titles[i], "<span class=\'item-btn\' onclick=\'chooseFavoriteTap(\"" + titleEncode + "\")\'><i class=\'bi bi-plus-circle\'></i>" + title + "</span>")
             }
+
+            subThis.tempOriginalMessage = subThis.tempOriginalMessage + content;
             subThis.tempMessage = tempMessage;
+
             subThis.scrollToBottomWithoutTimer();
           }
         },
@@ -408,15 +426,12 @@ export default {
         return;
       }
 
-      this.messages = [
-        // {
-        //   role: "assistant",
-        //   content: "",
-        //   time: Math.floor(Date.now() / 1000)
-        // }
+      this.originalMessage = [
       ]
+      this.messages = [
+      ]
+      this.tempOriginalMessage = ""
       this.tempMessage = ""
-      this.messages = []
       this.items = new Set()
 
       this.inputText = ''
@@ -453,7 +468,7 @@ export default {
       if (confirm(confirmStr)) {
         const tag = this.store.order[this.round - 1]
 
-        this.store.messages[tag] = this.messages;
+        this.store.messages[tag] = this.originalMessage;
         this.store.items[tag] = this.items;
         this.store.itemsRates[tag] = this.itemRates;
 
@@ -475,20 +490,21 @@ export default {
     },
 
     exportCurrentConversationRecords() {
-      // const logStr = JSON.stringify(this.messages);
-
       let logStr = '';
-      for (const index in this.messages) {
-        const message = this.messages[index];
+      for (const index in this.originalMessage) {
+        const message = this.originalMessage[index];
 
         logStr += moment.unix(message.time).format('YYYY/MM/DD HH:mm:ss') + ' - ' + message.role + ': ' + '\n' + message.content + '\n\n';
       }
 
-
       // Copy the text inside the text field
-      navigator.clipboard.writeText(logStr);
-
-      alert('The records have been copied to the clipboard.');
+      navigator.clipboard.writeText(logStr)
+          .then(() => {
+            alert("The records have been copied to the clipboard.");
+          })
+          .catch(() => {
+            alert("something went wrong");
+          });
     },
 
     formatDate(timestamp) {
