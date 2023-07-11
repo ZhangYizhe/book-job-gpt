@@ -198,11 +198,11 @@ export default {
     },
 
     defaultPrompt() {
-      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender bot based on Chat-GPT, and I'm happy to assist you!\n\nNote: \n - Please follow <strong>the task requirement</strong> to create the wish list. \n - If you want to add a " + (this.tag === "book" ? "book" : "job type") +  " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon."
+      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNote: \n - Please follow <strong>the task requirements</strong> to create the wish list. \n - If you want to add a " + (this.tag === "book" ? "book" : "job type") +  " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon." + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '')
 
 
       if (this.store.isPrompts) {
-        return welcomeMessage + "\n\nYou may start the conversation with me in this way \n(Clicking on the following content will automatically fill to the input box.):\n" +
+        return welcomeMessage + "\n\nYou may start the conversation with me in this way (Clicking on the following content will automatically fill to the input box):\n" +
         "<strong>“<span class=\'item-btn\' onclick=\'fillContentBtnTap(\"" + this.firstPrompt + "\")\'>" + this.firstPrompt +"</span>”</strong>"
       } else {
         return welcomeMessage
@@ -210,7 +210,7 @@ export default {
     },
 
     firstPrompt() {
-      return this.tag === "book" ? "I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. You may ask me the first question now." : "I would like you to act as a personalised job recommender to help me find jobs which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different job types so that I can make the right choices. You may ask me the first question now."
+      return this.tag === "book" ? "I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. You can ask me the first question now." : "I would like you to act as a personalised job recommender to help me find job types which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different job types so that I can make the right choices. You can ask me the first question now."
     },
 
     isCompleted() {

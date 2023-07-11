@@ -3,7 +3,7 @@ import {reactive} from 'vue'
 export const postQuestionnaires = reactive({
     'book': {
         title: "For Book Recommendation",
-        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the job/book chatbot.</p>",
+        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the book chatbot.</p>",
         guideline: "",
         type: "post-study",
         task: "book",
@@ -70,7 +70,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 3,
-                title: 'I found it easy to tell the system what I like/dislike.',
+                title: 'I found it easy to tell the chatbot what I like/dislike.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -430,7 +430,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 15,
-                title: 'I feel I could count on the chatbot to help me choose/purchase the items I need.',
+                title: 'I feel I could count on the chatbot to help me choose the items I need.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -520,7 +520,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 18,
-                title: 'Given a chance, I predict that I would consider buying the items recommended by the chatbot in the near future.',
+                title: 'Given a chance, I predict that I would consider actually experiencing the items recommended by the chatbot in the near future.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -552,7 +552,7 @@ export const postQuestionnaires = reactive({
     },
     'job': {
         title: "For Job Types Recommendation",
-        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the job/book chatbot.</p>",
+        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the job chatbot.</p>",
         guideline: "",
         type: "post-study",
         task: "job",
@@ -619,7 +619,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 3,
-                title: 'I found it easy to tell the system what I like/dislike.',
+                title: 'I found it easy to tell the chatbot what I like/dislike.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -979,7 +979,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 15,
-                title: 'I feel I could count on the chatbot to help me choose/purchase the items I need.',
+                title: 'I feel I could count on the chatbot to help me choose the items I need.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -1069,7 +1069,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 18,
-                title: 'Given a chance, I predict that I would consider buying the items recommended by the chatbot in the near future.',
+                title: 'Given a chance, I predict that I would consider actually experiencing the items recommended by the chatbot in the near future.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [

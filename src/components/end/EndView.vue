@@ -11,7 +11,7 @@
 <!--                  Hong Kong Baptist University-->
 <!--                </p>-->
                 <p style="font-size: 1.3rem; font-weight: bold">
-                  Thank you for your participation. <br>
+                  Thank you for your time in participating this study! <br>
                   The experiment is finished.
                 </p>
               </div>
