@@ -23,7 +23,7 @@
 
           <div class="column is-full py-0">
             <p style="white-space: pre-wrap; font-size: 1.1rem; color: red">
-              Please note: All of the following questions must be answered.
+              Note: Please answer all the questions.
             </p>
           </div>
 
