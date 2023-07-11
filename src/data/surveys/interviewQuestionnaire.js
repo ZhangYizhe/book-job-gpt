@@ -10,7 +10,7 @@ export const interviewQuestionnaire = reactive({
         {
             id: 1,
             displayId: "1",
-            title: 'Can you tell me about your experience of using these two bots for getting the recommendations?',
+            title: 'Please tell me about your experience of using these two bots to get the recommendations.',
             type: 'text',
             value: null,
             required: true,
@@ -18,7 +18,7 @@ export const interviewQuestionnaire = reactive({
         {
             id: 2,
             displayId: "2",
-            title: 'Were you satisfied with the recommendations returned by the bot? Did they align with your preferences?',
+            title: 'What do you think of the recommendations returned by the bot regarding the alignment with your preferences? ',
             type: 'text',
             value: null,
             required: true,
@@ -26,7 +26,7 @@ export const interviewQuestionnaire = reactive({
         {
             id: 3,
             displayId: "3",
-            title: 'How well do you think the recommender bot is able to learn and adapt to your preferences over time?',
+            title: 'What do you think of conversations with the bot regarding its adaptation to your preferences over time?',
             type: 'text',
             value: null,
             required: true,
@@ -34,7 +34,7 @@ export const interviewQuestionnaire = reactive({
         {
             id: 4,
             displayId: "4",
-            title: 'Compared to the traditional recommender system (e.g., Amazon or LinkedIn), what do you think is the major difference in using such a recommender bot to get recommendations?',
+            title: 'Compared to the daily used websites (e.g., Amazon or LinkedIn), what are the major differences of using such a bot to get recommendations for books and jobs?',
             type: 'text',
             value: null,
             required: true,
@@ -42,7 +42,7 @@ export const interviewQuestionnaire = reactive({
         {
             id: 5,
             displayId: "5",
-            title: 'In your opinion, what are the pros and cons of using such a bot for recommendations?',
+            title: 'In your opinion, what are the pros and cons of using such a bot for getting recommendation services?',
             type: 'text',
             value: null,
             required: true,
@@ -77,7 +77,7 @@ export const interviewQuestionnaire = reactive({
         {
             id: 7,
             displayId: "6.2",
-            title: 'Why?',
+            title: 'Please explain your choice for question 6.1.',
             type: 'text',
             value: null,
             required: true,

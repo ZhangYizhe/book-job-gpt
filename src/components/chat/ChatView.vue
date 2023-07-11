@@ -202,7 +202,7 @@ export default {
 
 
       if (this.store.isPrompts) {
-        return welcomeMessage + "\n\nYou may start the conversation with me in this way (Clicking on the following content will automatically fill to the input box):\n" +
+        return welcomeMessage + "\n\nYou can start the conversation with me in this way (Clicking on the following content will automatically fill to the input box):\n" +
         "<strong>“<span class=\'item-btn\' onclick=\'fillContentBtnTap(\"" + this.firstPrompt + "\")\'>" + this.firstPrompt +"</span>”</strong>"
       } else {
         return welcomeMessage
