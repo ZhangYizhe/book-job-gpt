@@ -6,13 +6,8 @@
           <div class="column is-full">
             <div class="columns is-mobile">
               <div class="column">
-                <img src="/public/logos/PI-Lab-Logo-Small.jpg" alt="logo" style="height: 10vh">
-                <p style="font-size: 1.8rem;font-weight: bold" v-html="title">
-
-                </p>
-                <p style="font-size: 1.3rem" v-html="description">
-
-                </p>
+                <p style="font-size: 1.8rem;font-weight: bold; margin-bottom: 20px; text-align: center" v-html="title"></p>
+                <p style="font-size: 1.3rem" v-html="description"></p>
               </div>
             </div>
           </div>
@@ -38,21 +33,15 @@
           </div>
         </div>
       </div>
-<!--      <div class="hero-foot pb-5">-->
-<!--        <div class="container is-max-widescreen">-->
-<!--          <div class="content has-text-centered">-->
-<!--            <p>-->
-<!--              Copyright © 2023 <a href="https://hci.comp.hkbu.edu.hk"><strong>PI Lab</strong></a>. All Rights Reserved.-->
-<!--            </p>-->
-<!--            <p>-->
-<!--              <a href="https://bupdpo.hkbu.edu.hk/policies-and-procedures/pps-pics/" target="_blank">Privacy Policy</a> |-->
-<!--              <a href="https://storyset.com" target="_blank">Illustrations by Storyset</a>-->
-<!--            </p>-->
-<!--            <a href="https://www.comp.hkbu.edu.hk" target="_blank"><img src="/public/logos/comp-logo.png" alt="logo" style="height: 30px; margin-right: 20px"></a>-->
-<!--            <a href="https://hkbu.edu.hk" target="_blank"><img src="/public/logos/bu-logo.png" alt="logo" style="height: 30px;"></a>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="hero-foot pb-5">
+        <div class="container is-max-widescreen">
+          <div class="content has-text-centered">
+            <a href="https://hci.comp.hkbu.edu.hk" target="_blank"><img src="/public/logos/PI-Lab-Logo-Small.jpg" alt="logo" style="height: 30px; margin-right: 20px"></a>
+            <a href="https://www.comp.hkbu.edu.hk" target="_blank"><img src="/public/logos/comp-logo.png" alt="logo" style="height: 30px; margin-right: 20px"></a>
+            <a href="https://hkbu.edu.hk" target="_blank"><img src="/public/logos/bu-logo.png" alt="logo" style="height: 30px;"></a>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -74,8 +63,24 @@ export default {
       bookNum: 0,
       jobNum: 0,
 
-      title: "Hong Kong Baptist University",
-      description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT can provide a satisfying user experience in accomplishing two tasks:  book recommendation task and job recommendations task.<br><small style='font-style: italic; color: gray'><strong>Note:</strong> ChatGPT is an AI language model developed by OpenAI. It is designed to generate human-like responses in text-based conversations. ChatGPT uses deep learning techniques to produce language-based conversations and is capable of engaging in dynamic and interactive exchanges with users.</small><br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It could understand your needs by communicating with you, and make recommendations accordingly.<br><br> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
+      title: "Experiment on Recommender Bots based on ChatGPT",
+      description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT can provide a satisfying user experience in accomplishing two tasks:  book recommendation task and job recommendations task.<br><small style='font-style: italic; color: #2455af'><strong style='color: #2455af''>Note:</strong> ChatGPT is an AI language model developed by OpenAI. It is designed to generate human-like responses in text-based conversations. ChatGPT uses deep learning techniques to produce language-based conversations and is capable of engaging in dynamic and interactive exchanges with users.</small><br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It could understand your needs by communicating with you, and make recommendations accordingly."
+
+          + "<p style='padding-top: 10px; padding-bottom: 10px; font-size: 1.0rem'><span style='font-size: 1.3rem;'>There are six steps in this experiment (lasting around 20-30 minutes):</span>"
+
+          + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Step 1: Fill out the pre-study questionnaire."
+
+          + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Step 2: Read the first task and complete the related quiz, then choose five items to create the first wish list by talking with the chatbot."
+
+          + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Step 3: Fill out the experience questionnaire for the first task."
+
+          + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Step 4: Read the second task and complete the related quiz, then choose five items to create the second wish list by talking with the chatbot."
+
+          + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Step 5: Fill out the experience questionnaire for the second task."
+
+          + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Step 6: Fill out the open-ended questionnaire."
+
+          + "</p> If you would like to start the experiment, please click the <span style=\"color: #2455af; font-weight: bold\">START</span> button.",
     };
   },
 
