@@ -2,28 +2,83 @@ import {reactive} from 'vue'
 
 export const scenarioQuestionnaires = reactive({
     'book': {
-        title: "Book Task Guideline",
-        description: "The most important thing when communicating with ChatGPT is to understand how to correctly and fully express your needs. The more information you provide, the more it may return ideal results.\n\n<strong>Book Task:</strong>" +
+        title: "Use a Book Chatbot",
+        description: "For this step, we would like to ask you to use a book chatbot based on ChatGPT to complete the following task: <br><br><strong style='font-size: 1.4rem; font-weight: bold;'>Book recommendation task:</strong>" +
             "<br>" +
-            "- You are about to embark on a summer vacation. You have planned to utilise this time off to read some books of your interest. For this task, please create a reading list by talking with ChatGPT and then ranking those books according to your preferences.<br>- Note: You need to choose <strong>FIVE books </strong>for creating the book list.",
+            "You are about to embark on a summer vacation. You have planned to utilise this time off to read some books of your interest. For this task, please create a reading list by using the chatbot.<br>The most important thing when communicating with the bot is to understand how to correctly and fully express your needs. The more information you provide, the more it may return ideal results.<br><br><strong>Note:</strong>\n- You need to choose <strong>FIVE books </strong>for creating the wish list.",
         type: "scenario-study",
         task: "book",
-        guideline: "<p style='font-size: 1.4rem; font-weight: bold'>Guideline</p><strong>In order to enable ChatGPT to better understand your needs, you can refer to the following prompts to start the conversation:</strong><br>“I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.”<br><br><strong>Then, if you're interested in a particular book, you can ask for an explanation of it:</strong><br>“ I want to know why you recommend this book to me. Can you please give me some explanation of the recommendation?”",
+        guideline: "<p style='font-size: 1.4rem; font-weight: bold'>Guideline</p><strong>In order to enable the book chatbot to better understand your needs, you can refer to the following  sample to start the conversation:</strong><br>“I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. You can ask me the first question now.”<br><br><strong>Then, if you're interested in a particular book, you can ask for an explanation of it:</strong><br>“Please tell me why you recommend this book to me.”",
         position: 1,
-        prompts: [1, 2],
+        prompts: [1],
         data: [
             {
                 id: 1,
-                title: 'How would you start communicating with ChatGPT for this task?',
+                title: 'How would you start communicating with the book chatbot for this task?',
                 type: 'selection',
                 options: [
                     {
                         id: 1,
-                        text: 'I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. Let’s start with this first question.',
+                        text: 'Hello, I want to create a book list for me to read during my summer vacation. I don\'t know which books are suitable for my needs. Maybe you can help me so that I can easily choose the book I like. Thank you for your help.',
                     },
                     {
                         id: 2,
-                        text: 'Hello, I want to create a book lis for me to read during my summer vacation. I don\'t know which books are suitable for my needs. Maybe you can help me so that I can easily choose the book I like. Thank you for your help.',
+                        text: 'I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. You can ask me the first question now.',
+                    },
+                ],
+                value: null,
+                answer: 2,
+                required: true,
+            },
+            {
+                id: 2,
+                title: 'How many books do you need to select in order to create the reading list?',
+                type: 'dropdown',
+                options: [
+                    {
+                        id: 1,
+                        text: '3',
+                    },
+                    {
+                        id: 2,
+                        text: '4',
+                    },
+                    {
+                        id: 3,
+                        text: '5',
+                    },
+                    {
+                        id: 4,
+                        text: '6',
+                    },
+                ],
+                value: null,
+                answer: "5",
+                required: true,
+            },
+        ]
+    },
+    'job': {
+        title: "Use a Job Type Chatbot",
+        description: "For this step, we would like to ask you to use a job type chatbot based on ChatGPT to complete the following task: \n\n<strong style='font-size: 1.4rem; font-weight: bold;'>Job type recommendation task</strong><br>You want to communicate with a job chatbot to know what types of jobs your skills and/or knowledge might be fit for. For this task, please create a wish list by using the chatbot.<br>The most important thing when communicating with the bot is to understand how to correctly and fully express your needs. The more information you provide, the more it may return ideal results.<br><br><strong>Notes:</strong>\n- You need to choose <strong>FIVE job types</strong> for creating the wish list.\n- This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.",
+        type: "scenario-study",
+        task: "job",
+        guideline: "<p style='font-size: 1.4rem; font-weight: bold'>Guideline</p><strong>- In order to enable the job chatbot to better understand your needs, you can refer to the following prompts to start the conversation:</strong><br>“I would like you to act as a personalised job recommender to help me find job types which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different job types so that I can make the right choices. You can ask me the first question now.”<br><br><strong>- Then, if you're interested in a particular job, you can ask for an explanation of it:</strong><br>“Please tell me why you recommend this job type to me.”",
+        position: 1,
+        prompts: [1],
+        data: [
+            {
+                id: 1,
+                title: 'How would you start communicating with the job chatbot for this task?',
+                type: 'selection',
+                options: [
+                    {
+                        id: 1,
+                        text: 'I would like you to act as a personalised job recommender to help me find job types which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different job types so that I can make the right choices. You can ask me the first question now.',
+                    },
+                    {
+                        id: 2,
+                        text: 'Hello, I am looking for a job. I want to know which kinds of jobs are suited to my skills and knowledge. I hope you can help me to explore my abilities, and talk with me to compare the advantages and disadvantages of different jobs.',
                     },
                 ],
                 value: null,
@@ -32,26 +87,8 @@ export const scenarioQuestionnaires = reactive({
             },
             {
                 id: 2,
-                title: 'If you think the items it recommends are not good enough, how should you ask?',
-                type: 'selection',
-                options: [
-                    {
-                        id: 1,
-                        text: 'Thank you for your help! I think some of the books you provided might be suitable for my needs, but I don\'t know enough about these books to know why you recommended them to me.',
-                    },
-                    {
-                        id: 2,
-                        text: 'Wow, your answer is really great. I like all these books, especially the second one. I want to know why you recommend this book to me? Can you please give me some explanation of the recommendation?',
-                    },
-                ],
-                value: null,
-                answer: 2,
-                required: true,
-            },
-            {
-                id: 3,
-                title: 'How many books do you need to select in order to create the book list?',
-                type: 'selection',
+                title: 'How many job types do you need to choose in order to create the job type list?',
+                type: 'dropdown',
                 options: [
                     {
                         id: 1,
@@ -71,80 +108,7 @@ export const scenarioQuestionnaires = reactive({
                     },
                 ],
                 value: null,
-                answer: 3,
-                required: true,
-            },
-        ]
-    },
-    'job': {
-        title: "Job Task Guideline",
-        description: "The most important thing when communicating with ChatGPT is to understand how to correctly and fully express your needs. The more information you provide, the more it may return ideal results.\n\n<strong>Job Task:</strong><br>- You want to communicate with ChatGPT to know what jobs your skills and/or knowledge might be fit for, and generate a job list for yourself. Finally, ranking those jobs according to your preferences.\n- Note: You need to choose <strong>FIVE jobs </strong>for creating the job list.",
-        type: "scenario-study",
-        task: "job",
-        guideline: "<p style='font-size: 1.4rem; font-weight: bold'>Guideline</p><strong>- In order to enable ChatGPT to better understand your needs, you can refer to the following prompts to start the conversation:</strong><br>“I would like you to act as a personalised job recommender to help me find jobs which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different jobs so that I can make the right choices. Let’s start with this first question.”<br><br><strong>- Then, if you're interested in a particular job, you can ask for an explanation of it:</strong><br>“I want to know why you recommend this job to me. Can you please give me some explanation of the recommendation?”",
-        position: 1,
-        prompts: [1, 2],
-        data: [
-            {
-                id: 1,
-                title: 'How would you start communicating with ChatGPT for this task?',
-                type: 'selection',
-                options: [
-                    {
-                        id: 1,
-                        text: 'Hello, I am looking for a job. I want to know which kinds of jobs are suited to my skill and knowledge. I hope you can help me to explore my abilities, and talk with me to compare the advantages and disadvantages of different jobs.',
-                    },
-                    {
-                        id: 2,
-                        text: 'I would like you to act as a personalised job recommender to help me find jobs which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different jobs so that I can make the right choices.',
-                    }
-                ],
-                value: null,
-                answer: 2,
-                required: true,
-            },
-            {
-                id: 2,
-                title: 'If you want to know the reason behind the recommendation, how would you ask?',
-                type: 'selection',
-                options: [
-                    {
-                        id: 1,
-                        text: 'Thank you for your help! I think some of the jobs you provided might be suitable for my needs, but I don\'t know enough about these jobs to know why you recommended them to me.',
-                    },
-                    {
-                        id: 2,
-                        text: 'Wow, your answer is really great. I like all these jobs, especially the second one. I want to know why you recommend this job to me? Can you please give me some explanation of the recommendation?',
-                    },
-                ],
-                value: null,
-                answer: 2,
-                required: true,
-            },
-            {
-                id: 3,
-                title: 'How many jobs do you need to choose in order to create the job list?',
-                type: 'selection',
-                options: [
-                    {
-                        id: 1,
-                        text: '3',
-                    },
-                    {
-                        id: 2,
-                        text: '4',
-                    },
-                    {
-                        id: 3,
-                        text: '5',
-                    },
-                    {
-                        id: 4,
-                        text: '6',
-                    },
-                ],
-                value: null,
-                answer: 3,
+                answer: '5',
                 required: true,
             },
         ]

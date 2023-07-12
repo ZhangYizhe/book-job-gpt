@@ -3,15 +3,13 @@ import {reactive} from 'vue'
 export const postQuestionnaires = reactive({
     'book': {
         title: "For Book Recommendation",
-        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the book chatbot.</p>",
-        guideline: "",
-        position: 2,
+        description: "",
         type: "post-study",
         task: "book",
         data: [
             {
                 id: 1,
-                title: 'The recommended items were well-chosen.',
+                title: 'ChatGPT provides me with surprising recommendations that helped me discover a new book that I would’t have found elsewhere.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -41,7 +39,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 2,
-                title: 'The chatbot provided me with surprising recommendations that helped me discover new items that I wouldn’t have found elsewhere.',
+                title: 'I find it easy to inform ChatGPT if I dislike/like the recommended book.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -71,7 +69,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 3,
-                title: 'I found it easy to tell the chatbot what I like/dislike.',
+                title: 'ChatGPT adapts continuously to my book preferences.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -101,7 +99,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 4,
-                title: 'The chatbot explained why the items were recommended to me.',
+                title: 'Most of ChatGPT’s responses make sense.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -131,7 +129,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 5,
-                title: 'I felt I was in sync with the chatbot.',
+                title: 'ChatGPT helps me find the ideal book.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -161,7 +159,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 6,
-                title: 'I found that the chatbot understood what I wanted.',
+                title: 'ChatGPT is warm and caring in the book recommendation task.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -191,7 +189,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 7,
-                title: 'Most of the chatbot’s responses make sense.',
+                title: 'I am convinced of the book ChatGPT recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -221,7 +219,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 8,
-                title: 'The chatbot paid attention to what I was saying.',
+                title: 'I will use ChatGPT again for book recommendations.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -251,7 +249,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 9,
-                title: 'It was easy to find what I liked by using the chatbot.',
+                title: 'The book recommended to me matched my interests.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -281,7 +279,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 10,
-                title: 'The chatbot gave me good suggestions.',
+                title: 'ChatGPT explains why the book was recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -311,7 +309,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 11,
-                title: 'I felt in control of modifying my taste using this chatbot.',
+                title: 'ChatGPT paid attention to what I was saying.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -341,7 +339,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 12,
-                title: 'I understood how well the recommendations matched my preferences.',
+                title: 'ChatGPT understands what I say in the book recommendation task.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -371,7 +369,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 13,
-                title: 'The chatbot behaved like a human.',
+                title: 'I understand why the book was recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -401,7 +399,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 14,
-                title: 'The chatbot cared about me.',
+                title: 'I could easily use ChatGPT to find the book of my interest.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -431,7 +429,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 15,
-                title: 'I feel I could count on the chatbot to help me choose the items I need.',
+                title: 'I feel in control of modifying my taste using ChatGPT in the book recommendation task',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -461,7 +459,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 16,
-                title: 'These recommendations made by the chatbot made me satisfied.',
+                title: 'ChatGPT behaves like a human in the book recommendation task.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -491,7 +489,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 17,
-                title: 'I will use this chatbot frequently.',
+                title: 'I am confident I will like the book recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -521,7 +519,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 18,
-                title: 'I would be likely to try the items recommended by the chatbot in the near future.',
+                title: 'I was satisfied with the book recommendations made by GhatGPT.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -552,16 +550,14 @@ export const postQuestionnaires = reactive({
         ]
     },
     'job': {
-        title: "For Job Type Recommendation",
-        description: "<p style='font-size: 1.2rem'>Please answer the following questions about your experience with the job chatbot.</p>",
-        guideline: "",
-        position: 2,
+        title: "For Job Recommendation",
+        description: "",
         type: "post-study",
         task: "job",
         data: [
             {
                 id: 1,
-                title: 'The recommended items were well-chosen.',
+                title: 'ChatGPT provides me with surprising recommendations that helped me discover a new job that I wouldn’t have found elsewhere.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -591,7 +587,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 2,
-                title: 'The chatbot provided me with surprising recommendations that helped me discover new items that I wouldn’t have found elsewhere.',
+                title: 'I find it easy to inform ChatGPT if I dislike/like the recommended job.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -621,7 +617,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 3,
-                title: 'I found it easy to tell the chatbot what I like/dislike.',
+                title: 'ChatGPT adapts continuously to my job preferences.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -651,7 +647,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 4,
-                title: 'The chatbot explained why the items were recommended to me.',
+                title: 'Most of ChatGPT’s responses make sense.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -681,7 +677,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 5,
-                title: 'I felt I was in sync with the chatbot.',
+                title: 'ChatGPT helps me find the ideal job.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -711,7 +707,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 6,
-                title: 'I found that the chatbot understood what I wanted.',
+                title: 'ChatGPT is warm and caring in the job recommendation task.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -741,7 +737,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 7,
-                title: 'Most of the chatbot’s responses make sense.',
+                title: 'I am convinced of the job ChatGPT recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -771,7 +767,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 8,
-                title: 'The chatbot paid attention to what I was saying.',
+                title: 'I will use ChatGPT again for job recommendations.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -801,7 +797,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 9,
-                title: 'It was easy to find what I liked by using the chatbot.',
+                title: 'The job recommended to me matched my interests.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -831,7 +827,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 10,
-                title: 'The chatbot gave me good suggestions.',
+                title: 'ChatGPT explains why the job was recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -861,7 +857,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 11,
-                title: 'I felt in control of modifying my taste using this chatbot.',
+                title: 'ChatGPT paid attention to what I was saying.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -891,7 +887,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 12,
-                title: 'I understood how well the recommendations matched my preferences.',
+                title: 'ChatGPT understands what I say in the job recommendation task.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -921,7 +917,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 13,
-                title: 'The chatbot behaved like a human.',
+                title: 'I understand why the job was recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -951,7 +947,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 14,
-                title: 'The chatbot cared about me.',
+                title: 'I could easily use ChatGPT to find the job of my interest.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -981,7 +977,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 15,
-                title: 'I feel I could count on the chatbot to help me choose the items I need.',
+                title: 'I feel in control of modifying my taste using ChatGPT in the job recommendation task',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -1011,7 +1007,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 16,
-                title: 'These recommendations made by the chatbot made me satisfied.',
+                title: 'ChatGPT behaves like a human in the job recommendation task.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -1041,7 +1037,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 17,
-                title: 'I will use this chatbot frequently.',
+                title: 'I am confident I will like the job recommended to me.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [
@@ -1071,7 +1067,7 @@ export const postQuestionnaires = reactive({
             },
             {
                 id: 18,
-                title: 'I would be likely to try the items recommended by the chatbot in the near future.',
+                title: 'I was satisfied with the job recommendations made by GhatGPT.',
                 type: 'selection',
                 layout: 'horizontal',
                 options: [

@@ -12,6 +12,8 @@
     "firebase": "^9.23.0",
     "js-base64": "^3.7.5",
     "moment": "^2.29.4",
+    "pinia": "^2.1.4",
+    "pinia-plugin-persistedstate": "^3.1.0",
     "uuid": "^9.0.0",
     "vue": "^3.3.2",
     "vue-router": "^4.2.2"

@@ -1,5 +1,4 @@
 import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
-import {store} from "@/data/store";
 
 const routes = [
     {

@@ -1,8 +1,17 @@
 <template>
   <div v-if="questionnaire">
     <div class="section p-0 is-vcentered navigation-bar">
-      <p style="text-align: center">
-        {{ questionnaire.title }}
+      <progress class="progress is-warning is-small" style="position: absolute" :value="(step / 6) * 100" max="100"></progress>
+      <p style="text-align: center;">
+        <template v-if="questionnaire.type === 'scenario-study'">
+          Step {{ step }}: {{ questionnaire.title }}
+        </template>
+        <template v-else-if="questionnaire.type === 'post-study'">
+          Step {{ step }}: {{ questionnaire.title }}
+        </template>
+        <template v-else>
+          Step {{step}}: {{ questionnaire.title }}
+        </template>
       </p>
     </div>
     <div class="section pt-4">
@@ -16,10 +25,28 @@
                v-if="store.isPrompts && questionnaire.guideline !== ''">
             <p style="white-space: pre-wrap; font-size: 1.1rem" v-html="questionnaire.guideline"></p>
           </div>
+
+          <div class="column is-full pb-0" >
+            <strong style='font-size: 1.4rem; font-weight: bold;' v-if="questionnaire.type === 'scenario-study'">Quiz: Verification Questions</strong>
+          </div>
+
+          <div class="column is-full py-0">
+            <p style="white-space: pre-wrap; color: red">
+              Note: Please answer all the questions.
+            </p>
+          </div>
+
           <div class="column is-full py-3" v-for="(question, index) in questionnaire.data">
+            <p v-if="question.topDescription" v-html="question.topDescription"></p>
             <p class="pb-3 pt-3" :style="['font-size: 1.1rem; font-weight: bold']">
-              {{ index + 1 }}. <span v-html="question.title"></span> <span v-if="question.required"
-                                                                                                                                                                                                 style="color: red">*</span>
+              <template v-if="questionnaire.type === 'interview-study'">
+                {{ question.displayId }}.
+              </template>
+              <template v-else>
+                {{ index + 1 }}.
+              </template>
+              <span v-html="question.title"></span>
+<!--              <span v-if="question.required" style="color: red">[Required]</span>-->
             </p>
             <!--   General Selection    -->
             <div class="control" v-if="question.type === 'selection'">
@@ -35,33 +62,47 @@
 
             <!--   Book list Selection    -->
             <div class="control" v-if="question.type === 'selection-itemList'">
-              <div class="mb-3">Note: - From {{itemList.size}} "Most favourite" to 1 "Least favourite".</div>
               <div class="columns is-mobile is-multiline">
                 <div :class="['column py-2', question.layout && question.layout === 'horizontal' ? '' : 'is-full']" v-for="title in itemList">
-                  <div class="columns">
-                    <div class="column"><strong>{{ title }}</strong></div>
-                    <div class="column" v-for="value in generateArray(itemList.size, itemList.size)">
-                      <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
-                        <input type="radio" :value="title" v-model="itemRank[value]">&nbsp; {{ value }}
-                      </label>
+                  <div class="columns py-3" style="border-bottom: 1px solid lightgrey">
+                    <div class="column is-3"><strong>{{ title }}</strong></div>
+                    <div class="column has-text-centered">
+                      <div class="columns">
+                        <div class="column" v-for="value in generateArray(itemList.size, itemList.size)">
+                          <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
+                            <input type="radio" :value="title" v-model="itemRank[value]">&nbsp; {{ value }}{{ value === 1 ? ' ( Least favourite )' : '' }}{{ value === itemList.size ? ' ( Most favourite )' : '' }}
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!--   country/region Selection    -->
+            <!--   country/region Dropdown    -->
             <div class="control" v-if="question.type === 'country/region'">
               <div class="select">
                 <select v-model="question.value">
+                  <option :value="null" disabled>Please choose</option>
                   <option v-for="item in question.options">{{ item.name }}</option>
+                </select>
+              </div>
+            </div>
+
+            <!--   general Dropdown    -->
+            <div class="control" v-if="question.type === 'dropdown'">
+              <div class="select">
+                <select v-model="question.value">
+                  <option :value="null" disabled>Please choose</option>
+                  <option v-for="item in question.options">{{ item.text }}</option>
                 </select>
               </div>
             </div>
 
             <!--   General Text    -->
             <div class="control questionnaire-text" v-if="question.type === 'text'">
-            <textarea placeholder="Please enter content" v-model="question.value"></textarea>
+            <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
             </div>
           </div>
           <div class="column is-full py-3 mt-3 mb-5">
@@ -93,10 +134,9 @@
 </template>
 
 <script>
-import {store} from "@/data/store";
+import {useDefaultStore} from "@/data/store";
 import {preQuestionnaire} from "@/data/surveys/preQuestionnaire";
 import {interviewQuestionnaire} from "@/data/surveys/interviewQuestionnaire";
-import {itemListQuestionnaires} from "@/data/surveys/itemListQuestionnaires";
 import {postQuestionnaires} from "@/data/surveys/postQuestionnaires";
 import {scenarioQuestionnaires} from "@/data/surveys/scenarioQuestionnaires";
 
@@ -105,7 +145,7 @@ export default {
   components: {},
   data() {
     return {
-      store,
+      store:  useDefaultStore(),
 
       isLoading: false,
 
@@ -129,6 +169,15 @@ export default {
     )
   },
   computed: {
+    step() {
+      if (this.questionnaire.type === 'scenario-study') {
+        return this.round * 2
+      } else if (this.questionnaire.type === 'post-study') {
+        return (this.round * 2 + 1)
+      } else {
+        return (this.round - 1) * 2 + this.position + 1
+      }
+    },
     isFilled() {
       if (this.store.debug) {
         return true
@@ -160,6 +209,25 @@ export default {
         return true;
       });
     },
+
+    allInCorrectItems() {
+      let items = [];
+      let index = 0;
+
+      this.questionnaire.data.forEach(question => {
+        index += 1;
+
+        if (question.answer !== undefined && question.answer !== null) {
+          if (question.value !== null && question.value !== undefined && question.value !== '') {
+            if (question.answer !== question.value) {
+              items.push(index)
+            }
+          }
+        }
+      });
+
+      return items;
+    }
   },
   methods: {
     reloadQuestionnaire() {
@@ -187,21 +255,13 @@ export default {
 
           this.questionnaire = JSON.parse(JSON.stringify(tempQ))
         }
-      } else if (this.position === 2) {
-        this.itemList = this.store.items[tag];
-        this.itemRank = this.store.itemsRanks[tag];
-        if (this.store.listQuestionnaires[tag] !== null) {
-          this.questionnaire = JSON.parse(JSON.stringify(this.store.listQuestionnaires[tag]))
-        } else {
-          this.questionnaire = JSON.parse(JSON.stringify(itemListQuestionnaires[tag]))
-        }
-      } else if (this.position === 3) {
+      }  else if (this.position === 2) {
         if (this.store.postQuestionnaires[tag] !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.postQuestionnaires[tag]))
         } else {
           this.questionnaire = JSON.parse(JSON.stringify(postQuestionnaires[tag]))
         }
-      }  else if (this.position === 4) {
+      }  else if (this.position === 3) {
         if (this.store.interviewQuestionnaire !== null) {
           this.questionnaire = JSON.parse(JSON.stringify(this.store.interviewQuestionnaire))
         } else {
@@ -216,7 +276,7 @@ export default {
       }
 
       if (!this.isAllCorrect) {
-        alert('Sorry, the answer is not correct, Please read the guidelines carefully and answer the question again.')
+        alert('Sorry, the answer to [Question ' + this.allInCorrectItems[0] + '] is not correct. Please read the guidelines carefully and answer the question again.')
         return
       }
 
@@ -238,15 +298,6 @@ export default {
         }
         this.$router.push({path: '/chat', query: query});
       } else if (this.position === 2) {
-        this.store.listQuestionnaires[tag] = this.questionnaire;
-
-        const query = {
-          round: this.round,
-          position: 3,
-        }
-        this.$router.push({path: '/survey', query: query});
-
-      } else if (this.position === 3) {
         this.store.postQuestionnaires[tag] = this.questionnaire;
 
         let query = {};
@@ -259,13 +310,13 @@ export default {
         } else {
           query = {
             round: 2,
-            position: 4,
+            position: 3,
           }
         }
 
         this.$router.push({path: '/survey', query: query});
 
-      } else if (this.position === 4) {
+      } else if (this.position === 3) {
         this.recordSubmit();
       } else {
         const query = {
@@ -293,8 +344,7 @@ export default {
 
 <style scoped>
 .navigation-bar {
-  height: 60px;
-  line-height: 60px;
+  line-height: 80px;
   font-weight: bold;
   font-size: 1.3rem;
   border-bottom: 1px solid #e0e0e0;
