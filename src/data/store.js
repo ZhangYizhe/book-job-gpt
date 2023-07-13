@@ -8,6 +8,8 @@ export const useDefaultStore = defineStore('default', {
     persist: true,
     state: () => {
         return {
+            tag: 'home',
+
             elecoxyKey: '',
             isPrompts: '',
             isAgreeConsent: false,
@@ -55,7 +57,6 @@ export const useDefaultStore = defineStore('default', {
         }
     },
     getters: {
-        tag: () => 'home',
         aiProxy: () => 'https://bookbot.yizheyun.cn',
         modelVersion: () => 'gpt-35-turbo',
         apiVersion: () => '2023-05-15',
