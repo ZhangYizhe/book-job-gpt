@@ -172,6 +172,7 @@ import {useDefaultStore} from "@/data/store";
 import {Base64} from "js-base64";
 import {fetchEventSource} from "@microsoft/fetch-event-source";
 import moment from "moment";
+import {nextTick} from "vue";
 
 export default {
   name: "ChatView",
@@ -279,9 +280,9 @@ export default {
   watch: {
     inputText() {
       const self = this
-      setTimeout(function () {
+      nextTick(() => {
         self.resizeTextarea()
-      }, 10);
+      })
     },
   },
   methods: {
@@ -503,15 +504,17 @@ export default {
     scrollToBottom() {
       self = this;
 
-      setTimeout(function () {
+      nextTick(() => {
         const el = self.$refs.chatCanvas;
         el.scrollTop = el.scrollHeight;
-      }, 10)
+      })
     },
 
     scrollToBottomWithoutTimer() {
-      const el = this.$refs.chatCanvas;
-      el.scrollTop = el.scrollHeight;
+      nextTick(() => {
+        const el = this.$refs.chatCanvas;
+        el.scrollTop = el.scrollHeight;
+      })
     },
 
     endConversationBtnTap() {
