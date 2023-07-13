@@ -27,12 +27,12 @@
           </div>
 
           <div class="column is-full pb-0" >
-            <strong style='font-size: 1.4rem; font-weight: bold;' v-if="questionnaire.type === 'scenario-study'">Quiz: Verification Questions</strong>
+            <strong style='font-size: 1.4rem; font-weight: bold;' v-if="questionnaire.type === 'scenario-study'">Quiz: Verification {{ questionnaire.data.length > 1 ? 'Questions' : 'Question' }}</strong>
           </div>
 
           <div class="column is-full py-0">
             <p style="white-space: pre-wrap; color: red">
-              Note: Please answer all the questions.
+              Note: Please answer all the {{ questionnaire.data.length > 1 ? 'questions' : 'question' }}.
             </p>
           </div>
 
