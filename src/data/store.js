@@ -8,7 +8,9 @@ export const useDefaultStore = defineStore('default', {
     persist: true,
     state: () => {
         return {
-            elecoxyKey: '',
+            tag: 'home',
+
+            azureKey: '',
             isPrompts: '',
             isAgreeConsent: false,
 
@@ -55,8 +57,7 @@ export const useDefaultStore = defineStore('default', {
         }
     },
     getters: {
-        tag: () => 'home',
-        aiProxy: () => 'https://bookbot.yizheyun.cn',
+        aiProxy: () => 'https://pi-lab.openai.azure.com/',
         modelVersion: () => 'gpt-35-turbo',
         apiVersion: () => '2023-05-15',
         debug: () => false,

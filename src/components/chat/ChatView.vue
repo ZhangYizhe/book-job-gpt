@@ -86,6 +86,8 @@
                 </div>
               </div>
 
+              <div v-if="!isLoading && messages.length > 0" class='button mt-2' style="margin-left: 2rem; margin-top: 5px" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Did not find the&nbsp;&nbsp;<span style='color: orange;'><i class='bi bi-plus-circle'></i></span>&nbsp;&nbsp;Icon? Click me!</div>
+
               <div class="column is-full" v-if="isLoading">
                 <div :class="['receive-canvas', 'temp-chat-content-canvas']">
                         <span v-html="tempMessage">
@@ -172,6 +174,7 @@ import {useDefaultStore} from "@/data/store";
 import {Base64} from "js-base64";
 import {fetchEventSource} from "@microsoft/fetch-event-source";
 import moment from "moment";
+import {nextTick} from "vue";
 
 export default {
   name: "ChatView",
@@ -279,9 +282,9 @@ export default {
   watch: {
     inputText() {
       const self = this
-      setTimeout(function () {
+      nextTick(() => {
         self.resizeTextarea()
-      }, 10);
+      })
     },
   },
   methods: {
@@ -371,7 +374,7 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'elecoxy-key': this.store.elecoxyKey,
+          'api-key': this.store.azureKey,
         },
         body: JSON.stringify({
           messages: [...this.systemMessage, ...this.originalMessage.map((message) => {
@@ -503,15 +506,17 @@ export default {
     scrollToBottom() {
       self = this;
 
-      setTimeout(function () {
+      nextTick(() => {
         const el = self.$refs.chatCanvas;
         el.scrollTop = el.scrollHeight;
-      }, 10)
+      })
     },
 
     scrollToBottomWithoutTimer() {
-      const el = this.$refs.chatCanvas;
-      el.scrollTop = el.scrollHeight;
+      nextTick(() => {
+        const el = this.$refs.chatCanvas;
+        el.scrollTop = el.scrollHeight;
+      })
     },
 
     endConversationBtnTap() {

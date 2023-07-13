@@ -45,7 +45,7 @@ export const interviewQuestionnaire = reactive({
         {
             id: 3,
             displayId: "2",
-            topDescription: "<span style='color: #204d9b'>For the following questions (Q2 to Q5), you may briefly describe your experience with one preferred chatbot between the book and job bots.</span>",
+            topDescription: "<span style='color: red; font-size: 1.2rem'>For the following questions (Q2 to Q5), you may briefly describe your experience with one preferred chatbot between the book and job bots.</span>",
             title: 'What do you think of the personalization degree of recommendations returned by the book/job chatbot?',
             type: 'text',
             value: null,
