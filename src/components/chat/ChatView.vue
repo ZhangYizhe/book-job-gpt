@@ -86,6 +86,8 @@
                 </div>
               </div>
 
+              <div v-if="!isLoading && messages.length > 0" class='button mt-2' style="margin-left: 2rem; margin-top: 5px" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Did not find the&nbsp;&nbsp;<span style='color: orange;'><i class='bi bi-plus-circle'></i></span>&nbsp;&nbsp;Icon? Click me!</div>
+
               <div class="column is-full" v-if="isLoading">
                 <div :class="['receive-canvas', 'temp-chat-content-canvas']">
                         <span v-html="tempMessage">
