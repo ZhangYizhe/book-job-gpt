@@ -371,7 +371,7 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'elecoxy-key': this.store.elecoxyKey,
+          'api-key': this.store.azureKey,
         },
         body: JSON.stringify({
           messages: [...this.systemMessage, ...this.originalMessage.map((message) => {

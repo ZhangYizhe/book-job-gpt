@@ -120,7 +120,7 @@ export default {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const info = docSnap.data();
-        this.store.elecoxyKey = info["elecoxyKey"];
+        this.store.azureKey = info["azureKey"];
 
         this.bookNum = parseInt(info["bookNum"]);
         this.jobNum = parseInt(info["jobNum"]);
