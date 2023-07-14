@@ -50,6 +50,16 @@ export const interviewQuestionnaire = reactive({
             type: 'text',
             value: null,
             required: true,
+            checkBots: [
+                {
+                    name: "Book Chatbot",
+                    value: false,
+                },
+                {
+                    name: "Job Chatbot",
+                    value: false,
+                }
+            ],
         },
         {
             id: 4,
@@ -58,6 +68,16 @@ export const interviewQuestionnaire = reactive({
             type: 'text',
             value: null,
             required: true,
+            checkBots: [
+                {
+                    name: "Book Chatbot",
+                    value: false,
+                },
+                {
+                    name: "Job Chatbot",
+                    value: false,
+                }
+            ],
         },
         {
             id: 5,
@@ -66,6 +86,16 @@ export const interviewQuestionnaire = reactive({
             type: 'text',
             value: null,
             required: true,
+            checkBots: [
+                {
+                    name: "Book Chatbot",
+                    value: false,
+                },
+                {
+                    name: "Job Chatbot",
+                    value: false,
+                }
+            ],
         },
         {
             id: 6,
@@ -74,6 +104,16 @@ export const interviewQuestionnaire = reactive({
             type: 'text',
             value: null,
             required: true,
+            checkBots: [
+                {
+                    name: "Book Chatbot",
+                    value: false,
+                },
+                {
+                    name: "Job Chatbot",
+                    value: false,
+                }
+            ],
         },
         {
             id: 7,
@@ -82,6 +122,16 @@ export const interviewQuestionnaire = reactive({
             type: 'text',
             value: null,
             required: true,
+            checkBots: [
+                {
+                    name: "Book Chatbot",
+                    value: false,
+                },
+                {
+                    name: "Job Chatbot",
+                    value: false,
+                }
+            ],
         },
     ]
 })

@@ -106,9 +106,22 @@
             </div>
 
             <!--   General Text    -->
-            <div class="control questionnaire-text" v-if="question.type === 'text'">
+            <div class="control questionnaire-text" v-if="question.type ==='text'">
+              <div v-if="question.checkBots">
+                <p class="pb-3">Please select your preferred Chatbot first.</p>
+                <div class="columns pb-3">
+                <div :class="['column is-narrow py-2']" v-for="(bot, index) in question.checkBots">
+                  <label class="checkbox">
+                    <input type="checkbox" v-model="bot.value">
+                    {{ bot.name }}
+                  </label>
+                </div>
+                </div>
+              </div>
             <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
             </div>
+
+
           </div>
           <div class="column is-full py-3 mt-3 mb-5">
             <template v-if="isLoading">
