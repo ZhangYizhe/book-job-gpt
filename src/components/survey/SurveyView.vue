@@ -33,10 +33,10 @@
           <div class="column is-full py-0">
             <p style="white-space: pre-wrap; color: red">
               <template v-if="questionnaire.data.length > 1">
-                Note: Please answer all the questions.
+                Please answer all the questions.
               </template>
               <template v-else>
-                Note: Please answer the question.
+                Please answer the question.
               </template>
             </p>
           </div>

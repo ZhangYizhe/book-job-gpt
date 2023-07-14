@@ -32,7 +32,7 @@
         </div>
 
         <div ref="wishlistBottomCanvas"
-            style="position: absolute; width: 100%; bottom: 0; padding-bottom: 20px; border-top: 1px solid #e1e1e1; background-color: white">
+            style="position: absolute; width: 100%; bottom: 0; padding-bottom: 20px; border-top: 1px solid #e1e1e1; background-color: white; overflow: scroll">
           <div class="px-3 py-3 mb-3" style="border-bottom: 1px solid #e1e1e1;">
             If the recommended item in the conversation cannot be selected.
             <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Click here!</span>
@@ -146,7 +146,7 @@
         </strong>
       </p>
 
-      <div class="buttons has-addons is-centered">
+      <div class="buttons has-addons is-centered is-hidden-mobile">
         <button :class="['button', currentItemRate === 1 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 1"><i class="bi bi-star-fill"></i></button>
         <button :class="['button', currentItemRate === 2 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 2"><i class="bi bi-star-fill"></i><i
             class="bi bi-star-fill"></i></button>
@@ -159,9 +159,27 @@
             class="bi bi-star-fill"></i></button>
       </div>
 
-      <div class="buttons is-centered">
-        <button class="button is-dark mr-5" @click="currentItemTitle = null; currentItemRate = null">Cancel</button>
+      <div class="buttons is-centered is-hidden-tablet">
+        <button :class="['button', currentItemRate === 1 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 1"><i class="bi bi-star-fill"></i></button>
+        <button :class="['button', currentItemRate === 2 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 2"><i class="bi bi-star-fill"></i><i
+            class="bi bi-star-fill"></i></button>
+        <button :class="['button', currentItemRate === 3 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 3"><i class="bi bi-star-fill"></i><i
+            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
+        <button :class="['button', currentItemRate === 4 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 4"><i class="bi bi-star-fill"></i><i
+            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
+        <button :class="['button', currentItemRate === 5 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 5"><i class="bi bi-star-fill"></i><i
+            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+            class="bi bi-star-fill"></i></button>
+      </div>
+
+      <div class="buttons is-centered is-hidden-mobile">
+        <button class="button is-dark" @click="currentItemTitle = null; currentItemRate = null">Cancel</button>
         <button class="button is-link" @click="favoriteBtnTap()" :disabled="this.currentItemRate === null">Submit</button>
+      </div>
+
+      <div class="buttons is-centered is-hidden-tablet">
+        <button class="button is-link" @click="favoriteBtnTap()" :disabled="this.currentItemRate === null">Submit</button>
+        <button class="button is-dark" @click="currentItemTitle = null; currentItemRate = null">Cancel</button>
       </div>
 
     </div>
