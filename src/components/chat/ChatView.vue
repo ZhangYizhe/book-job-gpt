@@ -34,8 +34,8 @@
         <div ref="wishlistBottomCanvas"
             style="position: absolute; width: 100%; bottom: 0; padding-bottom: 20px; border-top: 1px solid #e1e1e1; background-color: white; overflow: scroll">
           <div class="px-3 py-3 mb-3" style="border-bottom: 1px solid #e1e1e1;">
-            If the recommended item in the conversation cannot be selected.
-            <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Click here!</span>
+            If the items recommended by the chatbot cannot be selected, please
+            <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">click here.</span>
           </div>
 
           <button class="button is-link" style="left: 50%; transform: translateX(-50%);" @click="endConversationBtnTap"

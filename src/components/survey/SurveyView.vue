@@ -30,7 +30,7 @@
             <strong style='font-size: 1.4rem; font-weight: bold;' v-if="questionnaire.type === 'scenario-study'">Quiz: Verification {{ questionnaire.data.length > 1 ? 'Questions' : 'Question' }}</strong>
           </div>
 
-          <div class="column is-full py-0">
+          <div class="column is-full py-0" v-if="questionnaire.type !== 'post-study'">
             <p style="white-space: pre-wrap; color: red">
               <template v-if="questionnaire.data.length > 1">
                 Please answer all the questions.
