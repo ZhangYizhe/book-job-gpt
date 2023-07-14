@@ -108,7 +108,7 @@
             <!--   General Text    -->
             <div class="control questionnaire-text" v-if="question.type ==='text'">
               <div v-if="question.checkBots">
-                <p class="pb-3">Please select your preferred Chatbot first.</p>
+                <p class="pb-3">Please select your preferred Chatbot(s) first.</p>
                 <div class="columns pb-3">
                 <div :class="['column is-narrow py-2']" v-for="(bot, index) in question.checkBots">
                   <label class="checkbox">
