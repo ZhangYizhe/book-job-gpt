@@ -32,7 +32,12 @@
 
           <div class="column is-full py-0">
             <p style="white-space: pre-wrap; color: red">
-              Note: Please answer all the {{ questionnaire.data.length > 1 ? 'questions' : 'question' }}.
+              <template v-if="questionnaire.data.length > 1">
+                Note: Please answer all the questions.
+              </template>
+              <template v-else>
+                Note: Please answer the question.
+              </template>
             </p>
           </div>
 
