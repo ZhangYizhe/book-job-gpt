@@ -2,7 +2,7 @@
   <div v-if="questionnaire">
     <div class="section p-0 is-vcentered navigation-bar">
       <progress class="progress is-warning is-small" style="position: absolute" :value="(step / 6) * 100" max="100"></progress>
-      <p style="text-align: center;">
+      <p class="py-5" style="text-align: center;">
         <template v-if="questionnaire.type === 'scenario-study'">
           Step {{ step }}: {{ questionnaire.title }}
         </template>
@@ -349,7 +349,7 @@ export default {
 
 <style scoped>
 .navigation-bar {
-  line-height: 80px;
+  line-height: 2rem;
   font-weight: bold;
   font-size: 1.3rem;
   border-bottom: 1px solid #e0e0e0;
