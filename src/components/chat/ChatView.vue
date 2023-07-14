@@ -24,12 +24,30 @@
           <p style="text-align: center; font-weight: bold; color: lightgrey">
             {{ items.size }} / {{ totalItems }}
           </p>
+
+          <div>
+            <hr>
+            <div class="px-3">
+              If the recommended item in the conversation is not clickable.
+              <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Click here!</span>
+            </div>
+          </div>
         </div>
         <div v-else>
           <p class="pt-5" style="color: gray; text-align: center">
             No items selected
           </p>
+          <div>
+            <hr>
+            <div class="px-3">
+              If the recommended item in the conversation is not clickable.
+              <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Click here!</span>
+            </div>
+          </div>
         </div>
+
+<!--          v-if="messages.length > 0"-->
+
 
         <div
             style="position: absolute; width: 100%; bottom: 20px; padding-top: 20px; border-top: 1px solid #e1e1e1; background-color: white">
@@ -85,8 +103,6 @@
                     v-html="message.content + formatDate(message.time)">
                 </div>
               </div>
-
-              <div v-if="!isLoading && messages.length > 0" class='button mt-2' style="margin-left: 2rem; margin-top: 5px" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Did not find the&nbsp;&nbsp;<span style='color: orange;'><i class='bi bi-plus-circle'></i></span>&nbsp;&nbsp;Icon? Click me!</div>
 
               <div class="column is-full" v-if="isLoading">
                 <div :class="['receive-canvas', 'temp-chat-content-canvas']">
@@ -234,7 +250,10 @@ export default {
     },
 
     defaultPrompt() {
-      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNotes: \n - You need to choose <strong>FIVE " + (this.tag === 'book' ? 'books' : 'job types') + "</strong> for creating the wish list. \n - If you want to add a " + (this.tag === "book" ? "book" : "job type") + " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon." + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '')
+
+      const notes = this.tag === 'book' ? "\n- You could ask the bot for more details about a recommended item, e.g., asking the bot about what is the abstract for a book.\n- You could also ask the bot to adjust the recommendations, e.g., asking the bot about which books are about American history." : "\n- You could ask the bot for more details about a recommended item, e.g., asking the bot about what kinds of skills this job type requires.\n- You could also ask the bot to adjust the recommendations, e.g., asking the bot about what kinds of jobs for Ph.D. graduates."
+
+      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNotes: \n - You need to choose <strong>FIVE " + (this.tag === 'book' ? 'books' : 'job types') + "</strong> for creating the wish list. \n - If you want to add a " + (this.tag === "book" ? "book" : "job type") + " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon." + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '') + notes
 
       let button = ""
 
@@ -244,8 +263,8 @@ export default {
 
 
       if (this.store.isPrompts) {
-        return welcomeMessage + "\n\nYou can start the conversation with me in this way:\n" +
-            "<strong>“<span>" + this.firstPrompt + "</span>”</strong>" + button
+        return welcomeMessage + "\n\n<strong>You can start the conversation with me in this way:</strong>\n" +
+            "“<span>" + this.firstPrompt + "</span>”" + button
 
       } else {
         return welcomeMessage

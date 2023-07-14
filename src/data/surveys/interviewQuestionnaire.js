@@ -1,7 +1,7 @@
 import {reactive} from 'vue'
 
 export const interviewQuestionnaire = reactive({
-    title: "Open-ended questionnaire",
+    title: "Final questionnaire",
     description: "",
     type: "interview-study",
     guideline: "",
@@ -70,7 +70,15 @@ export const interviewQuestionnaire = reactive({
         {
             id: 6,
             displayId: "5",
-            title: 'Compared to the commonly used websites (e.g., Amazon or LinkedIn), what are the major differences of using  this book/job chatbot to get recommendations?',
+            title: 'Compared to the commonly used websites (e.g., Amazon or LinkedIn), what are the <strong style="color: red">major advantages</strong> of using this book/job chatbot to get recommendations?',
+            type: 'text',
+            value: null,
+            required: true,
+        },
+        {
+            id: 7,
+            displayId: "6",
+            title: 'Compared to the commonly used websites (e.g., Amazon or LinkedIn), what are the <strong style="color: red">major drawbacks</strong> of using this book/job chatbot to get recommendations?',
             type: 'text',
             value: null,
             required: true,
