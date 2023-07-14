@@ -60,6 +60,7 @@ export const interviewQuestionnaire = reactive({
                     value: false,
                 }
             ],
+            checkBotValue: null
         },
         {
             id: 4,

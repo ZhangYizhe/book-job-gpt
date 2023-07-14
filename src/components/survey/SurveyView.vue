@@ -108,11 +108,16 @@
             <!--   General Text    -->
             <div class="control questionnaire-text" v-if="question.type ==='text'">
               <div v-if="question.checkBots">
-                <p class="pb-3">Please select your preferred Chatbot(s) first.</p>
+                <p class="pb-3">Please select your preferred Chatbot first.</p>
                 <div class="columns pb-3">
                 <div :class="['column is-narrow py-2']" v-for="(bot, index) in question.checkBots">
-                  <label class="checkbox">
-                    <input type="checkbox" v-model="bot.value">
+<!--                  <label class="checkbox">-->
+<!--                    <input type="checkbox" v-model="bot.value">-->
+<!--                    {{ bot.name }}-->
+<!--                  </label>-->
+
+                  <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
+                    <input type="radio" :value="bot.name" v-model="question.checkBotValue">&nbsp;
                     {{ bot.name }}
                   </label>
                 </div>
