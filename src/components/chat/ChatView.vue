@@ -8,7 +8,7 @@
           Wish List
         </p>
         <div class="pb-4" v-if="items.size > 0"
-             style="width: 100%; height: calc(100vh - 177px); overflow-y: scroll; overflow-x: hidden">
+             :style="['width: 100%; overflow-y: scroll; overflow-x: hidden', 'height: calc(100vh - 95px - ' + wishlistBottomCanvasHeight + 'px);']">
           <div class="columns is-multiline is-mobile px-4 pt-4">
             <div class="column is-full" v-for="item in items"
                  style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
@@ -24,33 +24,20 @@
           <p style="text-align: center; font-weight: bold; color: lightgrey">
             {{ items.size }} / {{ totalItems }}
           </p>
-
-          <div>
-            <hr>
-            <div class="px-3">
-              If the recommended item in the conversation is not clickable.
-              <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Click here!</span>
-            </div>
-          </div>
         </div>
         <div v-else>
           <p class="pt-5" style="color: gray; text-align: center">
             No items selected
           </p>
-          <div>
-            <hr>
-            <div class="px-3">
-              If the recommended item in the conversation is not clickable.
-              <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Click here!</span>
-            </div>
-          </div>
         </div>
 
-<!--          v-if="messages.length > 0"-->
+        <div ref="wishlistBottomCanvas"
+            style="position: absolute; width: 100%; bottom: 0; padding-bottom: 20px; border-top: 1px solid #e1e1e1; background-color: white">
+          <div class="px-3 py-3 mb-3" style="border-bottom: 1px solid #e1e1e1;">
+            If the recommended item in the conversation cannot be selected.
+            <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Click here!</span>
+          </div>
 
-
-        <div
-            style="position: absolute; width: 100%; bottom: 20px; padding-top: 20px; border-top: 1px solid #e1e1e1; background-color: white">
           <button class="button is-link" style="left: 50%; transform: translateX(-50%);" @click="endConversationBtnTap"
                   :disabled="!isCompleted && !store.debug">
             Next Step
@@ -200,6 +187,8 @@ export default {
       store: useDefaultStore(),
       round: 1,
 
+      wishlistBottomCanvasHeight: 0,
+
       inputText: '',
 
       isLoading: false,
@@ -282,6 +271,13 @@ export default {
   mounted() {
     window.chooseFavoriteTap = this.chooseFavoriteTap;
     window.fillContentBtnTap = this.fillContentBtnTap;
+
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize()
+  },
+
+  unmounted() {
+    window.removeEventListener('resize', this.handleResize)
   },
   created() {
     this.$watch(
@@ -584,7 +580,11 @@ export default {
 
     formatDate(timestamp) {
       return "<p style='text-align: right; color: darkgray'>" + moment.unix(timestamp).format('HH:mm') + "</p>";
-    }
+    },
+
+    handleResize() {
+      this.wishlistBottomCanvasHeight = this.$refs.wishlistBottomCanvas.offsetHeight;
+    },
 
   }
 }
