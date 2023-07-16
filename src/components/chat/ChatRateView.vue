@@ -87,5 +87,6 @@ function currentItemRateBtnTap(rate) {
   margin-left: 50vw;
   margin-top: 50vh;
   transform: translate(-50%, -50%);
+  min-width: 300px;
 }
 </style>
