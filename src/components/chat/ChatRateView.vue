@@ -52,14 +52,9 @@ function currentItemRateBtnTap(rate) {
             class="bi bi-star-fill"></i></button>
       </div>
 
-      <div class="buttons is-centered is-hidden-mobile">
+      <div class="buttons is-centered">
         <button class="button is-dark" @click="$emit('cancelBtnTap')">Cancel</button>
-        <button class="button is-link" @click="$emit('favoriteBtnTap')" :disabled="this.currentItemRate === null">Submit</button>
-      </div>
-
-      <div class="buttons is-centered is-hidden-tablet">
-        <button class="button is-link" @click="$emit('favoriteBtnTap')" :disabled="this.currentItemRate === null">Submit</button>
-        <button class="button is-dark" @click="$emit('cancelBtnTap')">Cancel</button>
+        <button class="button is-link" @click="$emit('favoriteBtnTap')" :disabled="currentItemRate === null">Submit</button>
       </div>
 
     </div>
@@ -87,5 +82,6 @@ function currentItemRateBtnTap(rate) {
   margin-left: 50vw;
   margin-top: 50vh;
   transform: translate(-50%, -50%);
+  min-width: 300px;
 }
 </style>

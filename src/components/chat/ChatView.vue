@@ -88,9 +88,8 @@
       </div>
     </div>
   </div>
-
   <template v-if="currentItemTitle">
-    <ChatRateView :current-item-title="currentItemTitle" :current-item-rate="currentItemRate" @cancelBtnTap="currentItemTitle = null; currentItemRate = null" @change-current-item-rate="changeFavoriteRate" @favorite-btn-tap="favoriteBtnTap"/>
+    <ChatRateView :current-item-title="currentItemTitle" :current-item-rate="currentItemRate" @cancelBtnTap="currentItemTitle = ''; currentItemRate = null" @change-current-item-rate="changeFavoriteRate" @favorite-btn-tap="favoriteBtnTap"/>
   </template>
 </template>
 
@@ -289,7 +288,7 @@ export default {
         this.itemRates[this.currentItemTitle] = this.currentItemRate;
       }
 
-      this.currentItemTitle = null;
+      this.currentItemTitle = '';
       this.currentItemRate = null;
     },
 
@@ -742,24 +741,5 @@ export default {
   font-weight: bold;
   color: #2455af;
 //text-decoration: underline;
-}
-
-.rate-canvas {
-  position: fixed;
-  z-index: 1000;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-}
-
-.rate-canvas-pop {
-  border-radius: 10px;
-  padding: 20px;
-  background: white;
-  position: absolute;
-  margin-left: 50vw;
-  margin-top: 50vh;
-  transform: translate(-50%, -50%);
 }
 </style>
