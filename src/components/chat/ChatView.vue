@@ -130,64 +130,9 @@
     </div>
   </div>
 
-  <div class="rate-canvas" v-if="currentItemTitle">
-    <div class="rate-canvas-pop">
-      <p style="font-weight: bold; font-style: italic; color: red">
-        <template v-if="tag === 'book'">
-          How much would you like this book:
-        </template>
-        <template v-else>
-          How much would you like this job:
-        </template>
-      </p>
-      <p class="mb-3" style="text-align: left">
-        <strong>
-          {{ currentItemTitle }}
-        </strong>
-      </p>
-
-      <div class="buttons has-addons is-centered is-hidden-mobile">
-        <button :class="['button', currentItemRate === 1 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 1"><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 2 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 2"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 3 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 3"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 4 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 4"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 5 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 5"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i></button>
-      </div>
-
-      <div class="buttons is-centered is-hidden-tablet">
-        <button :class="['button', currentItemRate === 1 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 1"><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 2 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 2"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 3 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 3"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 4 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 4"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 5 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 5"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i></button>
-      </div>
-
-      <div class="buttons is-centered is-hidden-mobile">
-        <button class="button is-dark" @click="currentItemTitle = null; currentItemRate = null">Cancel</button>
-        <button class="button is-link" @click="favoriteBtnTap()" :disabled="this.currentItemRate === null">Submit</button>
-      </div>
-
-      <div class="buttons is-centered is-hidden-tablet">
-        <button class="button is-link" @click="favoriteBtnTap()" :disabled="this.currentItemRate === null">Submit</button>
-        <button class="button is-dark" @click="currentItemTitle = null; currentItemRate = null">Cancel</button>
-      </div>
-
-    </div>
-    <div style="width: 100%; height: 100%; background: red; background: rgba(0, 0, 0, 0.2);"
-         @click="currentItemTitle = null">
-
-    </div>
-  </div>
+  <template v-if="currentItemTitle">
+    <ChatRateView :current-item-title="currentItemTitle" :current-item-rate="currentItemRate" @cancelBtnTap="currentItemTitle = null; currentItemRate = null" @change-current-item-rate="changeFavoriteRate" @favorite-btn-tap="favoriteBtnTap"/>
+  </template>
 </template>
 
 <script>
@@ -196,10 +141,11 @@ import {Base64} from "js-base64";
 import {fetchEventSource} from "@microsoft/fetch-event-source";
 import moment from "moment";
 import {nextTick} from "vue";
+import ChatRateView from "@/components/chat/ChatRateView.vue";
 
 export default {
   name: "ChatView",
-  components: {},
+  components: {ChatRateView},
   data() {
     return {
       store: useDefaultStore(),
@@ -368,6 +314,10 @@ export default {
       }
 
       this.currentItemTitle = decodeTitle;
+    },
+
+    changeFavoriteRate(rate) {
+      this.currentItemRate = rate;
     },
 
     favoriteBtnTap() {
