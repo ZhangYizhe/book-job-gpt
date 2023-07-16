@@ -2,7 +2,7 @@
   <div v-if="questionnaire">
     <div class="section p-0 is-vcentered navigation-bar">
       <progress class="progress is-warning is-small" style="position: absolute" :value="(step / 6) * 100" max="100"></progress>
-      <p style="text-align: center;">
+      <p class="py-5" style="text-align: center;">
         <template v-if="questionnaire.type === 'scenario-study'">
           Step {{ step }}: {{ questionnaire.title }}
         </template>
@@ -30,9 +30,14 @@
             <strong style='font-size: 1.4rem; font-weight: bold;' v-if="questionnaire.type === 'scenario-study'">Quiz: Verification {{ questionnaire.data.length > 1 ? 'Questions' : 'Question' }}</strong>
           </div>
 
-          <div class="column is-full py-0">
+          <div class="column is-full py-0" v-if="questionnaire.type !== 'post-study'">
             <p style="white-space: pre-wrap; color: red">
-              Note: Please answer all the {{ questionnaire.data.length > 1 ? 'questions' : 'question' }}.
+              <template v-if="questionnaire.data.length > 1">
+                Please answer all the questions.
+              </template>
+              <template v-else>
+                Please answer the question.
+              </template>
             </p>
           </div>
 
@@ -101,9 +106,27 @@
             </div>
 
             <!--   General Text    -->
-            <div class="control questionnaire-text" v-if="question.type === 'text'">
+            <div class="control questionnaire-text" v-if="question.type ==='text'">
+              <div v-if="question.checkBots">
+                <p class="pb-3">Please select your preferred Chatbot first.</p>
+                <div class="columns pb-3">
+                <div :class="['column is-narrow py-2']" v-for="(bot, index) in question.checkBots">
+<!--                  <label class="checkbox">-->
+<!--                    <input type="checkbox" v-model="bot.value">-->
+<!--                    {{ bot.name }}-->
+<!--                  </label>-->
+
+                  <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
+                    <input type="radio" :value="bot.name" v-model="question.checkBotValue">&nbsp;
+                    {{ bot.name }}
+                  </label>
+                </div>
+                </div>
+              </div>
             <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
             </div>
+
+
           </div>
           <div class="column is-full py-3 mt-3 mb-5">
             <template v-if="isLoading">
@@ -344,7 +367,7 @@ export default {
 
 <style scoped>
 .navigation-bar {
-  line-height: 80px;
+  line-height: 2rem;
   font-weight: bold;
   font-size: 1.3rem;
   border-bottom: 1px solid #e0e0e0;

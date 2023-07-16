@@ -2,45 +2,9 @@
   <div class="container"
        style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
     <div class="columns is-multiline is-mobile m-0">
-      <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
-        <p class="pt-3 pb-3"
-           style="color: gray; text-align: center; border-bottom: 1px solid #e1e1e1; font-size: 1.3rem; font-weight: bold; color: black">
-          Wish List
-        </p>
-        <div class="pb-4" v-if="items.size > 0"
-             style="width: 100%; height: calc(100vh - 177px); overflow-y: scroll; overflow-x: hidden">
-          <div class="columns is-multiline is-mobile px-4 pt-4">
-            <div class="column is-full" v-for="item in items"
-                 style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
-              <i class="bi bi-x-circle mr-2" style="color: red; cursor: pointer" @click="disFavoriteBtnTap(item)"></i>
-              <template v-for="i in itemRates[item]">
-                <i class="bi bi-star-fill" style="color: orange"></i>
-              </template>
-              <br>
-              {{ item }}
-            </div>
-          </div>
+      <!--Wish List-->
+      <ChatWishListView class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative" :store="store" :items="items" :item-rates="itemRates" :total-items="totalItems" :messages="messages" @dis-favorite-btn-tap="(title) => disFavoriteBtnTap(title)" @end-conversation-btn-tap="endConversationBtnTap" @fill-content-btn-tap="(content) => fillContentBtnTap(content)"/>
 
-          <p style="text-align: center; font-weight: bold; color: lightgrey">
-            {{ items.size }} / {{ totalItems }}
-          </p>
-        </div>
-        <div v-else>
-          <p class="pt-5" style="color: gray; text-align: center">
-            No items selected
-          </p>
-        </div>
-
-        <div
-            style="position: absolute; width: 100%; bottom: 20px; padding-top: 20px; border-top: 1px solid #e1e1e1; background-color: white">
-          <button class="button is-link" style="left: 50%; transform: translateX(-50%);" @click="endConversationBtnTap"
-                  :disabled="!isCompleted && !store.debug">
-            Next Step
-          </button>
-        </div>
-
-
-      </div>
       <div class="column is-9 p-0">
         <div class="main-canvas" style="position: relative">
 
@@ -86,8 +50,6 @@
                 </div>
               </div>
 
-              <div v-if="!isLoading && messages.length > 0" class='button mt-2' style="margin-left: 2rem; margin-top: 5px" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">Did not find the&nbsp;&nbsp;<span style='color: orange;'><i class='bi bi-plus-circle'></i></span>&nbsp;&nbsp;Icon? Click me!</div>
-
               <div class="column is-full" v-if="isLoading">
                 <div :class="['receive-canvas', 'temp-chat-content-canvas']">
                         <span v-html="tempMessage">
@@ -127,46 +89,9 @@
     </div>
   </div>
 
-  <div class="rate-canvas" v-if="currentItemTitle">
-    <div class="rate-canvas-pop">
-      <p style="font-weight: bold; font-style: italic; color: red">
-        <template v-if="tag === 'book'">
-          How much would you like this book:
-        </template>
-        <template v-else>
-          How much would you like this job:
-        </template>
-      </p>
-      <p class="mb-3" style="text-align: left">
-        <strong>
-          {{ currentItemTitle }}
-        </strong>
-      </p>
-
-      <div class="buttons has-addons is-centered">
-        <button :class="['button', currentItemRate === 1 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 1"><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 2 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 2"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 3 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 3"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 4 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 4"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></button>
-        <button :class="['button', currentItemRate === 5 ? 'is-warning' : 'is-light']" style="color: orange" @click="currentItemRate = 5"><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
-            class="bi bi-star-fill"></i></button>
-      </div>
-
-      <div class="buttons is-centered">
-        <button class="button is-dark mr-5" @click="currentItemTitle = null; currentItemRate = null">Cancel</button>
-        <button class="button is-link" @click="favoriteBtnTap()" :disabled="this.currentItemRate === null">Submit</button>
-      </div>
-
-    </div>
-    <div style="width: 100%; height: 100%; background: red; background: rgba(0, 0, 0, 0.2);"
-         @click="currentItemTitle = null">
-
-    </div>
-  </div>
+  <template v-if="currentItemTitle">
+    <ChatRateView :current-item-title="currentItemTitle" :current-item-rate="currentItemRate" @cancelBtnTap="currentItemTitle = null; currentItemRate = null" @change-current-item-rate="changeFavoriteRate" @favorite-btn-tap="favoriteBtnTap"/>
+  </template>
 </template>
 
 <script>
@@ -175,10 +100,12 @@ import {Base64} from "js-base64";
 import {fetchEventSource} from "@microsoft/fetch-event-source";
 import moment from "moment";
 import {nextTick} from "vue";
+import ChatRateView from "@/components/chat/ChatRateView.vue";
+import ChatWishListView from "@/components/chat/ChatWishListView.vue";
 
 export default {
   name: "ChatView",
-  components: {},
+  components: {ChatWishListView, ChatRateView},
   data() {
     return {
       store: useDefaultStore(),
@@ -234,7 +161,10 @@ export default {
     },
 
     defaultPrompt() {
-      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNotes: \n - You need to choose <strong>FIVE " + (this.tag === 'book' ? 'books' : 'job types') + "</strong> for creating the wish list. \n - If you want to add a " + (this.tag === "book" ? "book" : "job type") + " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon." + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '')
+
+      const notes = this.tag === 'book' ? "\n- You could ask the bot for more details about a recommended item, e.g., asking the bot about what is the abstract for a book.\n- You could also ask the bot to adjust the recommendations, e.g., asking the bot about which books are about American history." : "\n- You could ask the bot for more details about a recommended item, e.g., asking the bot about what kinds of skills this job type requires.\n- You could also ask the bot to adjust the recommendations, e.g., asking the bot about what kinds of jobs for Ph.D. graduates."
+
+      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNotes: \n - You need to choose <strong>FIVE " + (this.tag === 'book' ? 'books' : 'job types') + "</strong> for creating the wish list. \n - <strong>If you want to add a " + (this.tag === "book" ? "book" : "job type") + " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon.</strong>" + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '') + notes + "<p> - Regarding item selection:</p><img src='/book-job-gpt/chatbot/chat-note.png' alt='chat note' style='max-height: 300px'>"
 
       let button = ""
 
@@ -244,8 +174,8 @@ export default {
 
 
       if (this.store.isPrompts) {
-        return welcomeMessage + "\n\nYou can start the conversation with me in this way:\n" +
-            "<strong>“<span>" + this.firstPrompt + "</span>”</strong>" + button
+        return welcomeMessage + "\n\n<strong>You can start the conversation with me in this way:</strong>\n" +
+            "“<span>" + this.firstPrompt + "</span>”" + button
 
       } else {
         return welcomeMessage
@@ -255,15 +185,12 @@ export default {
     firstPrompt() {
       return this.tag === "book" ? "I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. You can ask me the first question now." : "I would like you to act as a personalised job recommender to help me find job types which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different job types so that I can make the right choices. You can ask me the first question now."
     },
-
-    isCompleted() {
-      return this.items.size >= this.totalItems;
-    }
   },
   mounted() {
     window.chooseFavoriteTap = this.chooseFavoriteTap;
     window.fillContentBtnTap = this.fillContentBtnTap;
   },
+
   created() {
     this.$watch(
         () => this.$route.params,
@@ -335,6 +262,10 @@ export default {
       }
 
       this.currentItemTitle = decodeTitle;
+    },
+
+    changeFavoriteRate(rate) {
+      this.currentItemRate = rate;
     },
 
     favoriteBtnTap() {
@@ -565,7 +496,7 @@ export default {
 
     formatDate(timestamp) {
       return "<p style='text-align: right; color: darkgray'>" + moment.unix(timestamp).format('HH:mm') + "</p>";
-    }
+    },
 
   }
 }

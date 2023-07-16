@@ -14,7 +14,7 @@
           <div class="column is-full">
             <label class="checkbox mb-5">
               <input type="checkbox" v-model="store.isAgreeConsent">
-              I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/InformedConsentStatement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
+              I indicate that I am 18 years of age or older with full knowledge of all the foregoing; I have read the information presented in this <a href="/book-job-gpt/InformedConsentStatement.pdf" target="_blank">Informed Consent Statement</a> about the study. I agree of my own free will to participate in this study.
             </label>
             <button :class="['button is-link', isLoading ? 'is-loading' : '']" style="width: 100%; font-size: 1.5rem" @click="startBtnTap" :disabled="!store.isAgreeConsent || isLoading">START</button>
 
@@ -66,7 +66,7 @@ export default {
       title: "Experiment on Recommender Bots based on ChatGPT",
       description: "Thank you for participating in this experiment! This experiment aims to investigate whether a chatbot based on ChatGPT can provide a satisfying user experience in accomplishing two tasks:  book recommendation task and job recommendations task.<br><small style='font-style: italic; color: #2455af'><strong style='color: #2455af''>Note:</strong> ChatGPT is an AI language model developed by OpenAI. It is designed to generate human-like responses in text-based conversations. ChatGPT uses deep learning techniques to produce language-based conversations and is capable of engaging in dynamic and interactive exchanges with users.</small><br><br>In this experiment, you will use a recommender chatbot based on ChatGPT. It could understand your needs by communicating with you, and make recommendations accordingly."
 
-          + "<p style='padding-top: 10px; padding-bottom: 10px; font-size: 1.0rem'><span style='font-size: 1.3rem;'>There are six steps in this experiment (lasting around 20-30 minutes):</span>"
+          + "<p style='padding-top: 10px; padding-bottom: 10px; font-size: 1.0rem'><span style='font-size: 1.3rem;'>There are <strong>six steps</strong> in this experiment (lasting around 20-30 minutes):</span>"
 
           + "<br>&nbsp;&nbsp;&nbsp;&nbsp;Step 1: Fill out the pre-study questionnaire."
 
