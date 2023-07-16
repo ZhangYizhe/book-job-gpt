@@ -2,50 +2,9 @@
   <div class="container"
        style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
     <div class="columns is-multiline is-mobile m-0">
-      <div class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative">
-        <p class="pt-3 pb-3"
-           style="color: gray; text-align: center; border-bottom: 1px solid #e1e1e1; font-size: 1.3rem; font-weight: bold; color: black">
-          Wish List
-        </p>
-        <div class="pb-4" v-if="items.size > 0"
-             :style="['width: 100%; overflow-y: scroll; overflow-x: hidden', 'height: calc(100vh - 95px - ' + wishlistBottomCanvasHeight + 'px);']">
-          <div class="columns is-multiline is-mobile px-4 pt-4">
-            <div class="column is-full" v-for="item in items"
-                 style="border-bottom: 1px solid #e1e1e1; word-wrap: break-word;">
-              <i class="bi bi-x-circle mr-2" style="color: red; cursor: pointer" @click="disFavoriteBtnTap(item)"></i>
-              <template v-for="i in itemRates[item]">
-                <i class="bi bi-star-fill" style="color: orange"></i>
-              </template>
-              <br>
-              {{ item }}
-            </div>
-          </div>
+      <!--Wish List-->
+      <ChatWishListView class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative" :store="store" :items="items" :item-rates="itemRates" :total-items="totalItems" :messages="messages" @dis-favorite-btn-tap="(title) => disFavoriteBtnTap(title)" @end-conversation-btn-tap="endConversationBtnTap" @fill-content-btn-tap="(content) => fillContentBtnTap(content)"/>
 
-          <p style="text-align: center; font-weight: bold; color: lightgrey">
-            {{ items.size }} / {{ totalItems }}
-          </p>
-        </div>
-        <div v-else>
-          <p class="pt-5" style="color: gray; text-align: center">
-            No items selected
-          </p>
-        </div>
-
-        <div ref="wishlistBottomCanvas"
-            style="position: absolute; width: 100%; bottom: 0; padding-bottom: 20px; border-top: 1px solid #e1e1e1; background-color: white; overflow: scroll">
-          <div class="px-3 py-3 mb-3" style="border-bottom: 1px solid #e1e1e1;">
-            If the items recommended by the chatbot cannot be selected, please
-            <span style="cursor: pointer; color: orange;" @click="fillContentBtnTap('Please surround each item in your response with <name></name> tags.')">click here.</span>
-          </div>
-
-          <button class="button is-link" style="left: 50%; transform: translateX(-50%);" @click="endConversationBtnTap"
-                  :disabled="!isCompleted && !store.debug">
-            Next Step
-          </button>
-        </div>
-
-
-      </div>
       <div class="column is-9 p-0">
         <div class="main-canvas" style="position: relative">
 
@@ -142,16 +101,15 @@ import {fetchEventSource} from "@microsoft/fetch-event-source";
 import moment from "moment";
 import {nextTick} from "vue";
 import ChatRateView from "@/components/chat/ChatRateView.vue";
+import ChatWishListView from "@/components/chat/ChatWishListView.vue";
 
 export default {
   name: "ChatView",
-  components: {ChatRateView},
+  components: {ChatWishListView, ChatRateView},
   data() {
     return {
       store: useDefaultStore(),
       round: 1,
-
-      wishlistBottomCanvasHeight: 0,
 
       inputText: '',
 
@@ -206,7 +164,7 @@ export default {
 
       const notes = this.tag === 'book' ? "\n- You could ask the bot for more details about a recommended item, e.g., asking the bot about what is the abstract for a book.\n- You could also ask the bot to adjust the recommendations, e.g., asking the bot about which books are about American history." : "\n- You could ask the bot for more details about a recommended item, e.g., asking the bot about what kinds of skills this job type requires.\n- You could also ask the bot to adjust the recommendations, e.g., asking the bot about what kinds of jobs for Ph.D. graduates."
 
-      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNotes: \n - You need to choose <strong>FIVE " + (this.tag === 'book' ? 'books' : 'job types') + "</strong> for creating the wish list. \n - <strong>If you want to add a " + (this.tag === "book" ? "book" : "job type") + " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon.</strong>" + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '') + notes
+      const welcomeMessage = "Hi, I'm a " + this.tag + " recommender chatbot based on ChatGPT, and I'm happy to assist you!\n\nNotes: \n - You need to choose <strong>FIVE " + (this.tag === 'book' ? 'books' : 'job types') + "</strong> for creating the wish list. \n - <strong>If you want to add a " + (this.tag === "book" ? "book" : "job type") + " to your wish list, please click the <span style='color: orange;'><i class='bi bi-plus-circle'></i></span> icon.</strong>" + (this.tag === 'job' ? '\n - This job chatbot is designed to provide recommendations for <strong>job types</strong>, not for specific job positions.' : '') + notes + "<p> - Regarding item selection:</p><img src='public/chatbot/chat-note.png' alt='chat note' style='max-height: 300px'>"
 
       let button = ""
 
@@ -227,22 +185,12 @@ export default {
     firstPrompt() {
       return this.tag === "book" ? "I would like you to act as a personalised book recommender to help me find books that may match my interests. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different books so that I can make the right choices. You can ask me the first question now." : "I would like you to act as a personalised job recommender to help me find job types which suit my skills and knowledge. You can ask me questions one by one and wait for my answers, and try to adjust your recommendations based on my answers. You can also help me compare different job types so that I can make the right choices. You can ask me the first question now."
     },
-
-    isCompleted() {
-      return this.items.size >= this.totalItems;
-    }
   },
   mounted() {
     window.chooseFavoriteTap = this.chooseFavoriteTap;
     window.fillContentBtnTap = this.fillContentBtnTap;
-
-    window.addEventListener('resize', this.handleResize)
-    this.handleResize()
   },
 
-  unmounted() {
-    window.removeEventListener('resize', this.handleResize)
-  },
   created() {
     this.$watch(
         () => this.$route.params,
@@ -548,10 +496,6 @@ export default {
 
     formatDate(timestamp) {
       return "<p style='text-align: right; color: darkgray'>" + moment.unix(timestamp).format('HH:mm') + "</p>";
-    },
-
-    handleResize() {
-      this.wishlistBottomCanvasHeight = this.$refs.wishlistBottomCanvas.offsetHeight;
     },
 
   }
