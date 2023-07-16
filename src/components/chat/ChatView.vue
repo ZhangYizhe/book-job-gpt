@@ -88,9 +88,8 @@
       </div>
     </div>
   </div>
-
   <template v-if="currentItemTitle">
-    <ChatRateView :current-item-title="currentItemTitle" :current-item-rate="currentItemRate" @cancelBtnTap="currentItemTitle = null; currentItemRate = null" @change-current-item-rate="changeFavoriteRate" @favorite-btn-tap="favoriteBtnTap"/>
+    <ChatRateView :current-item-title="currentItemTitle" :current-item-rate="currentItemRate" @cancelBtnTap="currentItemTitle = ''; currentItemRate = 0" @change-current-item-rate="changeFavoriteRate" @favorite-btn-tap="favoriteBtnTap"/>
   </template>
 </template>
 
@@ -125,7 +124,7 @@ export default {
       items: new Set(),
       itemRates: {},
       currentItemTitle: "",
-      currentItemRate: null,
+      currentItemRate: 0,
 
       systemMessage: [
         {
@@ -270,7 +269,7 @@ export default {
 
     favoriteBtnTap() {
 
-      if (this.currentItemRate === null) {
+      if (this.currentItemRate === 0) {
         return
       }
 
@@ -289,8 +288,8 @@ export default {
         this.itemRates[this.currentItemTitle] = this.currentItemRate;
       }
 
-      this.currentItemTitle = null;
-      this.currentItemRate = null;
+      this.currentItemTitle = '';
+      this.currentItemRate = 0;
     },
 
     disFavoriteBtnTap(title) {

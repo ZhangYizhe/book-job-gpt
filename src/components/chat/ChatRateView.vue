@@ -54,11 +54,11 @@ function currentItemRateBtnTap(rate) {
 
       <div class="buttons is-centered is-hidden-mobile">
         <button class="button is-dark" @click="$emit('cancelBtnTap')">Cancel</button>
-        <button class="button is-link" @click="$emit('favoriteBtnTap')" :disabled="this.currentItemRate === null">Submit</button>
+        <button class="button is-link" @click="$emit('favoriteBtnTap')" :disabled="currentItemRate === null">Submit</button>
       </div>
 
       <div class="buttons is-centered is-hidden-tablet">
-        <button class="button is-link" @click="$emit('favoriteBtnTap')" :disabled="this.currentItemRate === null">Submit</button>
+        <button class="button is-link" @click="$emit('favoriteBtnTap')" :disabled="currentItemRate === null">Submit</button>
         <button class="button is-dark" @click="$emit('cancelBtnTap')">Cancel</button>
       </div>
 
