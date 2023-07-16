@@ -10,6 +10,7 @@ export const useDefaultStore = defineStore('default', {
         return {
             tag: 'home',
 
+            prolificCode: 'CEBMLMFN',
             azureKey: '',
             isPrompts: '',
             isAgreeConsent: false,
