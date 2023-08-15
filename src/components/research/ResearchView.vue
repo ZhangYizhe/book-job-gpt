@@ -7,12 +7,13 @@ const isExpandBasic = ref(false)
 const isPreQuestionnaire = ref(false)
 const isShowProlificId = ref(false)
 const isShowItems = ref(false)
+const isShowChatStatistics = ref(true)
 const isShowPostQuestionnaires = ref(false)
-const isShowOpenEndedQuestionnaire = ref(true)
-
+const isShowOpenEndedQuestionnaire = ref(false)
 
 const records = ref([])
 const currentChat = ref(null)
+const chatStatistics = ref([])
 
 function popChatModal(id, messages) {
   currentChat.value = null;
@@ -65,6 +66,57 @@ onMounted(() => {
       endDate: endDate,
     })
   })
+
+  for (let i = 0; i < records.value.length; i++) {
+    const record = records.value[i]
+    const chat = record.chat
+    const messages = chat.messages
+
+    const book = messages['book']
+    const job = messages['job']
+
+    let bookDuration = 0
+    let jobDuration = 0
+
+    let bookTurns = 0
+    let jobTurns = 0
+
+    let bookWords = 0
+    let jobWords = 0
+
+    if (book.length > 1) {
+      bookDuration = book[book.length - 1].time - book[0].time
+
+      book.forEach((message) => {
+        if (message.role === 'user') {
+          bookTurns += 1
+          bookWords += message.content.split(' ').length
+        }
+      })
+    }
+
+    if (job.length > 1) {
+      jobDuration = job[job.length - 1].time - job[0].time
+
+      job.forEach((message) => {
+        if (message.role === 'user') {
+          jobTurns += 1
+          jobWords += message.content.split(' ').length
+        }
+      })
+    }
+
+    chatStatistics.value.push({
+      id: i + 1,
+      bookDuration: bookDuration,
+      bookTurns: bookTurns,
+      bookWords: bookWords,
+      jobDuration: jobDuration,
+      jobTurns: jobTurns,
+      jobWords: jobWords,
+    })
+  }
+
 })
 
 
@@ -259,6 +311,44 @@ onMounted(() => {
                   Chat Details
                 </div>
               </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="column is-full p-0">
+      <hr class="m-2">
+    </div>
+
+    <div class="column is-full">
+      <div class="columns is-mobile is-multiline px-3">
+        <div class="column is-full">
+          <span class="title">Chat Statistics</span>
+        </div>
+        <div class="column is-full">
+          <button :class="['button', isShowChatStatistics ? 'is-light' : '']" @click="isShowChatStatistics = !isShowChatStatistics">{{ isShowChatStatistics ? 'Hidden' : 'Show' }} Details</button>
+        </div>
+        <div class="column" v-if="isShowChatStatistics">
+          <table class="table is-bordered is-striped is-fullwidth is-hoverable">
+            <thead>
+            <th>id</th>
+            <th>book.turns</th>
+            <th>book.words</th>
+            <th>book.duration</th>
+            <th>job.turns</th>
+            <th>job.words</th>
+            <th>job.duration</th>
+            </thead>
+            <tbody>
+            <tr v-for="(item) in chatStatistics">
+              <th>{{ item.id }}</th>
+              <td>{{ item.bookTurns }}</td>
+              <td>{{ item.bookWords }}</td>
+              <td>{{ item.bookDuration }}</td>
+              <td>{{ item.jobTurns }}</td>
+              <td>{{ item.jobWords }}</td>
+              <td>{{ item.jobDuration }}</td>
             </tr>
             </tbody>
           </table>
