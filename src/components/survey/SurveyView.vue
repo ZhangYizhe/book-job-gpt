@@ -106,7 +106,7 @@
             </div>
 
             <!--   General Text    -->
-            <div class="control questionnaire-text" v-if="question.type ==='text'">
+            <div class="control" v-if="question.type ==='text'">
               <div v-if="question.checkBots">
                 <p class="pb-3">Please select your preferred Chatbot first.</p>
                 <div class="columns pb-3">
@@ -118,7 +118,9 @@
                 </div>
                 </div>
               </div>
-            <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
+            <div class="questionnaire-text">
+              <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
+            </div>
             </div>
 
             <!-- single-text -->
