@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
 
 const routes = [
     {
@@ -24,6 +24,12 @@ const routes = [
         name: 'end',
         component: () => import('@/components/end/EndView.vue'),
     },
+
+    {
+        path: '/research',
+        name: 'research',
+        component: () => import('@/components/research/ResearchView.vue'),
+    }
 ]
 
 const router = createRouter({

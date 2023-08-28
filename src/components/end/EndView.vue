@@ -14,6 +14,9 @@
                   Thank you for your time in participating this study! <br>
                   The experiment is finished.
                 </p>
+                <p v-if="prolific" style="font-weight: bold; font-size: 1.4rem; color: #204d9b">
+                  Code for participants: <span style="color: red">{{ prolific }}</span>
+                </p>
               </div>
             </div>
           </div>
@@ -49,7 +52,21 @@ export default {
   data() {
     return {
       store:  useDefaultStore(),
+      prolific: null,
     };
+  },
+
+  created() {
+    // watch 路由的参数，以便再次获取数据
+    this.$watch(
+        () => this.$route.query,
+        () => {
+          this.prolific = this.$route.query.prolific;
+        },
+        // 组件创建完后获取数据，
+        // 此时 data 已经被 observed 了
+        { immediate: true }
+    )
   },
 
   methods: {

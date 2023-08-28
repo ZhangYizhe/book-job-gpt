@@ -96,13 +96,6 @@ export default {
     async startBtnTap() {
       this.isLoading = true;
 
-      const docRef = doc(this.db, "basic", "info");
-      await updateDoc(docRef, {
-        startCount: this.startCount,
-        bookNum: this.bookNum,
-        jobNum: this.jobNum,
-      })
-
       this.store.startDate = Date.now();
 
       const query = {
@@ -125,23 +118,37 @@ export default {
         this.bookNum = parseInt(info["bookNum"]);
         this.jobNum = parseInt(info["jobNum"]);
 
-        if (this.bookNum === this.jobNum) {
-          this.shuffle(this.store.order);
-          if (this.store.order[0] === 'book') {
-            this.bookNum += 1;
-          } else {
-            this.jobNum += 1;
-          }
-        } else if (this.bookNum > this.jobNum) {
+        if (this.bookNum >= 35 && this.jobNum <= 35) {
           this.store.order = ['job', 'book']
           this.jobNum += 1;
-        } else {
+        } else if (this.jobNum >= 35 && this.bookNum <= 35) {
           this.store.order = ['book', 'job']
           this.bookNum += 1;
+        } else {
+          if (this.bookNum === this.jobNum) {
+            this.shuffle(this.store.order);
+            if (this.store.order[0] === 'book') {
+              this.bookNum += 1;
+            } else {
+              this.jobNum += 1;
+            }
+          } else if (this.bookNum > this.jobNum) {
+            this.store.order = ['job', 'book']
+            this.jobNum += 1;
+          } else {
+            this.store.order = ['book', 'job']
+            this.bookNum += 1;
+          }
         }
 
         this.startCount = parseInt(info["startCount"]) + 1;
         this.store.isPrompts = this.startCount % 2 === 0;
+
+        await updateDoc(docRef, {
+          startCount: this.startCount,
+          bookNum: this.bookNum,
+          jobNum: this.jobNum,
+        })
 
         this.isLoading = false;
       } else {

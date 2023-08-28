@@ -106,16 +106,11 @@
             </div>
 
             <!--   General Text    -->
-            <div class="control questionnaire-text" v-if="question.type ==='text'">
+            <div class="control" v-if="question.type ==='text'">
               <div v-if="question.checkBots">
                 <p class="pb-3">Please select your preferred Chatbot first.</p>
                 <div class="columns pb-3">
                 <div :class="['column is-narrow py-2']" v-for="(bot, index) in question.checkBots">
-<!--                  <label class="checkbox">-->
-<!--                    <input type="checkbox" v-model="bot.value">-->
-<!--                    {{ bot.name }}-->
-<!--                  </label>-->
-
                   <label class="radio" style="font-size: 1.1rem; line-height: 1.7rem">
                     <input type="radio" :value="bot.name" v-model="question.checkBotValue">&nbsp;
                     {{ bot.name }}
@@ -123,7 +118,14 @@
                 </div>
                 </div>
               </div>
-            <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
+            <div class="questionnaire-text">
+              <textarea :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value"></textarea>
+            </div>
+            </div>
+
+            <!-- single-text -->
+            <div class="control questionnaire-text" v-if="question.type ==='single-text'">
+              <input :placeholder="question.placeholder !== undefined ? question.placeholder : 'Please enter content' " v-model="question.value">
             </div>
 
 
@@ -354,7 +356,7 @@ export default {
       this.store.interviewQuestionnaire = this.questionnaire;
       this.isLoading = true;
       await this.store.submit();
-      this.$router.push('/end');
+      this.$router.push({name: 'end', query: { prolific: this.store.prolificCode }});
     },
 
     generateArray(size, start) {
@@ -383,6 +385,15 @@ export default {
   border: 1px solid #d2d2d2;
   border-radius: 10px;
   height: 100px;
+  resize: none;
+  padding: 10px;
+  font-size: 1.1rem;
+}
+
+.questionnaire-text input {
+  width: 100%;
+  border: 1px solid #d2d2d2;
+  border-radius: 10px;
   resize: none;
   padding: 10px;
   font-size: 1.1rem;

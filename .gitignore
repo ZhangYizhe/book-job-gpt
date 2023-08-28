@@ -11,7 +11,7 @@ node_modules
 .DS_Store
 dist
 dist/
-dist-ssr
+dist-ssrx
 coverage
 *.local
 
@@ -27,3 +27,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+/public/records/
+/dist/
