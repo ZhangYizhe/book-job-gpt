@@ -1,13 +1,14 @@
 <script setup>
-import _records from '/public/records/_records.csv'
+import _records from '/public/records/_records_2.csv'
 import {onMounted, ref} from "vue";
 import moment from "moment/moment";
+import { read, utils, writeFile } from 'xlsx';
 
 const isExpandBasic = ref(false)
 const isPreQuestionnaire = ref(false)
 const isShowProlificId = ref(false)
 const isShowItems = ref(false)
-const isShowChatStatistics = ref(true)
+const isShowChatStatistics = ref(false)
 const isShowPostQuestionnaires = ref(false)
 const isShowOpenEndedQuestionnaire = ref(false)
 
@@ -25,6 +26,29 @@ function popChatModal(id, messages) {
 
 function formatDate(timestamp) {
   return "<p style='text-align: right; color: darkgray'>" + moment.unix(timestamp).format('HH:mm') + "</p>";
+}
+
+const basic_table = ref(null)
+const pre_table = ref(null)
+const chat_statistics_table = ref(null)
+const post_table_book = ref(null)
+
+async function exportBtnTap(id) {
+  let wb = null;
+  if (id === "basic_table") {
+    wb = utils.table_to_book(basic_table.value);
+  } else if (id === "pre_table") {
+    wb = utils.table_to_book(pre_table.value);
+  } else if (id === "chat_statistics_table") {
+    wb = utils.table_to_book(chat_statistics_table.value);
+  } else if (id === "post_table_book") {
+    wb = utils.table_to_book(document.getElementById('post_table_book'));
+  } else if (id === "post_table_job") {
+    wb = utils.table_to_book(document.getElementById('post_table_job'));
+  }
+
+  /* Export to file (start a download) */
+  writeFile(wb, id + ".csv");
 }
 
 function timestamp2Date(timestamp) {
@@ -175,18 +199,25 @@ onMounted(() => {
           </p>
         </div>
         <div class="column is-full">
-          <button :class="['button', isExpandBasic ? 'is-light' : '']" @click="isExpandBasic = !isExpandBasic">{{ isExpandBasic ? 'Hidden' : 'Show' }} Details</button>
+          <div class="buttons">
+            <button :class="['button', isExpandBasic ? 'is-light' : '']" @click="isExpandBasic = !isExpandBasic">{{ isExpandBasic ? 'Hidden' : 'Show' }} Details</button>
+            <button class="button" @click="exportBtnTap('basic_table')"  v-if="isExpandBasic">
+              Export
+            </button>
+          </div>
         </div>
         <div class="column" v-if="isExpandBasic">
-          <table class="table is-bordered is-striped is-fullwidth is-hoverable">
+          <table ref="basic_table" class="table is-bordered is-striped is-fullwidth is-hoverable">
             <thead>
-            <th>id</th>
-            <th>isPrompts</th>
-            <th>order</th>
-            <th>start</th>
-            <th>end</th>
-            <th>duration (Format)</th>
-            <th>duration (seconds)</th>
+            <tr>
+              <th>id</th>
+              <th>isPrompts</th>
+              <th>order</th>
+              <th>start</th>
+              <th>end</th>
+<!--              <th>duration (Format)</th>-->
+              <th>duration (seconds)</th>
+            </tr>
             </thead>
             <tbody>
             <tr v-for="(record, index) in records">
@@ -195,7 +226,7 @@ onMounted(() => {
               <td>{{ record.basic.order }}</td>
               <td>{{ timestamp2Date(record.startDate) }}</td>
               <td>{{ timestamp2Date(record.endDate) }}</td>
-              <td>{{ timestamp2DurationMinutesAndSeconds(parseInt(record.startDate), parseInt(record.endDate)) }}</td>
+<!--              <td>{{ timestamp2DurationMinutesAndSeconds(parseInt(record.startDate), parseInt(record.endDate)) }}</td>-->
               <td>{{ ((parseInt(record.endDate) -  parseInt(record.startDate)) / 1000).toFixed(0) }}</td>
             </tr>
             </tbody>
@@ -217,26 +248,31 @@ onMounted(() => {
           <div class="buttons">
             <button :class="['button', isPreQuestionnaire ? 'is-light' : '']" @click="isPreQuestionnaire = !isPreQuestionnaire">{{ isPreQuestionnaire ? 'Hidden' : 'Show' }} Details</button>
             <button :class="['button', isShowProlificId ? 'is-light' : '']" @click="isShowProlificId = !isShowProlificId">{{ isShowProlificId ? 'Hidden' : 'Show' }} Prolific ID</button>
+            <button class="button" @click="exportBtnTap('pre_table')"  v-if="isPreQuestionnaire">
+              Export
+            </button>
           </div>
         </div>
         <div class="column table-container" v-if="isPreQuestionnaire">
-          <table class="table is-bordered is-striped is-fullwidth is-hoverable">
+          <table class="table is-bordered is-striped is-fullwidth is-hoverable" ref="pre_table">
             <thead>
-            <th>id</th>
-            <th v-if="isShowProlificId">Prolific ID</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Education</th>
-            <th>Country/Region</th>
-            <th>Job</th>
-            <th>Familiar</th>
-            <th>Frequently</th>
-            <th>Trust new technology</th>
-            <th>Trusting someone difficult</th>
-            <th>Confident new technology</th>
-            <th>ChatGPT expert</th>
-            <th>ChatGPT knowledgeable</th>
-            <th>ChatGPT extensive experience</th>
+            <tr>
+              <th>id</th>
+              <th v-if="isShowProlificId">Prolific ID</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Education</th>
+              <th>Country/Region</th>
+              <th>Job</th>
+              <th>Familiar</th>
+              <th>Frequently</th>
+              <th>Trust new technology</th>
+              <th>Trusting someone difficult</th>
+              <th>Confident new technology</th>
+              <th>ChatGPT expert</th>
+              <th>ChatGPT knowledgeable</th>
+              <th>ChatGPT extensive experience</th>
+            </tr>
             </thead>
             <tbody>
             <tr v-for="(record, index) in records">
@@ -327,18 +363,25 @@ onMounted(() => {
           <span class="title">Chat Statistics</span>
         </div>
         <div class="column is-full">
-          <button :class="['button', isShowChatStatistics ? 'is-light' : '']" @click="isShowChatStatistics = !isShowChatStatistics">{{ isShowChatStatistics ? 'Hidden' : 'Show' }} Details</button>
+          <div class="buttons">
+            <button :class="['button', isShowChatStatistics ? 'is-light' : '']" @click="isShowChatStatistics = !isShowChatStatistics">{{ isShowChatStatistics ? 'Hidden' : 'Show' }} Details</button>
+            <button class="button" @click="exportBtnTap('chat_statistics_table')"  v-if="isShowChatStatistics">
+              Export
+            </button>
+          </div>
         </div>
         <div class="column" v-if="isShowChatStatistics">
-          <table class="table is-bordered is-striped is-fullwidth is-hoverable">
+          <table class="table is-bordered is-striped is-fullwidth is-hoverable" ref="chat_statistics_table">
             <thead>
-            <th>id</th>
-            <th>book.turns</th>
-            <th>book.words</th>
-            <th>book.duration</th>
-            <th>job.turns</th>
-            <th>job.words</th>
-            <th>job.duration</th>
+            <tr>
+              <th>id</th>
+              <th>book.turns</th>
+              <th>book.words</th>
+              <th>book.duration</th>
+              <th>job.turns</th>
+              <th>job.words</th>
+              <th>job.duration</th>
+            </tr>
             </thead>
             <tbody>
             <tr v-for="(item) in chatStatistics">
@@ -366,7 +409,15 @@ onMounted(() => {
         </div>
         <div class="column is-full">
           <div class="buttons">
-            <button :class="['button', isShowPostQuestionnaires ? 'is-light' : '']" @click="isShowPostQuestionnaires = !isShowPostQuestionnaires">{{ isShowPostQuestionnaires ? 'Hidden' : 'Show' }} Details</button>
+            <div class="buttons">
+              <button :class="['button', isShowPostQuestionnaires ? 'is-light' : '']" @click="isShowPostQuestionnaires = !isShowPostQuestionnaires">{{ isShowPostQuestionnaires ? 'Hidden' : 'Show' }} Details</button>
+              <button class="button" @click="exportBtnTap('post_table_book')"  v-if="isShowPostQuestionnaires">
+                Export Book
+              </button>
+              <button class="button" @click="exportBtnTap('post_table_job')"  v-if="isShowPostQuestionnaires">
+                Export Job
+              </button>
+            </div>
           </div>
         </div>
         <div class="column table-container" v-if="isShowPostQuestionnaires">
@@ -374,12 +425,14 @@ onMounted(() => {
             <p class="subtitle">
               {{tag === 'book' ? 'Book' : 'Job'}}
             </p>
-            <table class="table is-bordered is-striped is-fullwidth is-hoverable" v-if="records.length > 0">
+            <table class="table is-bordered is-striped is-fullwidth is-hoverable" v-if="records.length > 0" :id="'post_table_' + tag">
               <thead>
-              <th>id</th>
-              <th v-for="question in records[0].data.postQuestionnaires[tag]">
-                {{question.id}}. {{ question.title }}
-              </th>
+              <tr>
+                <th>id</th>
+                <th v-for="question in records[0].data.postQuestionnaires[tag]">
+                  {{question.id}}. {{ question.title }}
+                </th>
+              </tr>
               </thead>
               <tbody>
               <tr v-for="(record, index) in records">
