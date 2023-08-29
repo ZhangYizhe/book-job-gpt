@@ -59,7 +59,6 @@ export default {
       db: null,
       isLoading: true,
 
-      startCount: 0,
       bookNum: 0,
       jobNum: 0,
 
@@ -115,39 +114,42 @@ export default {
         const info = docSnap.data();
         this.store.azureKey = info["azureKey"];
 
+        // Domain
         this.bookNum = parseInt(info["bookNum"]);
         this.jobNum = parseInt(info["jobNum"]);
 
-        if (this.bookNum >= 35 && this.jobNum <= 35) {
+        if (this.bookNum === this.jobNum) {
+          this.shuffle(this.store.order);
+          if (this.store.order[0] === 'book') {
+            this.bookNum += 1;
+          } else {
+            this.jobNum += 1;
+          }
+        } else if (this.bookNum > this.jobNum) {
           this.store.order = ['job', 'book']
           this.jobNum += 1;
-        } else if (this.jobNum >= 35 && this.bookNum <= 35) {
+        } else {
           this.store.order = ['book', 'job']
           this.bookNum += 1;
-        } else {
-          if (this.bookNum === this.jobNum) {
-            this.shuffle(this.store.order);
-            if (this.store.order[0] === 'book') {
-              this.bookNum += 1;
-            } else {
-              this.jobNum += 1;
-            }
-          } else if (this.bookNum > this.jobNum) {
-            this.store.order = ['job', 'book']
-            this.jobNum += 1;
-          } else {
-            this.store.order = ['book', 'job']
-            this.bookNum += 1;
-          }
         }
 
-        this.startCount = parseInt(info["startCount"]) + 1;
-        this.store.isPrompts = this.startCount % 2 === 0;
+        // prompts
+        let isPrompts = parseInt(info["isPrompts"]);
+        let noPrompts = parseInt(info["noPrompts"]);
+
+        if (isPrompts > noPrompts) {
+          noPrompts += 1;
+          this.store.isPrompts = false;
+        } else {
+          isPrompts += 1;
+          this.store.isPrompts = true;
+        }
 
         await updateDoc(docRef, {
-          startCount: this.startCount,
           bookNum: this.bookNum,
           jobNum: this.jobNum,
+          isPrompts: isPrompts,
+          noPrompts: noPrompts,
         })
 
         this.isLoading = false;
