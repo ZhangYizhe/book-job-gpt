@@ -145,12 +145,14 @@ export default {
           this.store.isPrompts = true;
         }
 
-        await updateDoc(docRef, {
-          bookNum: this.bookNum,
-          jobNum: this.jobNum,
-          isPrompts: isPrompts,
-          noPrompts: noPrompts,
-        })
+        if (this.store.start) {
+          await updateDoc(docRef, {
+            bookNum: this.bookNum,
+            jobNum: this.jobNum,
+            isPrompts: isPrompts,
+            noPrompts: noPrompts,
+          })
+        }
 
         this.isLoading = false;
       } else {
