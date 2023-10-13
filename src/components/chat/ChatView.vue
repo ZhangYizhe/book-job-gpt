@@ -1,6 +1,6 @@
 <template>
   <div class="container"
-       style="box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
+       style="box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2); margin-top: 20px; height: calc(100vh - 40px);">
     <div class="columns is-multiline is-mobile m-0">
       <!--Wish List-->
       <ChatWishListView class="column is-3 p-0" style="background-color: white; border-right: 1px solid #e1e1e1; position: relative" :store="store" :items="items" :item-rates="itemRates" :total-items="totalItems" :messages="messages" @dis-favorite-btn-tap="(title) => disFavoriteBtnTap(title)" @end-conversation-btn-tap="endConversationBtnTap" @fill-content-btn-tap="(content) => fillContentBtnTap(content)"/>
@@ -93,7 +93,6 @@
 <script>
 import {useDefaultStore} from "@/data/store";
 import {Base64} from "js-base64";
-import {fetchEventSource} from "@microsoft/fetch-event-source";
 import moment from "moment";
 import {nextTick} from "vue";
 import ChatRateView from "@/components/chat/ChatRateView.vue";
@@ -355,25 +354,25 @@ export default {
       })
     },
 
-    resetConversationBtnTap() {
-      if (confirm('Are you sure you want to restart the conversation? This will lose all current session content.')) {
-        this.resetConversation();
-      }
-    },
+    // resetConversationBtnTap() {
+    //   if (confirm('Are you sure you want to restart the conversation? This will lose all current session content.')) {
+    //     this.resetConversation();
+    //   }
+    // },
 
-    resetConversation() {
-      if (this.isLoading) {
-        alert("Please wait for a complete reply.")
-        return;
-      }
-
-      this.originalMessage = []
-      this.messages = []
-      this.items = new Set()
-
-      this.inputText = ''
-      this.resizeTextarea()
-    },
+    // resetConversation() {
+    //   if (this.isLoading) {
+    //     alert("Please wait for a complete reply.")
+    //     return;
+    //   }
+    //
+    //   this.originalMessage = []
+    //   this.messages = []
+    //   this.items = new Set()
+    //
+    //   this.inputText = ''
+    //   this.resizeTextarea()
+    // },
 
     resizeTextarea() {
       this.$refs.inputTextRef.style.height = 0 + 'px';
@@ -395,12 +394,12 @@ export default {
       })
     },
 
-    scrollToBottomWithoutTimer() {
-      nextTick(() => {
-        const el = this.$refs.chatCanvas;
-        el.scrollTop = el.scrollHeight;
-      })
-    },
+    // scrollToBottomWithoutTimer() {
+    //   nextTick(() => {
+    //     const el = this.$refs.chatCanvas;
+    //     el.scrollTop = el.scrollHeight;
+    //   })
+    // },
 
     endConversationBtnTap() {
       const confirmStr = this.tag === "book" ? "Are you sure you have found all the suitable books in this list?" : "Are you sure you have found all the suitable job types in this list?"
@@ -543,7 +542,7 @@ export default {
   padding: 10px;
   white-space: pre-line;
   background-color: white;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow:0 0 5px 0 rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
 
@@ -559,7 +558,7 @@ export default {
 }
 
 .temp-chat-content-canvas :deep(.item-btn) {
-  color: gray;
+  color: rgb(128, 128, 128);
   font-size: 1rem;
   cursor: not-allowed;
 }
@@ -592,7 +591,7 @@ export default {
   word-wrap: break-word;
 
   background-color: white;
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .receive-end-canvas {
@@ -608,7 +607,7 @@ export default {
 
   color: #2455af;
 //text-decoration: underline; background-color: white;
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .send-canvas {
@@ -624,7 +623,7 @@ export default {
   word-wrap: break-word;
 
   background-color: #e8fed7;
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .chat-input-canvas {
