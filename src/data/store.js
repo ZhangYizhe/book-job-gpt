@@ -58,9 +58,9 @@ export const useDefaultStore = defineStore('default', {
         }
     },
     getters: {
-        aiProxy: () => 'https://pi-lab.openai.azure.com/',
-        modelVersion: () => 'gpt-35-turbo',
-        apiVersion: () => '2023-05-15',
+        aiProxy: () => 'https://ai.yizheyun.cn',
+        modelVersion: () => 'gpt-35-turbo-16k',
+        apiVersion: () => '2023-08-01-preview',
         start: () => false,
         debug: () => false,
         db: () => firebaseDB,

@@ -52,9 +52,6 @@
 
               <div class="column is-full" v-if="isLoading">
                 <div :class="['receive-canvas', 'temp-chat-content-canvas']">
-                        <span v-html="tempMessage">
-
-                        </span>
                   <span class='blinking-cursor'>▋</span>
                 </div>
               </div>
@@ -101,6 +98,7 @@ import moment from "moment";
 import {nextTick} from "vue";
 import ChatRateView from "@/components/chat/ChatRateView.vue";
 import ChatWishListView from "@/components/chat/ChatWishListView.vue";
+import axios from "axios";
 
 export default {
   name: "ChatView",
@@ -113,9 +111,6 @@ export default {
       inputText: '',
 
       isLoading: false,
-
-      tempOriginalMessage: "",
-      tempMessage: "",
 
       originalMessage: [],
       messages: [],
@@ -300,104 +295,64 @@ export default {
       this.isLoading = true;
       const subThis = this;
 
-      await fetchEventSource(this.store.aiProxy + `/openai/deployments/${this.store.modelVersion}/chat/completions?api-version=${this.store.apiVersion}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'api-key': this.store.azureKey,
-        },
-        body: JSON.stringify({
-          messages: [...this.systemMessage, ...this.originalMessage.map((message) => {
-            return {
-              "role": message.role,
-              "content": message.content
+      axios.post(
+          this.store.aiProxy,
+          {
+            messages: [...this.systemMessage, ...this.originalMessage.map((message) => {
+              return {
+                "role": message.role,
+                "content": message.content
+              }
+            })],
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
             }
-          })],
-          stream: true,
-        }),
-        async onopen(response) {
-          if (response.status === 200) {
-            subThis.tempOriginalMessage = "";
-            subThis.tempMessage = "";
+          }
+      ).then(function (response) {
+        try {
+          subThis.isLoading = false;
+
+          const data = response.data;
+          if (data.error !== undefined) {
+            alert(data.error.message);
             return;
           }
+          const message = data.choices[0].message;
+          let content = message["content"]
+          let tempMessage = content;
 
-          switch (response.status) {
-            case 201 :
-              alert(`Error Code: ${response.status}, invalid Elecoxy key.`);
-              break;
-            case 401 :
-              alert(`Error Code: ${response.status}, invalid Authentication.`);
-              break;
-            case 403 :
-              alert(`Error Code: ${response.status}, invalid Elecoxy Authentication, please try again later.`);
-              break;
-            case 429 :
-              alert(`Error Code: ${response.status}, rate limit reached for requests, please try again later.`);
-              break;
-            case 500 :
-              alert(`Error Code: ${response.status}, the server had an error while processing your request, please try again later.`);
-              break;
-            default:
-              alert(`Error Code: ${response.status}, please try again later.`);
-              break;
-          }
-        },
-        onmessage(msg) {
-          const data = JSON.parse(msg.data);
-          const delta = data.choices[0].delta;
-          const finish_reason = data.choices[0].finish_reason;
+          const re = new RegExp("<name>(.*?)</name>", "g");
+          const titles = tempMessage.match(re);
 
-
-          if (finish_reason !== null) {
-            subThis.originalMessage.push({
-              "role": "assistant",
-              "content": subThis.tempOriginalMessage,
-              "time": Math.floor(Date.now() / 1000)
-            });
-            subThis.messages.push({
-              "role": "assistant",
-              "content": subThis.tempMessage,
-              "time": Math.floor(Date.now() / 1000)
-            });
-
-            subThis.isLoading = false;
-            subThis.tempOriginalMessage = "";
-            subThis.tempMessage = "";
-
-            return;
+          for (const i in titles) {
+            const title = titles[i].replace("<name>", "").replace("</name>", "");
+            const titleEncode = Base64.encode(encodeURI(title));
+            tempMessage = tempMessage.replaceAll(titles[i], "<span class=\'item-btn\' onclick=\'chooseFavoriteTap(\"" + titleEncode + "\")\'><i class=\'bi bi-plus-circle\'></i>" + title + "</span>")
           }
 
-          if (delta['content'] !== undefined) {
-            let content = delta["content"]
-            let tempMessage = subThis.tempMessage + content;
+          subThis.originalMessage.push({
+            "role": "assistant",
+            "content": content,
+            "time": Math.floor(Date.now() / 1000)
+          });
+          subThis.messages.push({
+            "role": "assistant",
+            "content": tempMessage,
+            "time": Math.floor(Date.now() / 1000)
+          });
 
-            const re = new RegExp("<name>(.*?)</name>", "g");
-            const titles = tempMessage.match(re);
+          subThis.isLoading = false;
 
-            for (const i in titles) {
-              const title = titles[i].replace("<name>", "").replace("</name>", "");
-              const titleEncode = Base64.encode(encodeURI(title));
-              tempMessage = tempMessage.replaceAll(titles[i], "<span class=\'item-btn\' onclick=\'chooseFavoriteTap(\"" + titleEncode + "\")\'><i class=\'bi bi-plus-circle\'></i>" + title + "</span>")
-            }
-
-            subThis.tempOriginalMessage = subThis.tempOriginalMessage + content;
-            subThis.tempMessage = tempMessage;
-
-            subThis.scrollToBottomWithoutTimer();
-          }
-        },
-        onclose() {
-
-        },
-        onerror(err) {
-
+          subThis.scrollToBottom();
+        } catch (e) {
+          alert(e)
         }
+      }).catch(function (error) {
+        subThis.isLoading = false;
+        alert(error);
       })
-
-      this.isLoading = false;
-      this.scrollToBottom();
-
     },
 
     resetConversationBtnTap() {
@@ -414,8 +369,6 @@ export default {
 
       this.originalMessage = []
       this.messages = []
-      this.tempOriginalMessage = ""
-      this.tempMessage = ""
       this.items = new Set()
 
       this.inputText = ''

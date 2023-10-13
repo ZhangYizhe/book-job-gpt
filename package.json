@@ -11,6 +11,7 @@
     "@microsoft/fetch-event-source": "^2.0.1",
     "@rollup/plugin-dsv": "^3.0.2",
     "animate.css": "^4.1.1",
+    "axios": "^1.5.1",
     "firebase": "^9.23.0",
     "js-base64": "^3.7.5",
     "moment": "^2.29.4",
