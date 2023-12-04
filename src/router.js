@@ -29,6 +29,12 @@ const routes = [
         path: '/research',
         name: 'research',
         component: () => import('@/components/research/ResearchView.vue'),
+    },
+
+    {
+        path: '/research/chat',
+        name: 'research/chat',
+        component: () => import('@/components/research/ResearchChatView.vue'),
     }
 ]
 
