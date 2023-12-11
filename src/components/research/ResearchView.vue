@@ -1,5 +1,5 @@
 <script setup>
-import _records from '/public/records/_records_2.csv'
+import _records from '/public/records/records-2.csv'
 import {onMounted, ref} from "vue";
 import moment from "moment/moment";
 import { read, utils, writeFile } from 'xlsx';
